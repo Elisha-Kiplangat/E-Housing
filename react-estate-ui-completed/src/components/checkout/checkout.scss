@@ -1,0 +1,124 @@
+.checkoutContainer {
+  max-width: 600px;
+  // margin: 5rem auto;
+  background: #fff;
+  // box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+
+  .header {
+    // background: #4a5568;
+    margin-top: -3.5rem;
+    color: rgb(20, 79, 26);
+    text-align: center;
+    padding: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .booking-container {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+  
+    .details {
+      margin-bottom: 1rem;
+
+      h3 {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+      }
+  
+      p {
+        font-size: 1rem;
+        margin-bottom: 0.3rem;
+      }
+    }
+  
+    .date-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+  
+      label {
+        font-weight: bold;
+      }
+      input{
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.3rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 5px;
+        outline: none;
+        font-size: 1rem;
+      }
+  
+      .react-datepicker-wrapper {
+        width: 100%;
+      }
+  
+      .react-datepicker__input-container input {
+        width: 100%;
+        padding: 0.5rem;
+        margin-top: 0.3rem;
+        border: 1px solid #cbd5e0;
+        border-radius: 5px;
+        outline: none;
+        font-size: 1rem;
+  
+        &:focus {
+          border-color: #4c51bf;
+          box-shadow: 0 0 5px rgba(76, 81, 191, 0.5);
+        }
+      }
+    }
+  
+    .amount {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  
+    .button-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+  
+      button {
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+  
+      .back-button {
+        background: #718096;
+        color: white;
+  
+        &:hover {
+          background: #4a5568;
+        }
+      }
+  
+      .confirm-button {
+        background: #4c51bf;
+        color: white;
+  
+        &:hover {
+          background: #3c366b;
+        }
+  
+        &:disabled {
+          background: #a0aec0;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  
+}

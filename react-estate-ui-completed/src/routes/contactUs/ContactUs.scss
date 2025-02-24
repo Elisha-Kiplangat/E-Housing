@@ -1,0 +1,182 @@
+@import "../../responsive.scss";
+
+.contact {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f9f9f9;
+    padding: 50px;
+    overflow-y: auto; 
+
+    .container {
+        width: 80%;
+        max-width: 900px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+
+        .banner {
+            position: relative;
+            width: 100%;
+            height: 300px;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            .overlay {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                background: rgba(0, 0, 0, 0.5);
+                padding: 20px 40px;
+                border-radius: 5px;
+                color: white;
+
+                h2 {
+                    font-size: 28px;
+                    margin-bottom: 10px;
+                }
+
+                p {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        .formContainer {
+            display: flex;
+            align-items: stretch;
+            gap: 20px;
+            padding: 30px;
+            flex-wrap: wrap;
+            overflow-y: auto;
+
+            @include md {
+                flex-direction: column;
+            }
+
+            .details,
+            .form {
+                flex: 1;
+                padding: 20px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                background: white;
+                border-radius: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            .details {
+                gap: 15px;
+
+                .info {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 10px;
+                    border-radius: 5px;
+
+                    img {
+                        width: 20px;
+                        height: 20px;
+                    }
+
+                    span {
+                        color: #555;
+                    }
+                }
+            }
+
+            .form {
+                gap: 15px;
+
+                input,
+                textarea {
+                    width: 100%;
+                    padding: 12px;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    box-sizing: border-box;
+                }
+
+                textarea {
+                    height: 120px;
+                    resize: none;
+                }
+
+                button {
+                    padding: 12px;
+                    background: #015f01;
+                    color: white;
+                    border: none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 16px;
+                    transition: 0.3s;
+
+                    &:hover {
+                        background: #034606;
+                    }
+                }
+            }
+        }
+    }
+
+    @include lg {
+        padding: 30px;
+    }
+
+    @include md {
+        padding: 20px;
+
+        .container {
+            width: 90%;
+        }
+    }
+
+    @include sm {
+        padding: 10px;
+
+        .container {
+            width: 100%;
+        }
+
+        .formContainer {
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .details,
+        .form {
+            padding: 15px;
+        }
+
+        .form {
+
+            input,
+            textarea {
+                font-size: 14px;
+                box-sizing: border-box;
+            }
+
+            button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+
+        .banner .overlay {
+            width: 90%;
+            padding: 15px;
+        }
+    }
+}
