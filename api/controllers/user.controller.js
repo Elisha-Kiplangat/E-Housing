@@ -76,6 +76,29 @@ export const deleteUser = async (req, res) => {
   }
 };
 
+export const getSavedPosts = async (req, res) => {
+  try {
+    const tokenUserId = req.userId; // Ensure user is authenticated
+
+    const savedPosts = await prisma.savedPost.findMany({
+      where: { userId: tokenUserId }, // Get posts saved by this user
+      include: {
+        post: true, // Join post details
+      },
+    });
+
+    if (!savedPosts || savedPosts.length === 0) {
+      return res.status(200).json([]); // Return an empty array if no saved posts
+    }
+
+    res.status(200).json(savedPosts.map((saved) => saved.post)); // Send only post details
+  } catch (err) {
+    console.error("Error fetching saved posts:", err);
+    res.status(500).json({ message: "Failed to get saved posts!" });
+  }
+};
+
+
 export const savePost = async (req, res) => {
   const postId = req.body.postId;
   const tokenUserId = req.userId;
