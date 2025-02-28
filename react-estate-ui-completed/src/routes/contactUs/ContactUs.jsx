@@ -1,12 +1,12 @@
 import "./ContactUs.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import image from "../../../public/chat.png";
+import image from "../../../public/contact.jpg";
 
 const ContactUs = () => {
   return (
     <div className="contact">
-      <div className="container">
+      {/* <div className="container"> */}
         <div className="banner">
           <img src={image} alt="Contact Us" />
           <div className="overlay">
@@ -38,7 +38,7 @@ const ContactUs = () => {
             <button type="submit">Send Message</button>
           </div>
         </div>
-      </div>
+      {/* </div> */}
     </div>
   );
 };

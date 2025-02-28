@@ -1,182 +1,182 @@
-@import "../../responsive.scss";
-
 .contact {
+    // margin-top: 20px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    min-height: 100vh;
     background: #f9f9f9;
-    padding: 50px;
-    overflow-y: auto; 
+    padding: 20px 0;
 
-    .container {
+    .banner {
+        position: relative;
         width: 80%;
         max-width: 900px;
-        background: rgba(255, 255, 255, 0.9);
+        height: 300px;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+
+            h2 {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+
+            p {
+                font-size: 1.2rem;
+            }
+        }
+    }
+
+    .formContainer {
+        display: flex;
+        width: 80%;
+        max-width: 900px;
+        background: #fff;
         border-radius: 10px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-
-        .banner {
-            position: relative;
-            width: 100%;
-            height: 300px;
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-            .overlay {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-                background: rgba(0, 0, 0, 0.5);
-                padding: 20px 40px;
-                border-radius: 5px;
-                color: white;
-
-                h2 {
-                    font-size: 28px;
-                    margin-bottom: 10px;
-                }
-
-                p {
-                    font-size: 16px;
-                }
-            }
-        }
-
-        .formContainer {
-            display: flex;
-            align-items: stretch;
-            gap: 20px;
-            padding: 30px;
-            flex-wrap: wrap;
-            overflow-y: auto;
-
-            @include md {
-                flex-direction: column;
-            }
-
-            .details,
-            .form {
-                flex: 1;
-                padding: 20px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                background: white;
-                border-radius: 10px;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            }
-
-            .details {
-                gap: 15px;
-
-                .info {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    padding: 10px;
-                    border-radius: 5px;
-
-                    img {
-                        width: 20px;
-                        height: 20px;
-                    }
-
-                    span {
-                        color: #555;
-                    }
-                }
-            }
-
-            .form {
-                gap: 15px;
-
-                input,
-                textarea {
-                    width: 100%;
-                    padding: 12px;
-                    border: 1px solid #ddd;
-                    border-radius: 5px;
-                    font-size: 16px;
-                    box-sizing: border-box;
-                }
-
-                textarea {
-                    height: 120px;
-                    resize: none;
-                }
-
-                button {
-                    padding: 12px;
-                    background: #015f01;
-                    color: white;
-                    border: none;
-                    border-radius: 5px;
-                    cursor: pointer;
-                    font-size: 16px;
-                    transition: 0.3s;
-
-                    &:hover {
-                        background: #034606;
-                    }
-                }
-            }
-        }
-    }
-
-    @include lg {
-        padding: 30px;
-    }
-
-    @include md {
         padding: 20px;
+        gap: 30px;
+        margin-bottom: 40px;
 
-        .container {
-            width: 90%;
-        }
-    }
-
-    @include sm {
-        padding: 10px;
-
-        .container {
-            width: 100%;
+        @media (max-width: 768px) {
+            flex-direction: column;
         }
 
-        .formContainer {
+        .details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 15px;
+            padding-left: 15px;
+
+            .info {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                font-size: 1rem;
+                margin-bottom: 15px;
+
+                svg {
+                    color: #007bff;
+                    font-size: 1.5rem;
+                }
+            }
+        }
+
+        .form {
+            flex: 1;
+            display: flex;
             flex-direction: column;
             gap: 15px;
-        }
-
-        .details,
-        .form {
-            padding: 15px;
-        }
-
-        .form {
 
             input,
             textarea {
-                font-size: 14px;
-                box-sizing: border-box;
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 1rem;
+            }
+
+            textarea {
+                height: 120px;
+                resize: none;
             }
 
             button {
-                font-size: 14px;
-                padding: 10px;
+                background: #007bff;
+                color: #fff;
+                padding: 12px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 1rem;
+                transition: background 0.3s;
+
+                &:hover {
+                    background: #0056b3;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 576px) {
+        padding: 30px 0;
+
+        .banner {
+            width: 90%;
+            height: 200px;
+
+            .overlay {
+                h2 {
+                    font-size: 1.5rem;
+                }
+
+                p {
+                    font-size: 1rem;
+                }
             }
         }
 
-        .banner .overlay {
+        .formContainer {
             width: 90%;
             padding: 15px;
+
+            .details,
+            .form {
+                gap: 10px;
+            }
+        }
+    }
+
+    @media (max-width: 375px) {
+        .banner {
+            height: 180px;
+
+            .overlay {
+                h2 {
+                    font-size: 1.2rem;
+                }
+
+                p {
+                    font-size: 0.9rem;
+                }
+            }
+        }
+
+        .formContainer {
+            padding: 10px;
+            gap: 15px;
+
+            .form {
+
+                input,
+                textarea {
+                    font-size: 0.9rem;
+                }
+
+                button {
+                    font-size: 0.9rem;
+                }
+            }
         }
     }
 }
