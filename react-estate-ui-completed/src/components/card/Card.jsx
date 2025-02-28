@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
 import "./card.scss";
+import { useSavedPosts } from "../../context/SavedPostsContext";
 
 function Card({ item }) {
+
+  const { savedPosts, toggleSave } = useSavedPosts();
+  // const isSaved = savedPosts.has(item.id);
+
   return (
     <div className="card">
       <Link to={`/${item.id}`} className="imageContainer">
@@ -28,8 +33,15 @@ function Card({ item }) {
             </div>
           </div>
           <div className="icons">
-            <div className="icon">
-              <img src="/save.png" alt="" />
+           
+            <div className="icon" onClick={() => toggleSave(item.id)}
+              style={{
+                 backgroundColor: savedPosts.has(item.id) ? "#fece51" : "transparent",
+                 padding: "5px", 
+                 transition: "background-color 0.3s ease", 
+               }}
+             >
+  <img src="/save.png" alt="Save" />
             </div>
             <div className="icon">
               <img src="/chat.png" alt="" />

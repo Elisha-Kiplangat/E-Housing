@@ -8,38 +8,35 @@ import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import Checkout from "../../components/checkout/Checkout";
 
+import { useSavedPosts } from "../../context/SavedPostsContext";
+
 function SinglePage() {
   const post = useLoaderData();
-  const [saved, setSaved] = useState(post.isSaved);
+  // const [saved, setSaved] = useState(post.isSaved);
+  const { savedPosts, toggleSave } = useSavedPosts();
+  // const isSaved = savedPosts.has(post.id);
   const { currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [isBookingFormOpen, setIsBookingFormOpen] = useState(false); // State for popup form
 
-  const handleSave = async () => {
-    if (!currentUser) {
-      navigate("/login");
-      return;
-    }
-
-    setSaved((prev) => !prev);
-    try {
-      await apiRequest.post("/users/save", { postId: post.id });
-    } catch (err) {
-      console.log(err);
-      setSaved((prev) => !prev);
-    }
-  };
+  //  const handleSave = () => {
+  //   if (!currentUser) {
+  //     navigate("/login");
+  //     return;
+  //   }
+  //   toggleSave(post.id);
+  // };
 
   const handleReserveClick = () => {
     if (!currentUser) {
       navigate("/login");
       return;
     }
-    setIsBookingFormOpen(true); // Show the booking form
+    setIsBookingFormOpen(true); 
   };
 
   const handleCloseForm = () => {
-    setIsBookingFormOpen(false); // Hide the booking form
+    setIsBookingFormOpen(false); 
   };
 
   return (
@@ -170,12 +167,13 @@ function SinglePage() {
               <img src="/chat.png" alt="" />
               Send a Message
             </button>
-            <button
-              onClick={handleSave}
-              style={{ backgroundColor: saved ? "#fece51" : "white" }}
+            
+        <button
+              onClick={() => toggleSave(post.id)}
+              style={{ backgroundColor: savedPosts.has(post.id) ? "#fece51" : "white" }}
             >
-              <img src="/save.png" alt="" />
-              {saved ? "Place Saved" : "Save the Place"}
+              <img src="/save.png" alt="Save" />
+              {savedPosts.has(post.id) ? "Place Saved" : "Save the Place"}
             </button>
           </div>
         </div>
