@@ -1,14 +1,14 @@
 import "./ContactUs.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import image from "../../../public/contact.jpg";
+// import image from "../../../public/contact.jpg";
 
 const ContactUs = () => {
   return (
     <div className="contact">
       {/* <div className="container"> */}
         <div className="banner">
-          <img src={image} alt="Contact Us" />
+          <img src="./contact.jpg" alt="Contact Us" />
           <div className="overlay">
             <h2>Contact Us</h2>
             <p>Have questions? Get in touch with us!</p>
