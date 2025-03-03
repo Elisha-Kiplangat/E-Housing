@@ -8,6 +8,7 @@ import {
   savePost,
   profilePosts,
   getNotificationNumber,
+  totalUsers,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -21,5 +22,6 @@ router.get("/saved", verifyToken, getSavedPosts);
 router.post("/save", verifyToken, savePost);
 router.get("/profilePosts", verifyToken, profilePosts);
 router.get("/notification", verifyToken, getNotificationNumber);
+router.get("/count", totalUsers);
 
 export default router;
