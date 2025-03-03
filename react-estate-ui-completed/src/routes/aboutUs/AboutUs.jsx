@@ -17,7 +17,7 @@ const AboutUs = () => {
       <section className="about-us__introduction">
         <div className="introduction-left">
           <img
-            src="./Apartment.jpg"
+            src="./Apartment1.jpg"
             alt="Affordable Housing"
             className="introduction-image"
           />

@@ -1,2 +1,25 @@
 ###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "Doe",
+    "password": "123456"
+}
+###
+GET http://localhost:3000/api/chats
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NThkNzU5MTQzMThhM2ZiMDE1Yzc4YiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDA4MzkwMDQsImV4cCI6MjM0NTYzOTAwNH0.shqVZYoIvv6Su6aSj0LP88j9Cs4LUvwNf0Tg-9pjQNE
+
+###
+POST http://localhost:3000/api/chats
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NThkNzU5MTQzMThhM2ZiMDE1Yzc4YiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDA4MzkwMDQsImV4cCI6MjM0NTYzOTAwNH0.shqVZYoIvv6Su6aSj0LP88j9Cs4LUvwNf0Tg-9pjQNE
+Content-Type: application/json
+
+{
+    "userIDs": ["6658d75914318a3fb015c78b"],
+    "receiverId": "67acbdd856523389e6876fae"
+}
+
+###
 GET  http://localhost:3000/api/users/count
+
