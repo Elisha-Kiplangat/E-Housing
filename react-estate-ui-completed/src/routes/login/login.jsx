@@ -29,7 +29,14 @@ function Login() {
 
       updateUser(res.data);
 
+      // navigate("/");
+
+      if (res.data.role === "admin") {
+      window.location.href = "http://localhost:3001";
+    } else {
       navigate("/");
+    }
+
     } catch (err) {
       setError(err.response.data.message);
     } finally {

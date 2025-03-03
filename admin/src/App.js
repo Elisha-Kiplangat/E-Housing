@@ -9,7 +9,7 @@ import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
-import { hostelColumns, roomColumns, userColumns } from "./datatablesource";
+import { bookingColumns, postColumns, userColumns } from "./datatablesource";
 import NewHotel from "./pages/newHotel/NewHotel";
 import NewRoom from "./pages/newRoom/NewRoom";
 
@@ -42,12 +42,12 @@ function App() {
               />
             </Route>
             <Route path="posts">
-              <Route index element={<List columns={hostelColumns} />} />
+              <Route index element={<List columns={postColumns} />} />
               <Route path=":productId" element={<Single />} />
               <Route path="new" element={<NewHotel />} />
             </Route>
-            <Route path="rooms">
-              <Route index element={<List columns={roomColumns} />} />
+            <Route path="bookings">
+              <Route index element={<List columns={bookingColumns} />} />
               <Route
                 path=":productId"
                 element={
