@@ -78,20 +78,20 @@ export const deleteUser = async (req, res) => {
 
 export const getSavedPosts = async (req, res) => {
   try {
-    const tokenUserId = req.userId; // Ensure user is authenticated
+    const tokenUserId = req.userId; 
 
     const savedPosts = await prisma.savedPost.findMany({
-      where: { userId: tokenUserId }, // Get posts saved by this user
+      where: { userId: tokenUserId }, 
       include: {
-        post: true, // Join post details
+        post: true, 
       },
     });
 
     if (!savedPosts || savedPosts.length === 0) {
-      return res.status(200).json([]); // Return an empty array if no saved posts
+      return res.status(200).json([]); 
     }
 
-    res.status(200).json(savedPosts.map((saved) => saved.post)); // Send only post details
+    res.status(200).json(savedPosts.map((saved) => saved.post)); 
   } catch (err) {
     console.error("Error fetching saved posts:", err);
     res.status(500).json({ message: "Failed to get saved posts!" });
@@ -177,3 +177,13 @@ export const getNotificationNumber = async (req, res) => {
     res.status(500).json({ message: "Failed to get profile posts!" });
   }
 };
+
+export const totalUsers = async (req, res) => {
+  try {
+    const total = await prisma.user.count();
+    res.status(200).json( total);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to get total users!" });
+  }
+}

@@ -1,6 +1,10 @@
 .datatable {
   height: 600px;
   padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 
   .datatableTitle {
     width: 100%;
@@ -17,9 +21,62 @@
       font-size: 16px;
       font-weight: 400;
       border: 1px solid green;
-      padding: 5px;
+      padding: 5px 10px;
       border-radius: 5px;
       cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: green;
+        color: white;
+      }
+    }
+  }
+
+  .tableWrapper {
+    overflow-x: auto;
+  }
+
+  .customTable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 14px;
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f5f5f5;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    tr {
+      transition: background 0.2s ease;
+
+      &:hover {
+        background: #f9f9f9;
+      }
+    }
+  }
+
+  .expandButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
     }
   }
 
@@ -32,24 +89,27 @@
       height: 32px;
       border-radius: 50%;
       object-fit: cover;
-      margin-right: 20px;
+      margin-right: 10px;
     }
   }
 
   .cellWithStatus {
     padding: 5px;
     border-radius: 5px;
+    font-weight: 500;
 
     &.active {
-      background-color: rgba(0, 128, 0, 0.05);
+      background-color: rgba(0, 128, 0, 0.1);
       color: green;
     }
+
     &.pending {
-      background-color: rgba(255, 217, 0, 0.05);
+      background-color: rgba(255, 217, 0, 0.1);
       color: goldenrod;
     }
+
     &.passive {
-      background-color: rgba(255, 0, 0, 0.05);
+      background-color: rgba(255, 0, 0, 0.1);
       color: crimson;
     }
   }
@@ -57,22 +117,60 @@
   .cellAction {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
+
+    .viewButton,
+    .deleteButton {
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
     .viewButton {
-      padding: 2px 5px;
-      border-radius: 5px;
       color: darkblue;
-      border: 1px dotted rgba(0, 0, 139, 0.596);
-      cursor: pointer;
+      border: 1px dotted rgba(0, 0, 139, 0.6);
+
+      &:hover {
+        background: darkblue;
+        color: white;
+      }
     }
 
     .deleteButton {
-      padding: 2px 5px;
-      border-radius: 5px;
       color: crimson;
       border: 1px dotted rgba(220, 20, 60, 0.6);
-      cursor: pointer;
+
+      &:hover {
+        background: crimson;
+        color: white;
+      }
     }
+  }
+
+  .expandedRow {
+    background: #f5f5f5;
+
+    .expandedContent {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 10px;
+    }
+
+    .expandedCell {
+      min-width: 150px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+  }
+
+  // Checkbox styling
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
   }
 }
