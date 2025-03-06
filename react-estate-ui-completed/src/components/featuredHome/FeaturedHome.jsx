@@ -1,8 +1,12 @@
 import React from "react";
 import Slider from "react-slick";
 import "./FeaturedHome.scss";
+
 import { Link } from "react-router-dom";
 import { useState } from "react";
+
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -23,6 +27,7 @@ const FeaturedHome = () => {
     minPrice: "",
     maxPrice: "",
   });
+   
   const settings = {
     dots: true,
     infinite: true,
@@ -55,6 +60,8 @@ const FeaturedHome = () => {
         <Link  to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`} >
         <button className="exploreBtn">Explore Now</button>
         </Link>
+        <Link  to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}><button className="exploreBtn">Explore Now</button></Link>
+        
       </div>
     </section>
   );
