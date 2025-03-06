@@ -81,9 +81,14 @@
         border: none;
         cursor: pointer;
         background-color: #fece51;
+        padding: 12px 20px; // Default padding
+
+        @include lg {
+          padding: 14px 40px; // Increased size on large screens
+        }
 
         @include sm {
-          padding: 10px;
+          padding: 10px 15px; // Smaller padding on small screens
         }
 
         img {

@@ -1,5 +1,6 @@
 import "./layout.scss";
 import Navbar from "../../components/navbar/Navbar";
+import Footer from "../../components/footer/Footer";
 import { Navigate, Outlet } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
@@ -12,6 +13,9 @@ function Layout() {
       </div>
       <div className="content">
         <Outlet />
+      </div>
+      <div className="footer">
+        <Footer /> <p>Ready to serve to our best</p>
       </div>
     </div>
   );
@@ -29,6 +33,9 @@ function RequireAuth() {
         </div>
         <div className="content">
           <Outlet />
+        </div>
+        <div className="footer">
+          <Footer /> Ensure Footer is present for authenticated users
         </div>
       </div>
     );

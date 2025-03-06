@@ -27,16 +27,36 @@ function SinglePage() {
   //   toggleSave(post.id);
   // };
 
+  const handleChat = async () => {
+    if (!currentUser) {
+      navigate("/login"); // Redirect if user is not logged in
+      return;
+    }
+    // console.log(post.userId)
+    // console.log(currentUser.id)
+    try {
+      // Send request to create a chat in the database
+       await apiRequest.post("/chats", {
+        userId: currentUser.id, // Logged-in user
+        receiverId: post.userId, // Post owner
+      });
+      
+      navigate(`/profile`, { state: { receiver: post.user.id } });
+    } catch (err) {
+      console.error("Error starting chat:", err);
+    }
+  };
+
   const handleReserveClick = () => {
     if (!currentUser) {
       navigate("/login");
       return;
     }
-    setIsBookingFormOpen(true); 
+    setIsBookingFormOpen(true);
   };
 
   const handleCloseForm = () => {
-    setIsBookingFormOpen(false); 
+    setIsBookingFormOpen(false);
   };
 
   return (
@@ -77,20 +97,21 @@ function SinglePage() {
         </div>
 
         {/* Booking Form Modal */}
-        {isBookingFormOpen && <div className="overlay" onClick={handleCloseForm}></div>}
+        {isBookingFormOpen && (
+          <div className="overlay" onClick={handleCloseForm}></div>
+        )}
 
         <div className="checkout">
-
-        {isBookingFormOpen && (
-          <div className="bookingModal">
-            <div className="bookingContent">
-              <button className="closeButton" onClick={handleCloseForm}>
-                ✖
-              </button>
-            </div>
+          {isBookingFormOpen && (
+            <div className="bookingModal">
+              <div className="bookingContent">
+                <button className="closeButton" onClick={handleCloseForm}>
+                  ✖
+                </button>
+              </div>
               <Checkout post={post} />
-          </div>
-        )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -163,14 +184,16 @@ function SinglePage() {
           </div>
 
           <div className="buttons">
-            <button>
+            <button onClick={handleChat}>
               <img src="/chat.png" alt="" />
               Send a Message
             </button>
-            
-        <button
+
+            <button
               onClick={() => toggleSave(post.id)}
-              style={{ backgroundColor: savedPosts.has(post.id) ? "#fece51" : "white" }}
+              style={{
+                backgroundColor: savedPosts.has(post.id) ? "#fece51" : "white",
+              }}
             >
               <img src="/save.png" alt="Save" />
               {savedPosts.has(post.id) ? "Place Saved" : "Save the Place"}
