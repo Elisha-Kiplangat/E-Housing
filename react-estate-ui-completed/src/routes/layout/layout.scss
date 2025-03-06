@@ -47,7 +47,7 @@ body {
   .content {
     flex-grow: 1; // Allows content to expand dynamically
     overflow-y: auto; // Enables vertical scrolling if needed
-    padding: 20px;
+    // padding: 20px;
   }
 
   .footer {
@@ -137,7 +137,7 @@ body {
     
     padding-right: 20px;
     margin-right: 0;
-    margin-left: 40px; // Pushes it slightly right
+    margin-left: 30px; // Pushes it slightly right
 
     @include md {
       max-width: 100%;
