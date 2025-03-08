@@ -14,14 +14,15 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
+router.get("/count", verifyToken, totalUsers);
+router.get("/saved", verifyToken, getSavedPosts);
+router.get("/profilePosts", verifyToken, profilePosts);
+router.get("/notification", verifyToken, getNotificationNumber);
 router.get("/", getUsers);
+router.get("/:id", verifyToken, getUser);
 // router.get("/search/:id", verifyToken, getUser);
 router.put("/:id", verifyToken, updateUser);
 router.delete("/:id", verifyToken, deleteUser);
-router.get("/saved", verifyToken, getSavedPosts);
 router.post("/save", verifyToken, savePost);
-router.get("/profilePosts", verifyToken, profilePosts);
-router.get("/notification", verifyToken, getNotificationNumber);
-router.get("/count", totalUsers);
 
 export default router;

@@ -7,6 +7,14 @@ Content-Type: application/json
     "password": "123456"
 }
 ###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345"
+}
+###
 GET http://localhost:3000/api/chats
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NThkNzU5MTQzMThhM2ZiMDE1Yzc4YiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDA4MzkwMDQsImV4cCI6MjM0NTYzOTAwNH0.shqVZYoIvv6Su6aSj0LP88j9Cs4LUvwNf0Tg-9pjQNE
 
@@ -22,4 +30,15 @@ Content-Type: application/json
 
 ###
 GET  http://localhost:3000/api/users/count
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
+
+###
+GET  http://localhost:3000/api/users/saved
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
+###
+GET  http://localhost:3000/api/users/profilePosts
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
+###
+GET  http://localhost:3000/api/users/notification
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
 

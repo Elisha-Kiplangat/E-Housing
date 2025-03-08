@@ -11,18 +11,51 @@ export const getUsers = async (req, res) => {
   }
 };
 
+// export const getUser = async (req, res) => {
+//   const id = req.params.id;
+//   try {
+//     const user = await prisma.user.findUnique({
+//       where: { id },
+//     });
+//     res.status(200).json(user);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ message: "Failed to get user!" });
+//   }
+// };
+
+import { ObjectId } from 'mongodb';
+
 export const getUser = async (req, res) => {
   const id = req.params.id;
+  const userId = req.userId;
+  const userRole = req.userRole;
+
+  // Validate if the id is a valid MongoDB ObjectID
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).json({ message: "Invalid ID format." });
+  }
+
   try {
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
-    res.status(200).json(user);
+    if (userId === id || userRole === 'admin') {
+      const user = await prisma.user.findUnique({
+        where: { id },
+      });
+
+      if (user) {
+        res.status(200).json(user);
+      } else {
+        res.status(404).json({ message: "User not found!" });
+      }
+    } else {
+      res.status(403).json({ message: "Not authorized to access this user's data." });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to get user!" });
   }
 };
+
 
 export const updateUser = async (req, res) => {
   const id = req.params.id;
