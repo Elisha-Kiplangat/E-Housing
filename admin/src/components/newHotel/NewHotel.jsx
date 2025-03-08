@@ -1,16 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./newHotel.scss";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/uploadWidget.jsx";
-import { useNavigate } from "react-router-dom";
+import Sidebar from "../../components/sidebar/Sidebar";
+import Navbar from "../../components/navbar/Navbar";
+import "./newHotel.scss";
 
 function NewHotel() {
   const [value, setValue] = useState("");
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,7 +21,7 @@ function NewHotel() {
     const inputs = Object.fromEntries(formData);
 
     try {
-      const res = await axios.post("http://localhost:3000/posts", {
+      const res = await apiRequest.post("/posts",  {
         postData: {
           title: inputs.title,
           price: parseInt(inputs.price),
@@ -52,10 +54,18 @@ function NewHotel() {
   };
 
   return (
-    <div className="newPostPage">
+    <div className="newHostel">
+      <Sidebar />
+      <div className="newHostelContainer">
+        <Navbar />
+        <div className="newPostPage">
       <div className="formContainer">
-        <h1>Add New Post</h1>
+        
         <div className="wrapper">
+          <button className="backButton" onClick={() => navigate(-1)}>
+  ← Back
+</button>
+
           <form onSubmit={handleSubmit}>
             <div className="item">
               <label htmlFor="title">Title</label>
@@ -190,6 +200,8 @@ function NewHotel() {
           }}
           setState={setImages}
         />
+      </div>
+    </div>
       </div>
     </div>
   );
