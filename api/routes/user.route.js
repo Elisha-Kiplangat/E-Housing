@@ -18,7 +18,7 @@ router.get("/count", verifyToken, totalUsers);
 router.get("/saved", verifyToken, getSavedPosts);
 router.get("/profilePosts", verifyToken, profilePosts);
 router.get("/notification", verifyToken, getNotificationNumber);
-router.get("/", getUsers);
+router.get("/", verifyToken, getUsers);
 router.get("/:id", verifyToken, getUser);
 // router.get("/search/:id", verifyToken, getUser);
 router.put("/:id", verifyToken, updateUser);

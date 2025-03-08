@@ -12,6 +12,7 @@ import { AuthContext } from "./context/AuthContext";
 import { bookingColumns, postColumns, userColumns } from "./datatablesource";
 import NewHotel from "./components/newHotel/NewHotel";
 import NewRoom from "./pages/newRoom/NewRoom";
+import SingleHouse from "./pages/singleHouse/SingleHouse";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -43,7 +44,7 @@ function App() {
             </Route>
             <Route path="posts">
               <Route index element={<List columns={postColumns} />} />
-              <Route path=":productId" element={<Single />} />
+              <Route path="search/:Id" element={<SingleHouse />} />
               <Route path="new" element={<NewHotel />} />
             </Route>
             <Route path="bookings">

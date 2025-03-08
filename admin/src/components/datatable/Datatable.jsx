@@ -7,7 +7,7 @@ import apiRequest from "../../lib/apiRequest";
 
 const Datatable = ({ columns }) => {
   const location = useLocation();
-  const path = location.pathname.split("/")[1];
+  const path = location.pathname.split("/")[1]; // Get "users" or "properties"
   const navigate = useNavigate();
 
   const { data, loading, error } = useFetch(`/${path}`);
@@ -28,13 +28,15 @@ const Datatable = ({ columns }) => {
     setList(formattedData);
   }, [data]);
 
-  const handleView = async (id) => {
-    try {
-      // const response = await apiRequest.get(`/users/${id}`);
-      // console.log("Fetched User Data:", response.data);
-      navigate(`/users/search/${id}`); // Navigates to Single page
-    } catch (error) {
-      console.error("Failed to fetch user details:", error);
+  const handleView = (id) => {
+    if (path === "users") {
+      console.log(`Navigating to user details: /users/search/${id}`);
+      navigate(`/users/search/${id}`); // Navigates to Single.jsx
+    } else if (path === "posts") {
+      console.log(`Navigating to property details: /posts/search/${id}`);
+      navigate(`/posts/search/${id}`); // Navigates to SingleHouse.jsx
+    } else {
+      console.error("Unknown path, cannot determine where to navigate.");
     }
   };
 
@@ -69,7 +71,7 @@ const Datatable = ({ columns }) => {
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        {path}
+        {path === "users" ? "Users" : "Properties"}
         <button className="link" onClick={() => navigate(`/${path}/new`)}>
           Add New
         </button>
