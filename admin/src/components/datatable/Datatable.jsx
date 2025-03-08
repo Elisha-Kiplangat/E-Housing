@@ -1,25 +1,47 @@
 import React, { useEffect, useState } from "react";
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-import axios from "axios";
+import apiRequest from "../../lib/apiRequest";
 
 const Datatable = ({ columns }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1];
+  const navigate = useNavigate();
 
-  const { data = [], loading, error } = useFetch(`/${path}`);
+  const { data, loading, error } = useFetch(`/${path}`);
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    setList(data || []);
+    if (!data || !Array.isArray(data)) {
+      console.error("Error: Data is not an array or is null:", data);
+      return;
+    }
+
+    // Ensure `_id` is mapped to `id` for `DataGrid`
+    const formattedData = data.map((item, index) => ({
+      ...item,
+      id: item.id || `temp-id-${index}`, // Ensures each row has an ID
+    }));
+
+    setList(formattedData);
   }, [data]);
+
+  const handleView = async (id) => {
+    try {
+      // const response = await apiRequest.get(`/users/${id}`);
+      // console.log("Fetched User Data:", response.data);
+      navigate(`/users/search/${id}`); // Navigates to Single page
+    } catch (error) {
+      console.error("Failed to fetch user details:", error);
+    }
+  };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/${path}/${id}`);
-      setList((prevList) => prevList.filter((item) => item._id !== id));
+      await apiRequest.delete(`/${path}/${id}`);
+      setList((prevList) => prevList.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Failed to delete item:", err);
     }
@@ -31,10 +53,10 @@ const Datatable = ({ columns }) => {
     width: 150,
     renderCell: (params) => (
       <div className="cellAction">
-        <Link to={`/users/${params.row._id}`} className="viewButton">
+        <button className="viewButton" onClick={() => handleView(params.row.id)}>
           View
-        </Link>
-        <button className="deleteButton" onClick={() => handleDelete(params.row._id)}>
+        </button>
+        <button className="deleteButton" onClick={() => handleDelete(params.row.id)}>
           Delete
         </button>
       </div>
@@ -44,18 +66,13 @@ const Datatable = ({ columns }) => {
   const displayedColumns = columns.length > 5 ? columns.slice(0, 5) : columns;
   const gridColumns = [...displayedColumns, actionColumn];
 
-  const rows = list.map((row, index) => ({
-    ...row,
-    id: row.id || `temp-id-${index}`,
-  }));
-
   return (
     <div className="datatable">
       <div className="datatableTitle">
         {path}
-        <Link to={`/${path}/new`} className="link">
+        <button className="link" onClick={() => navigate(`/${path}/new`)}>
           Add New
-        </Link>
+        </button>
       </div>
 
       {loading ? (
@@ -66,13 +83,13 @@ const Datatable = ({ columns }) => {
         <div className="tableWrapper">
           <DataGrid
             className="datagrid"
-            rows={rows}
+            rows={list}
             columns={gridColumns}
             pageSize={9}
             rowsPerPageOptions={[9]}
             checkboxSelection
             autoHeight
-            getRowId={(row) => row.id}
+            getRowId={(row) => row.id} // Ensure every row has a unique identifier
           />
         </div>
       )}

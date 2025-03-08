@@ -35,7 +35,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="users">
               <Route index element={<List columns={userColumns} />} />
-              <Route path=":userId" element={<Single />} />
+              <Route path="search/:Id" element={<Single />} />
               <Route
                 path="new"
                 element={<New inputs={userInputs} title="Add New User" />}
