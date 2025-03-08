@@ -60,7 +60,6 @@ const FeaturedHome = () => {
         <Link  to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`} >
         <button className="exploreBtn">Explore Now</button>
         </Link>
-        <Link  to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}><button className="exploreBtn">Explore Now</button></Link>
         
       </div>
     </section>
