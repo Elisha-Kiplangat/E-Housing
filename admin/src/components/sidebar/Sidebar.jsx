@@ -13,15 +13,50 @@ import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext";
-import { useContext } from "react";
+import { useContext, useEffect, useCallback, useRef } from "react";
+import apiRequest from "../../lib/apiRequest";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
+
+// Helper function to clear cookies
+const clearCookies = () => {
+  document.cookie.split(";").forEach((cookie) => {
+    const cookieName = cookie.split("=")[0].trim();
+    document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  });
+};
 
 const Sidebar = () => {
   const { dispatch } = useContext(DarkModeContext);
+  const { updateUser } = useContext(AuthContext);
+  const logoutInProgress = useRef(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    if (logoutInProgress.current) return;
+    logoutInProgress.current = true;
+
+    try {
+      await apiRequest.post("/auth/logout");
+
+      if (updateUser) updateUser(null);
+      localStorage.clear();
+      sessionStorage.clear();
+      clearCookies();
+
+      // Redirect to login page
+      navigate("/login");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
   return (
     <div className="sidebar">
       <div className="top">
         <Link to="/" style={{ textDecoration: "none" }}>
-          <span className="logo">lamadmin</span>
+          <span className="logo">E-House</span>
         </Link>
       </div>
       <hr />
@@ -84,10 +119,10 @@ const Sidebar = () => {
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>
-          <li>
-            <ExitToAppIcon className="icon" />
-            <span>Logout</span>
-          </li>
+          <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+  <ExitToAppIcon className="icon" />
+  <span>Logout</span>
+</li>
         </ul>
       </div>
       <div className="bottom">

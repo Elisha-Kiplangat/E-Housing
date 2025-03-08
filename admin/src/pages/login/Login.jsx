@@ -1,51 +1,41 @@
-import axios from "axios";
+
 import { useContext, useState } from "react";
 import "./login.scss";
-import { Link, useNavigate } from "react-router-dom";
-//import apiRequest from "../../lib/apiRequest";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import apiRequest from "../../lib/apiRequest";
 
 function Login() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const { updateUser } = useContext(AuthContext);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-    const formData = new FormData(e.target);
+  e.preventDefault();
+  setIsLoading(true);
+  setError("");
+  const formData = new FormData(e.target);
 
-    const username = formData.get("username");
-    const password = formData.get("password");
+  const username = formData.get("username");
+  const password = formData.get("password");
 
-    try {
-      const res = await axios.post("/auth/login", {
-        username,
-        password,
-      });
-      if (res.data.isAdmin) {
-        updateUser(res.data.details);
+  try {
+    const res = await apiRequest.post("/auth/login", { username, password });
 
-        navigate("/");
-      } else {
-        setError("Not Authorized!");
-      }
-    } catch (err) {
-      // Check if the error response exists and contains the data property
-      if (err.response && err.response.data) {
-        setError(err.response.data.message);
-      } else {
-        // Handle other errors such as network errors
-        setError("An error occurred. Please try again.");
-      }
-    } finally {
-      setIsLoading(false);
+    if (res.data.role === "admin") {
+      updateUser(res.data);
+      
+      navigate("/");
+    } else {
+      setError("Not Authorized!");
     }
-  };
+  } catch (err) {
+    setError(err.response?.data?.message || "An error occurred. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="login">
@@ -68,7 +58,7 @@ function Login() {
           />
           <button disabled={isLoading}>Login</button>
           {error && <span>{error}</span>}
-          <Link to="/register">{"Don't"} you have an account?</Link>
+        <a href="http://localhost:5173/login">Not a Guest?</a>
         </form>
       </div>
       <div className="imgContainer">
