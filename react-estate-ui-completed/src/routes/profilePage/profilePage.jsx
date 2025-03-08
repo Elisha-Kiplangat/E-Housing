@@ -22,6 +22,7 @@ function ProfilePage() {
       console.log(err);
     }
   };
+
   return (
     <div className="profilePage">
       <div className="details">

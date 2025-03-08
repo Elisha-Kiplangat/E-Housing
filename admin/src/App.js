@@ -10,7 +10,7 @@ import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
 import { bookingColumns, postColumns, userColumns } from "./datatablesource";
-import NewHotel from "./pages/newHotel/NewHotel";
+import NewHotel from "./components/newHotel/NewHotel";
 import NewRoom from "./pages/newRoom/NewRoom";
 
 function App() {

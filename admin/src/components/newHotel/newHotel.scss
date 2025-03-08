@@ -1,13 +1,38 @@
-.newPostPage {
-  height: 100%;
+.newHostel {
+  width: 100%;
   display: flex;
 
+  .newHostelContainer {
+    flex: 6;
+
+
+.newPostPage {
+  height: calc(100vh - 60px);
+  display: flex;
+  overflow: hidden;
+
   .formContainer {
-    flex: 3;
-    overflow-y: scroll;
+    flex: 2;
+    overflow-y: auto;
+    padding: 20px;
 
     .wrapper {
-      margin: 30px 50px 100px 0px;
+      margin: 20px;
+      .backButton {
+  background-color: #f3f3f3;
+  color: #333;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 10px;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background-color: #e0e0e0;
+  }
+}
 
       form {
         display: flex;
@@ -16,22 +41,15 @@
         gap: 20px;
 
         .item {
-          width: 30%;
+          width: 48%;
           display: flex;
           flex-direction: column;
           gap: 5px;
 
-          label {
-          }
-
-          input {
-            padding: 20px;
+          input, select {
+            padding: 10px;
             border-radius: 5px;
             border: 1px solid gray;
-          }
-
-          select {
-            padding: 19px;
           }
 
           &.description {
@@ -44,27 +62,32 @@
             }
           }
         }
+
         .sendButton {
-          width: 30%;
+          width: 100%;
+          max-width: 200px;
           border-radius: 5px;
           border: none;
           background-color: teal;
           color: white;
           font-weight: bold;
           cursor: pointer;
+          padding: 10px;
         }
       }
     }
   }
 
   .sideContainer {
-    flex: 2;
+    flex: 1;
     background-color: #fcf5f3;
     display: flex;
     flex-direction: column;
     gap: 20px;
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
 
     img {
       width: 50%;
@@ -72,5 +95,21 @@
       object-fit: cover;
       border-radius: 5px;
     }
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .newPostPage {
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+    margin-left: 0;
+
+    .formContainer, .sideContainer {
+      flex: none;
+      width: 100%;
+    }
+  }
+}
   }
 }
