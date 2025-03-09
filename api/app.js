@@ -17,6 +17,8 @@ const app = express();
 const allowedOrigins = [
   process.env.CLIENT_URL1,
   process.env.CLIENT_URL2,
+  process.env.CLIENT_URL3,
+  process.env.CLIENT_URL4,
 ];
 
 app.use(
