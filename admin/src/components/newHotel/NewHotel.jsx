@@ -13,11 +13,13 @@ function NewHotel() {
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
+    setIsLoading(true);
 
     try {
       const res = await apiRequest.post("/posts",  {
@@ -45,7 +47,7 @@ function NewHotel() {
           restaurant: parseInt(inputs.restaurant),
         },
       });
-      navigate("/" + res.data.id);
+      navigate("/posts/search/" + res.data.id);
     } catch (err) {
       console.log(err);
       setError(err.message || "An error occurred while adding the post.");
@@ -89,7 +91,7 @@ function NewHotel() {
             <div className="item">
               <label htmlFor="bedroom">Bedroom Number</label>
               <input
-                min={1}
+                min={0}
                 id="bedroom"
                 name="bedroom"
                 type="number"
@@ -99,7 +101,7 @@ function NewHotel() {
             <div className="item">
               <label htmlFor="bathroom">Bathroom Number</label>
               <input
-                min={1}
+                min={0}
                 id="bathroom"
                 name="bathroom"
                 type="number"
@@ -179,7 +181,7 @@ function NewHotel() {
                 required
               />
             </div>
-            <button className="sendButton" type="submit">
+            <button disabled={isLoading} className="sendButton" type="submit">
               Add
             </button>
             {error && <span>{error}</span>}
