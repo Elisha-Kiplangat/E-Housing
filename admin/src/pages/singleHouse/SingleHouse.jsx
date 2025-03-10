@@ -103,7 +103,7 @@ const SingleHouse = () => {
         ) : error ? (
           <p className="error">Error fetching data</p>
         ) : house ? (
-          <div>
+          <div className="houseContainer">
             <div className="details">
               <div className="imageContainer">
                 <img src={house.images?.[0] || "/default-house.jpg"} alt="House" />

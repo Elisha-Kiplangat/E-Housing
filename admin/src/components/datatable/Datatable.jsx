@@ -4,6 +4,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate, useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import apiRequest from "../../lib/apiRequest";
+import Cookies from "js-cookie";
 
 const Datatable = ({ columns }) => {
   const location = useLocation();
@@ -30,10 +31,10 @@ const Datatable = ({ columns }) => {
 
   const handleView = (id) => {
     if (path === "users") {
-      console.log(`Navigating to user details: /users/search/${id}`);
+      // console.log(`Navigating to user details: /users/search/${id}`);
       navigate(`/users/search/${id}`); // Navigates to Single.jsx
     } else if (path === "posts") {
-      console.log(`Navigating to property details: /posts/search/${id}`);
+      // console.log(`Navigating to property details: /posts/search/${id}`);
       navigate(`/posts/search/${id}`); // Navigates to SingleHouse.jsx
     } else {
       console.error("Unknown path, cannot determine where to navigate.");
@@ -42,7 +43,24 @@ const Datatable = ({ columns }) => {
 
   const handleDelete = async (id) => {
     try {
-      await apiRequest.delete(`/${path}/${id}`);
+
+      if (path === "users") {    
+        const token = Cookies.get("token");
+        console.log("Token:", token);
+        const response = await apiRequest.delete(`/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("User deleted:", response.data);
+      }
+      else if (path === "posts") {
+        await apiRequest.delete(`/posts/${id}`);
+      }
+      else {
+        console.error("Unknown path, cannot determine where to delete.");
+      }
+      // await apiRequest.delete(`/${path}/${id}`);
       setList((prevList) => prevList.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Failed to delete item:", err);
@@ -91,7 +109,7 @@ const Datatable = ({ columns }) => {
             rowsPerPageOptions={[9]}
             checkboxSelection
             autoHeight
-            getRowId={(row) => row.id} // Ensure every row has a unique identifier
+            getRowId={(row) => row.id}
           />
         </div>
       )}

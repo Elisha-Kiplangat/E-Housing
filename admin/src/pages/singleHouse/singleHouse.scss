@@ -5,7 +5,11 @@
     .singleHouseContainer {
       flex: 6;
       // padding: 20px;
-  
+
+      .houseContainer{
+        overflow-y: auto;
+        height: calc(100vh - 60px); 
+      
       .details {
         display: flex;
         flex-direction: row;
@@ -218,5 +222,6 @@
         }
       }
     }
+  }
   }
   
