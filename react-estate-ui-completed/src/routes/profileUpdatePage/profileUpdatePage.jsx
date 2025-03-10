@@ -4,6 +4,7 @@ import { AuthContext } from "../../context/AuthContext";
 import apiRequest from "../../lib/apiRequest";
 import { useNavigate } from "react-router-dom";
 import UploadWidget from "../../components/uploadWidget/uploadWidget";
+import Cookies from "js-cookie";
 
 function ProfileUpdatePage() {
   const { currentUser, updateUser } = useContext(AuthContext);
@@ -19,12 +20,21 @@ function ProfileUpdatePage() {
     const { username, email, password } = Object.fromEntries(formData);
 
     try {
-      const res = await apiRequest.put(`/users/${currentUser.id}`, {
+      const userReq = {
         username,
         email,
         password,
         avatar: avatar[0],
+      }
+      const token = Cookies.get("token");
+      console.log("Token:", token);
+      console.log("User:", userReq);
+      const res = await apiRequest.put(`/users/${currentUser.id}`, userReq, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+      
       updateUser(res.data);
       navigate("/profile");
     } catch (err) {
