@@ -62,7 +62,11 @@ export const updateUser = async (req, res) => {
   const tokenUserId = req.userId;
   const { password, avatar, ...inputs } = req.body;
 
-  if (id !== tokenUserId) {
+  const user = await prisma.user.findUnique({
+    where: { id: tokenUserId },
+  });
+
+  if (user.id !== tokenUserId && user.role !== "admin") {
     return res.status(403).json({ message: "Not Authorized!" });
   }
 
@@ -94,7 +98,7 @@ export const deleteUser = async (req, res) => {
   const id = req.params.id;
   const tokenUserId = req.userId;
 
-  if (id !== tokenUserId) {
+  if (id !== tokenUserId && req.userRole !== "admin") {
     return res.status(403).json({ message: "Not Authorized!" });
   }
 

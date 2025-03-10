@@ -192,7 +192,7 @@ export const deletePost = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    if (post.userId !== tokenUserId) {
+    if (post.userId !== tokenUserId && user.role !== 'admin') {
       return res.status(403).json({ message: "Not Authorized!" });
     }
 
@@ -204,5 +204,43 @@ export const deletePost = async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({ message: "Failed to delete post" });
+  }
+};
+
+export const deletePostDetail = async (req, res) => {
+  const id = req.params.id;
+  const tokenUserId = req.userId;
+
+  try {
+    const post = await prisma.post.findUnique({
+      where: { id },
+      include: { postDetail: true },
+    });
+
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: tokenUserId },
+    });
+
+    if (post.userId !== tokenUserId && user.role !== 'admin') {
+      return res.status(403).json({ message: "Not Authorized!" });
+    }
+
+    await prisma.$transaction([
+      prisma.postDetail.delete({
+        where: { id: post.postDetail.id },
+      }),
+      prisma.post.delete({
+        where: { id },
+      }),
+    ]);
+
+    return res.status(200).json({ message: "Post and post details deleted" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Failed to delete post and post details" });
   }
 };

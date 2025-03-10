@@ -60,4 +60,7 @@ Content-Type: application/json
     }
 }
 
+###
+DELETE http://localhost:3000/api/posts/67cee08ee4d18fab2ae3b466
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE2MjgxMTEsImV4cCI6MjM0NjQyODExMX0.c1yuWsQ9QLlW_tMqvuCUd7cd0bMdTqrlNvMZbxRb-q4
 
