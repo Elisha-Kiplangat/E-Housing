@@ -15,6 +15,7 @@ import {
   singlePageLoader,
 } from "./lib/loaders";
 import ContactUs from "./routes/contactUs/ContactUs";
+import CompleteOrder from "./routes/completeOrder/completeOrder"; // ✅ Import the OrderComplete page
 
 function App() {
   const router = createBrowserRouter([
@@ -44,7 +45,6 @@ function App() {
           element: <SinglePage />,
           loader: singlePageLoader,
         },
-
         {
           path: "/login",
           element: <Login />,
@@ -52,6 +52,10 @@ function App() {
         {
           path: "/register",
           element: <Register />,
+        },
+        {
+          path: "/completeOrder", // ✅ Define a route for OrderComplete
+          element: <CompleteOrder />,
         },
       ],
     },
