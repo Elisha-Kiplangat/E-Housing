@@ -1,18 +1,20 @@
 import "./sidebar.scss";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
+// import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import PaymentIcon from "@mui/icons-material/Payment";
+// import CreditCardIcon from "@mui/icons-material/CreditCard";
+import EventIcon from "@mui/icons-material/Event";
 import StoreIcon from "@mui/icons-material/Store";
-import InsertChartIcon from "@mui/icons-material/InsertChart";
+// import InsertChartIcon from "@mui/icons-material/InsertChart";
 import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
-import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
-import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
+// import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+// import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
+// import PsychologyOutlinedIcon from "@mui/icons-material/PsychologyOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import { Link } from "react-router-dom";
-import { DarkModeContext } from "../../context/darkModeContext";
+// import { DarkModeContext } from "../../context/darkModeContext";
 import { useContext, useRef } from "react";
 import apiRequest from "../../lib/apiRequest";
 import { AuthContext } from "../../context/AuthContext";
@@ -28,7 +30,7 @@ const clearCookies = () => {
 };
 
 const Sidebar = () => {
-  const { dispatch } = useContext(DarkModeContext);
+  // const { dispatch } = useContext(DarkModeContext);
   const { updateUser } = useContext(AuthContext);
   const logoutInProgress = useRef(false);
   const navigate = useNavigate();
@@ -84,15 +86,17 @@ const Sidebar = () => {
           </Link>
           <Link to="/bookings" style={{ textDecoration: "none" }}>
             <li>
-              <CreditCardIcon className="icon" />
+              <EventIcon className="icon" />
               <span>Bookings</span>
             </li>
           </Link>
+            <Link to="/payments" style={{ textDecoration: "none" }}>
           <li>
-            <LocalShippingIcon className="icon" />
-            <span>Delivery</span>
+            <PaymentIcon className="icon" />
+            <span>Payments</span>
           </li>
-          <p className="title">USEFUL</p>
+          </Link>
+          {/* <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />
             <span>Stats</span>
@@ -109,8 +113,8 @@ const Sidebar = () => {
           <li>
             <PsychologyOutlinedIcon className="icon" />
             <span>Logs</span>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
           </li>
@@ -122,18 +126,33 @@ const Sidebar = () => {
           <li onClick={handleLogout} style={{ cursor: "pointer" }}>
   <ExitToAppIcon className="icon" />
   <span>Logout</span>
-</li>
+</li> */}
         </ul>
       </div>
       <div className="bottom">
-        <div
+        {/* <div
           className="colorOption"
           onClick={() => dispatch({ type: "LIGHT" })}
         ></div>
         <div
           className="colorOption"
           onClick={() => dispatch({ type: "DARK" })}
-        ></div>
+        ></div> */}
+        <ul>
+          <p className="title">USER</p>
+        <li>
+            <SettingsApplicationsIcon className="icon" />
+            <span>Settings</span>
+          </li>
+          <li>
+            <AccountCircleOutlinedIcon className="icon" />
+            <span>Profile</span>
+          </li>
+          <li onClick={handleLogout} style={{ cursor: "pointer" }}>
+  <ExitToAppIcon className="icon" />
+  <span>Logout</span>
+</li>
+        </ul>
       </div>
     </div>
   );

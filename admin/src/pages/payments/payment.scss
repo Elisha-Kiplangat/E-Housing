@@ -1,0 +1,19 @@
+.list {
+    display: flex;
+  }
+  
+  .listContainer {
+    flex: 6;
+  }
+  .datatableContainer {
+    overflow-y: auto;
+    height: calc(100vh - 60px); 
+
+    .listTitle{
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: rgb(171, 171, 171);
+    }
+  }
+  

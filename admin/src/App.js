@@ -13,6 +13,7 @@ import { bookingColumns, postColumns, userColumns } from "./datatablesource";
 import NewHotel from "./components/newHotel/NewHotel";
 import NewRoom from "./pages/newRoom/NewRoom";
 import SingleHouse from "./pages/singleHouse/SingleHouse";
+import Payment from "./pages/payments/Payment";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -58,6 +59,9 @@ function App() {
                 }
               />
               <Route path="new" element={<NewRoom />} />
+            </Route>
+            <Route path="/payments">
+              <Route index element={<Payment/>} />
             </Route>
           </Route>
         </Routes>
