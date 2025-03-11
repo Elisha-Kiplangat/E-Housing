@@ -19,7 +19,26 @@ const getAccessToken = async () => {
 };
 
 export const payment = async (req, res) => {
-  const { phone, amount } = req.body;
+  let { phone, amount } = req.body;
+
+  // ✅ Validate the request body to ensure 'phone' and 'amount' exist
+  if (!phone || !amount) {
+    return res
+      .status(400)
+      .json({ error: "Phone number and amount are required" });
+  }
+
+  // ✅ Ensure phone number is in the correct M-Pesa format (2547XXXXXXXX)
+  if (typeof phone !== "string") {
+    return res.status(400).json({ error: "Invalid phone number format" });
+  }
+
+  if (phone.startsWith("07" || "0")) {
+    phone = "254" + phone.substring(1); // Convert 07XXXXXXXX to 2547XXXXXXXX
+  } else if (!phone.startsWith("254") || phone.length !== 12) {
+    return res.status(400).json({ error: "Invalid Phone Number Format" });
+  }
+
   try {
     const token = await getAccessToken();
     const timestamp = new Date()
@@ -36,12 +55,12 @@ export const payment = async (req, res) => {
       Timestamp: timestamp,
       TransactionType: "CustomerPayBillOnline",
       Amount: amount,
-      PartyA: phone,
+      PartyA: phone, // ✅ Corrected phone number
       PartyB: process.env.BUSINESS_SHORTCODE,
-      PhoneNumber: phone,
+      PhoneNumber: phone, // ✅ Corrected phone number
       CallBackURL: process.env.CALLBACK_URL,
-      AccountReference: "E-Housing",
-      TransactionDesc: "E-Housing Payment",
+      AccountReference: "Husler Fund",
+      TransactionDesc: "Hustler-Fund",
     };
 
     const response = await axios.post(
