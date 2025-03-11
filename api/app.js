@@ -10,6 +10,7 @@ import chatRoute from "./routes/chat.route.js";
 import messageRoute from "./routes/message.route.js";
 // import paymentRoute from "./routes/payment.route.js";
 import { payment } from "./controllers/payment.controller.js";
+import bookingRoute from "./routes/booking.route.js";
 
 const app = express();
 
@@ -17,6 +18,8 @@ const app = express();
 const allowedOrigins = [
   process.env.CLIENT_URL1,
   process.env.CLIENT_URL2,
+  process.env.CLIENT_URL3,
+  process.env.CLIENT_URL4,
 ];
 
 app.use(
@@ -40,6 +43,7 @@ app.use("/api/posts", postRoute);
 app.use("/api/test", testRoute);
 app.use("/api/chats", chatRoute);
 app.use("/api/messages", messageRoute);
+app.use("/api/bookings", bookingRoute);
 app.use("/api/payment", payment);
 
 app.listen(3000, () => {

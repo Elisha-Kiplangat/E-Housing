@@ -29,14 +29,9 @@ function Login() {
 
       updateUser(res.data);
 
-      // navigate("/");
-
-      if (res.data.role === "admin") {
-      window.location.href = "http://localhost:3001";
-    } else {
       navigate("/");
-    }
 
+  
     } catch (err) {
       setError(err.response.data.message);
     } finally {
@@ -65,6 +60,11 @@ function Login() {
           <button disabled={isLoading}>Login</button>
           {error && <span>{error}</span>}
           <Link to="/register">{"Don't"} you have an account?</Link>
+
+          <Link to="/forgot-password">Forgot password?</Link>
+
+         <a href="http://localhost:3001/login">Guest?</a>
+
         </form>
       </div>
       <div className="imgContainer">

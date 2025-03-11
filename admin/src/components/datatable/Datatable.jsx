@@ -1,25 +1,67 @@
 import React, { useEffect, useState } from "react";
 import "./datatable.scss";
 import { DataGrid } from "@mui/x-data-grid";
-import { Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
-import axios from "axios";
+import apiRequest from "../../lib/apiRequest";
+import Cookies from "js-cookie";
 
 const Datatable = ({ columns }) => {
   const location = useLocation();
-  const path = location.pathname.split("/")[1];
+  const path = location.pathname.split("/")[1]; // Get "users" or "properties"
+  const navigate = useNavigate();
 
-  const { data = [], loading, error } = useFetch(`/${path}`);
+  const { data, loading, error } = useFetch(`/${path}`);
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    setList(data || []);
+    if (!data || !Array.isArray(data)) {
+      console.error("Error: Data is not an array or is null:", data);
+      return;
+    }
+
+    // Ensure `_id` is mapped to `id` for `DataGrid`
+    const formattedData = data.map((item, index) => ({
+      ...item,
+      id: item.id || `temp-id-${index}`, // Ensures each row has an ID
+    }));
+
+    setList(formattedData);
   }, [data]);
+
+  const handleView = (id) => {
+    if (path === "users") {
+      // console.log(`Navigating to user details: /users/search/${id}`);
+      navigate(`/users/search/${id}`); // Navigates to Single.jsx
+    } else if (path === "posts") {
+      // console.log(`Navigating to property details: /posts/search/${id}`);
+      navigate(`/posts/search/${id}`); // Navigates to SingleHouse.jsx
+    } else {
+      console.error("Unknown path, cannot determine where to navigate.");
+    }
+  };
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/${path}/${id}`);
-      setList((prevList) => prevList.filter((item) => item._id !== id));
+
+      if (path === "users") {    
+        const token = Cookies.get("token");
+        console.log("Token:", token);
+        const response = await apiRequest.delete(`/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log("User deleted:", response.data);
+      }
+      else if (path === "posts") {
+        await apiRequest.delete(`/posts/${id}`);
+      }
+      else {
+        console.error("Unknown path, cannot determine where to delete.");
+      }
+      // await apiRequest.delete(`/${path}/${id}`);
+      setList((prevList) => prevList.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Failed to delete item:", err);
     }
@@ -31,10 +73,10 @@ const Datatable = ({ columns }) => {
     width: 150,
     renderCell: (params) => (
       <div className="cellAction">
-        <Link to={`/users/${params.row._id}`} className="viewButton">
+        <button className="viewButton" onClick={() => handleView(params.row.id)}>
           View
-        </Link>
-        <button className="deleteButton" onClick={() => handleDelete(params.row._id)}>
+        </button>
+        <button className="deleteButton" onClick={() => handleDelete(params.row.id)}>
           Delete
         </button>
       </div>
@@ -44,18 +86,13 @@ const Datatable = ({ columns }) => {
   const displayedColumns = columns.length > 5 ? columns.slice(0, 5) : columns;
   const gridColumns = [...displayedColumns, actionColumn];
 
-  const rows = list.map((row, index) => ({
-    ...row,
-    id: row.id || `temp-id-${index}`,
-  }));
-
   return (
     <div className="datatable">
       <div className="datatableTitle">
-        {path}
-        <Link to={`/${path}/new`} className="link">
+        {path === "users" ? "Users" : "Properties"}
+        <button className="link" onClick={() => navigate(`/${path}/new`)}>
           Add New
-        </Link>
+        </button>
       </div>
 
       {loading ? (
@@ -66,7 +103,7 @@ const Datatable = ({ columns }) => {
         <div className="tableWrapper">
           <DataGrid
             className="datagrid"
-            rows={rows}
+            rows={list}
             columns={gridColumns}
             pageSize={9}
             rowsPerPageOptions={[9]}

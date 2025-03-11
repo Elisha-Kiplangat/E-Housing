@@ -1,25 +1,28 @@
 import { useState } from "react";
-import axios from "axios";
-import "./newHotel.scss";
+import { useNavigate } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import apiRequest from "../../lib/apiRequest";
 import UploadWidget from "../../components/uploadWidget/uploadWidget.jsx";
-import { useNavigate } from "react-router-dom";
+import Sidebar from "../../components/sidebar/Sidebar";
+import Navbar from "../../components/navbar/Navbar";
+import "./newHotel.scss";
 
 function NewHotel() {
   const [value, setValue] = useState("");
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
-
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputs = Object.fromEntries(formData);
+    setIsLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:3000/posts", {
+      const res = await apiRequest.post("/posts",  {
         postData: {
           title: inputs.title,
           price: parseInt(inputs.price),
@@ -44,7 +47,7 @@ function NewHotel() {
           restaurant: parseInt(inputs.restaurant),
         },
       });
-      navigate("/" + res.data.id);
+      navigate("/posts/search/" + res.data.id);
     } catch (err) {
       console.log(err);
       setError(err.message || "An error occurred while adding the post.");
@@ -52,10 +55,18 @@ function NewHotel() {
   };
 
   return (
-    <div className="newPostPage">
+    <div className="newHostel">
+      <Sidebar />
+      <div className="newHostelContainer">
+        <Navbar />
+        <div className="newPostPage">
       <div className="formContainer">
-        <h1>Add New Post</h1>
+        
         <div className="wrapper">
+          <button className="backButton" onClick={() => navigate(-1)}>
+  ← Back
+</button>
+
           <form onSubmit={handleSubmit}>
             <div className="item">
               <label htmlFor="title">Title</label>
@@ -80,7 +91,7 @@ function NewHotel() {
             <div className="item">
               <label htmlFor="bedroom">Bedroom Number</label>
               <input
-                min={1}
+                min={0}
                 id="bedroom"
                 name="bedroom"
                 type="number"
@@ -90,7 +101,7 @@ function NewHotel() {
             <div className="item">
               <label htmlFor="bathroom">Bathroom Number</label>
               <input
-                min={1}
+                min={0}
                 id="bathroom"
                 name="bathroom"
                 type="number"
@@ -170,7 +181,7 @@ function NewHotel() {
                 required
               />
             </div>
-            <button className="sendButton" type="submit">
+            <button disabled={isLoading} className="sendButton" type="submit">
               Add
             </button>
             {error && <span>{error}</span>}
@@ -190,6 +201,8 @@ function NewHotel() {
           }}
           setState={setImages}
         />
+      </div>
+    </div>
       </div>
     </div>
   );

@@ -4,6 +4,10 @@
   .homeContainer {
     flex: 6;
 
+    .featured {
+      overflow-y: auto;
+      height: calc(100vh - 60px); 
+
     .widgets,
     .charts {
       display: flex;
@@ -27,5 +31,6 @@
         margin-bottom: 15px;
       }
     }
+  }
   }
 }

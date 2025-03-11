@@ -12,12 +12,12 @@ const Widget = ({ type }) => {
 
   const apiUrl = type === "user"
     ? "/users/count"
-    : type === "order"
-    ? "/orders/count"
+    : type === "booking"
+    ? "/bookings/count"
     : type === "earning"
-    ? "/earnings/total"
+    ? "/bookings/count"
     : type === "balance"
-    ? "/balance/total"
+    ? "/bookings/count"
     : null;
 
   const { data: apiData, loading, error } = useFetch(apiUrl);
@@ -39,11 +39,11 @@ const Widget = ({ type }) => {
         ),
       };
       break;
-    case "order":
+    case "booking":
       data = {
-        title: "ORDERS",
+        title: "BOOKINGS",
         isMoney: false,
-        link: "View all orders",
+        link: "View all bookings",
         icon: (
           <ShoppingCartOutlinedIcon
             className="icon"

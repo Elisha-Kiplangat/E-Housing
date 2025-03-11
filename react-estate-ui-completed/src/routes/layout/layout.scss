@@ -15,7 +15,7 @@ body {
   font-family: "Lato", sans-serif;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; // Ensures full viewport height
+  min-height: 100vh;
 }
 
 .layout {
@@ -45,9 +45,11 @@ body {
   }
 
   .content {
+    flex-grow: 1;
+    overflow-y: auto; 
     flex-grow: 1; // Allows content to expand dynamically
     overflow-y: auto; // Enables vertical scrolling if needed
-    padding: 20px;
+    // padding: 20px;
   }
 
   .footer {
@@ -57,7 +59,7 @@ body {
     padding: 15px 20px;
     text-align: center;
     font-size: 14px;
-    width: 100%; // Ensures it spans the full width
+    width: 100%;
 
     @include md {
       font-size: 13px;
@@ -125,8 +127,7 @@ body {
       }
     }
   }
-
-  /*** ✅ Push Image Container to the Right ***/
+  
   .imgContainer {
     flex: 1;
     max-width: 40%;
@@ -137,18 +138,20 @@ body {
     
     padding-right: 20px;
     margin-right: 0;
-    margin-left: 40px; // Pushes it slightly right
+    margin-left: 42px;
+
+    margin-left: 30px; // Pushes it slightly right
 
     @include md {
       max-width: 100%;
-      margin-left: 0; // Reset for smaller screens
+      margin-left: 0;
     }
 
     img {
       width: 100%;
       max-width: 600px;
       border-radius: 10px;
-      transform: translateX(10px); // Slightly shift right
+      transform: translateX(10px);
 
       @include lg {
         max-width: 500px;
@@ -157,7 +160,7 @@ body {
 
       @include md {
         max-width: 400px;
-        transform: translateX(0); // Reset for smaller screens
+        transform: translateX(0);
       }
     }
   }
