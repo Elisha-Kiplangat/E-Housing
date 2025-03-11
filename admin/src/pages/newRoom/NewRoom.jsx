@@ -5,11 +5,13 @@ import { useState } from "react";
 import { roomInputs } from "../../formSource";
 import useFetch from "../../hooks/useFetch";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const NewRoom = () => {
   const [info, setInfo] = useState({});
   const [hotelId, setHotelId] = useState(undefined);
   const [rooms, setRooms] = useState([]);
+  const navigate = useNavigate();
 
   const { data, loading } = useFetch("/hotels");
 
@@ -34,7 +36,10 @@ const NewRoom = () => {
       <div className="newContainer">
         <Navbar />
         <div className="top">
-          <h1>Add New Room</h1>
+          {/* <h1>Add New Room</h1> */}
+          <button className="backButton" onClick={() => navigate(-1)}>
+            ← Back
+          </button>
         </div>
         <div className="bottom">
           <div className="right">
