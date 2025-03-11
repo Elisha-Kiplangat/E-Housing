@@ -10,11 +10,25 @@ import chatRoute from "./routes/chat.route.js";
 import messageRoute from "./routes/message.route.js";
 // import paymentRoute from "./routes/payment.route.js";
 import { payment } from "./controllers/payment.controller.js";
+
 // import { confirmOrder } from "../controllers/complete.controller.js";
+// const app = express();
+
+// app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+// const allowedOrigins = [process.env.CLIENT_URL1, process.env.CLIENT_URL2, process.env.CLIENT_URL3];
+
+import bookingRoute from "./routes/booking.route.js";
+
 const app = express();
 
 // app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
-const allowedOrigins = [process.env.CLIENT_URL1, process.env.CLIENT_URL2, process.env.CLIENT_URL3];
+const allowedOrigins = [
+  process.env.CLIENT_URL1,
+  process.env.CLIENT_URL2,
+  process.env.CLIENT_URL3,
+  process.env.CLIENT_URL4,
+];
+
 
 app.use(
   cors({
@@ -37,8 +51,13 @@ app.use("/api/posts", postRoute);
 app.use("/api/test", testRoute);
 app.use("/api/chats", chatRoute);
 app.use("/api/messages", messageRoute);
+
 app.use("/payment", payment);
 // app.use("/completeorder", confirmOrder);
+
+app.use("/api/bookings", bookingRoute);
+// app.use("/api/payment", payment);
+
 
 app.listen(3000, () => {
   console.log("Server is running!");

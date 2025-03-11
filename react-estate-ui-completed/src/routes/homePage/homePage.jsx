@@ -54,13 +54,11 @@ function HomePage() {
           </div>
         </div>
 
-        {/* Image Container on the Right */}
         <div className="imgContainer">
           <img src="/bg.png" alt="Real Estate Background" />
         </div>
       </div>
 
-      {/* Featured Home Section */}
       <div className="featuredContainer">
         <FeaturedHome />
       </div>

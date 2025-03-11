@@ -4,6 +4,10 @@
   .singleContainer {
     flex: 6;
 
+    .singleContent {
+      overflow-y: auto;
+      height: calc(100vh - 60px);
+  
     .top {
       padding: 20px;
       display: flex;
@@ -80,5 +84,6 @@
       color: lightgray;
       margin-bottom: 20px;
     }
+  }
   }
 }

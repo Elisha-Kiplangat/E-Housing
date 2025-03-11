@@ -1,8 +1,12 @@
 import React from "react";
 import Slider from "react-slick";
 import "./FeaturedHome.scss";
-import { useState } from "react";
+
 import { Link } from "react-router-dom";
+import { useState } from "react";
+
+// import { useState } from "react";
+// import { Link } from "react-router-dom";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -15,13 +19,15 @@ const images = [
   "/Apartment4.png",
 ];
 
+
 const FeaturedHome = () => {
-   const [query, setQuery] = useState({
-      type: "apartment",
-      city: "",
-      minPrice: "",
-      maxPrice: "",
-    });
+  const [query, setQuery] = useState({
+    type: "apartment",
+    city: "",
+    minPrice: "",
+    maxPrice: "",
+  });
+   
   const settings = {
     dots: true,
     infinite: true,
@@ -51,7 +57,9 @@ const FeaturedHome = () => {
           looking for an apartment, a family home, or a luxury villa, we have it
           all.
         </p>
-        <Link  to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`}><button className="exploreBtn">Explore Now</button></Link>
+        <Link  to={`/list?type=${query.type}&city=${query.city}&minPrice=${query.minPrice}&maxPrice=${query.maxPrice}`} >
+        <button className="exploreBtn">Explore Now</button>
+        </Link>
         
       </div>
     </section>
