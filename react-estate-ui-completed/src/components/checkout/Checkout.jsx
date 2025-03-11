@@ -1,47 +1,86 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "./checkout.scss";
 import { useLoaderData } from "react-router-dom";
+import axios from "axios";
 
 const Checkout = () => {
   const post = useLoaderData();
+  const navigate = useNavigate();
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const isApartment = post.type === "apartment";
-  const [amountToPay, setAmountToPay] = useState(0);
+  const [amountToPay, setAmountToPay] = useState(post.price);
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [transactionId, setTransactionId] = useState(null); // Store Transaction ID
 
   useEffect(() => {
     if (!isApartment) {
       setStartDate(null);
       setEndDate(null);
-      // amountToPay = post.price
+      setAmountToPay(post.price);
     }
-  }, [isApartment]);
+  }, [isApartment, post.price]);
 
   const calculateAmount = () => {
-    if (!startDate || !endDate) return 0;
-    const days = Math.ceil(endDate.getDate() - startDate.getDate());
-    const amount = days * post.price;
-    setAmountToPay(amount);
-    // console.log(days);
+    if (!startDate || !endDate) return;
+    const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+    setAmountToPay(days * post.price);
   };
+
   useEffect(() => {
-    calculateAmount();
+    if (isApartment) {
+      calculateAmount();
+    }
   }, [startDate, endDate, post.price]);
 
   const handlePayment = async () => {
+    setMessage("Processing payment...");
+    setMessageType("processing");
+
+    let formattedPhone = phone;
+    if (phone.startsWith("07")) {
+      formattedPhone = "254" + phone.substring(1);
+    } else if (!phone.startsWith("254") || phone.length !== 12) {
+      setMessage("Invalid phone number format.");
+      setMessageType("error");
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:5000/stkpush", {
-        phone,
-        amount,
-      });
-      alert("Payment request sent! Check your phone.");
+      const response = await axios.post(
+        "https://a488-102-215-33-50.ngrok-free.app/payment",
+        {
+          phone: formattedPhone,
+          amount: amountToPay,
+        }
+      );
+
+      if (response.data && response.data.CheckoutRequestID) {
+        setMessage("Payment request sent. Check your phone.");
+        setMessageType("success");
+
+        // Store the Transaction ID
+        setTransactionId(response.data.CheckoutRequestID);
+
+        // Redirect to order options page after success
+        setTimeout(() => {
+          navigate("/completeOrder", {
+            state: { transactionId: response.data.CheckoutRequestID },
+          });
+        }, 3000);
+      } else {
+        setMessage("Payment failed. Try again.");
+        setMessageType("error");
+      }
     } catch (error) {
-      // console.error("Payment error", error);
-      alert("Payment failed. Try again.");
+      setMessage("Payment request failed. Try again.");
+      setMessageType("error");
     }
   };
 
@@ -56,12 +95,13 @@ const Checkout = () => {
             <b>{post.title}</b>
           </h3>
           <p>
-            <b>Room:</b> {243}
+            <b>Room:</b> 243
           </p>
           <p>
             <b>Type:</b> {post.type}
           </p>
         </div>
+
         <div className="date-inputs">
           <label>Payment Number</label>
           <input
@@ -95,8 +135,7 @@ const Checkout = () => {
         )}
 
         <p className="amount">
-          Total Amount: KSh.
-          {post.type === "apartment" ? amountToPay : post.price}
+          <b>Total Amount:</b> KSh. {amountToPay}
         </p>
 
         <div className="button-group">
@@ -111,6 +150,10 @@ const Checkout = () => {
             Confirm Booking
           </button>
         </div>
+
+        {message && (
+          <p className={`payment-message ${messageType}`}>{message}</p>
+        )}
       </div>
     </div>
   );
