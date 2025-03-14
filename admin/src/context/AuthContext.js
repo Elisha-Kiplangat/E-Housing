@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 
 const INITIAL_STATE = {
   user: JSON.parse(localStorage.getItem("user")) || null,
@@ -23,49 +23,67 @@ const AuthReducer = (state, action) => {
   }
 };
 
-const logoutChannel = new BroadcastChannel("logout"); // ✅ Shared across tabs
-
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
-
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(state.user));
-
-    const handleStorageChange = (event) => {
-      if (event.key === "logout") {
-        dispatch({ type: "LOGOUT" });
-      }
-    };
-
-    const handleBroadcastLogout = () => {
-      dispatch({ type: "LOGOUT" });
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    logoutChannel.addEventListener("message", handleBroadcastLogout);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      logoutChannel.removeEventListener("message", handleBroadcastLogout);
-    };
-  }, [state.user]);
+  const [currentUser, setCurrentUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
 
   const updateUser = (user) => {
     if (user) {
       dispatch({ type: "LOGIN_SUCCESS", payload: user });
-      localStorage.setItem("user", JSON.stringify(user));
+      setCurrentUser(user);
     } else {
       dispatch({ type: "LOGOUT" });
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      sessionStorage.clear();
-      logoutChannel.postMessage("logout");
-      localStorage.setItem("logout", Date.now()); // Sync logout across tabs
+      setCurrentUser(null);
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
+
+  const login = async (username, password) => {
+    dispatch({ type: "LOGIN_START" });
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Login failed');
+      }
+
+      const data = await response.json();
+      updateUser(data);
+      console.log('Login successful:', data);
+    } catch (error) {
+      dispatch({ type: "LOGIN_FAILURE", payload: error.message });
+      console.error('An error occurred during admin login:', error);
+    }
+  };
+
+  const logout = () => {
+    updateUser(null);
+    localStorage.removeItem("user");
+  };
+
   return (
-    <AuthContext.Provider value={{ user: state.user, loading: state.loading, error: state.error, dispatch, updateUser }}>
+    <AuthContext.Provider
+      value={{
+        user: state.user,
+        loading: state.loading,
+        error: state.error,
+        dispatch,
+        login,
+        logout,
+        updateUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

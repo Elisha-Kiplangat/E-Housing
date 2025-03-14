@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 
-const Datatable = ({ columns }) => {
+const Datatable = ({ columns, searchQueryProp }) => {
   const location = useLocation();
   const path = location.pathname.split("/")[1]; // Get "users", "posts", or "bookings"
   const navigate = useNavigate();
@@ -16,6 +16,9 @@ const Datatable = ({ columns }) => {
 
   const { data, loading, error } = useFetch(`/${path}`);
   const [list, setList] = useState([]);
+  
+  console.log(path);
+  console.log("Data:", data);
 
   useEffect(() => {
     if (!data || !Array.isArray(data)) {
@@ -31,6 +34,19 @@ const Datatable = ({ columns }) => {
 
     setList(formattedData);
   }, [data]);
+
+  useEffect(() => {
+    if (searchQueryProp) {
+      const filteredData = data.filter((item) =>
+        Object.values(item).some((value) =>
+          String(value).toLowerCase().includes(searchQueryProp.toLowerCase())
+        )
+      );
+      setList(filteredData);
+    } else {
+      setList(data);
+    }
+  }, [searchQueryProp, data]);
 
   const handleView = (id) => {
     if (path === "users") {

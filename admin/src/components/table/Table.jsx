@@ -6,9 +6,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useMemo } from "react";
 
-const List = () => {
-  const rows = [
+const List = ({ searchQueryProp }) => {
+
+  const rows = useMemo(() => [
     {
       id: 1143155,
       product: "NEW HOPE",
@@ -59,7 +61,17 @@ const List = () => {
       method: "Online",
       status: "Pending",
     },
-  ];
+  ], []);
+
+  const filteredRows = useMemo(() => {
+    if (!searchQueryProp) return rows;
+    return rows.filter((row) =>
+      Object.values(row).some((value) =>
+        String(value).toLowerCase().includes(searchQueryProp.toLowerCase())
+      )
+    );
+  }, [searchQueryProp, rows]);
+
   return (
     <TableContainer component={Paper} className="table">
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -75,7 +87,7 @@ const List = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {filteredRows.map((row) => (
             <TableRow key={row.id}>
               <TableCell className="tableCell">{row.id}</TableCell>
               <TableCell className="tableCell">
