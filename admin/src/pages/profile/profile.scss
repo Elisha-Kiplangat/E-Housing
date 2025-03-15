@@ -1,0 +1,222 @@
+.profile {
+  display: flex;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  &.dark {
+    background-color: #141414;
+    color: #7a7676;
+
+    .profileContainer {
+      background-color: #141414;
+      color: #7a7676;
+    }
+
+    .editButton {
+      background-color: #2f3c49;
+      color: #2f57dc;
+
+      &:hover {
+        background-color: #2f57dc;
+        color: #fff;
+      }
+    }
+
+    .cellAction {
+      .viewButton {
+        background-color: #2f3c49;
+        color: #6a8bf9;
+      }
+      .deleteButton {
+        background-color: #4d4040;
+        color: #bf0f0f;
+      }
+    }
+    .MuiDataGrid-root {
+      .MuiDataGrid-columnHeaders {
+        background-color: #141414; 
+        color: #7a7676; 
+      }
+
+      .MuiDataGrid-cell {
+        background-color: #141414;
+        color: #7a7676; 
+      }
+
+      .MuiDataGrid-footerContainer {
+        background-color: #141414; 
+        color: #7a7676;
+      }
+    }
+    
+  }
+
+  &.light {
+    background-color: #fff;
+    color: #011a27;
+
+    .profileContainer {
+      background-color: #fff;
+      color: #777676;
+    }
+
+    .editButton {
+      background-color: #fff;
+      color: #2f57dc;
+
+      &:hover {
+        background-color: #2f57dc;
+        color: #fff;
+      }
+    }
+
+    .cellAction {
+      .viewButton {
+        background-color: #fff;
+        color: #2f57dc;
+      }
+      .deleteButton {
+        background-color: #fff;
+        color: #bf0f0f;
+      }
+    }
+    .MuiDataGrid-root {
+      .MuiDataGrid-columnHeaders {
+        background-color: #f5f5f5; 
+        color: #000000; 
+      }
+
+      .MuiDataGrid-cell {
+        color: #000000;
+      }
+
+      .MuiDataGrid-footerContainer {
+        background-color: #f5f5f5;
+        color: #000000;
+      }
+    }
+  }
+
+  .profileContainer {
+    flex: 6;
+    border-radius: 8px;
+    background: #fff;
+    overflow-y: auto;
+
+    .profileContent {
+      overflow-y: auto;
+
+      .top {
+        flex: 1;
+        -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+        padding: 20px;
+        position: relative;
+
+        .editButton {
+          position: absolute;
+          top: 0;
+          right: 0;
+          padding: 5px;
+          font-size: 12px;
+          color: #7451f8;
+          background-color: #7551f818;
+          cursor: pointer;
+          border: none;
+          border-radius: 0px 0px 0px 5px;
+        }
+
+        .item {
+          display: flex;
+          gap: 50px;
+          margin-top: 20px;
+          justify-content: center;
+
+          .itemImg {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 40px;
+          }
+
+          .details {
+            .itemTitle {
+              margin-bottom: 10px;
+              color: #555;
+            }
+
+            .detailItem {
+              margin-bottom: 10px;
+              font-size: 14px;
+
+              .itemKey {
+                font-weight: bold;
+                color: gray;
+                margin-right: 5px;
+              }
+
+              .itemValue {
+                font-weight: 300;
+              }
+            }
+          }
+        }
+      }
+
+      .bottom {
+        margin-top: 20px;
+
+        .title {
+          font-size: 20px;
+          font-weight: bold;
+          margin-bottom: 10px;
+        }
+
+        .tableWrapper {
+          overflow-x: auto;
+        }
+      }
+    }
+  // }
+
+  .cellAction {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .viewButton,
+    .deleteButton {
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .viewButton {
+      color: darkblue;
+      border: 1px dotted rgba(0, 0, 139, 0.6);
+
+      &:hover {
+        background: darkblue;
+        color: white;
+      }
+    }
+
+    .deleteButton {
+      color: crimson;
+      border: 1px dotted rgba(220, 20, 60, 0.6);
+
+      &:hover {
+        background: crimson;
+        color: white;
+      }
+    }
+  }
+}
+}

@@ -14,6 +14,7 @@ import NewHotel from "./components/newHotel/NewHotel";
 import NewRoom from "./pages/newRoom/NewRoom";
 import SingleHouse from "./pages/singleHouse/SingleHouse";
 import Payment from "./pages/payments/Payment";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   const { darkMode } = useContext(DarkModeContext);
@@ -62,6 +63,10 @@ function App() {
             </Route>
             <Route path="/payments">
               <Route index element={<Payment/>} />
+            </Route>
+
+            <Route path="/profile">
+              <Route index element={<Profile />} />
             </Route>
           </Route>
         </Routes>
