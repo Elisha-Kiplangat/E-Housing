@@ -109,6 +109,26 @@
           border-top: 1px solid #ddd;
 
           .leftSection {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+            
+          .backbutton {
+            background-color: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+
+            &:hover {
+              background-color: #0056b3;
+            }
+          }
+        }
+
+          .centerSection {
             flex: 3;
             padding-right: 1rem;
             color: #555;

@@ -1,104 +1,93 @@
 .singleHouse {
-    display: flex;
-    width: 100%;
-  
-    .singleHouseContainer {
-      flex: 6;
-      // padding: 20px;
+  display: flex;
+  width: 100%;
 
-      .houseContainer{
-        overflow-y: auto;
-        height: calc(100vh - 60px); 
-      
+  .singleHouseContainer {
+    flex: 6;
+
+    .houseContainer {
+      overflow-y: auto;
+      height: calc(100vh - 60px);
+
       .details {
         display: flex;
         flex-direction: row;
         gap: 40px;
         padding: 15px 0 0 15px;
-  
-        // .wrapper {
-        //   display: flex;
-        //   align-items: center;
-        // flex-direction: row;
-        //   gap: 20px;
-        //   width: 100%;
-  
-          .imageContainer {
-            flex: 1;
-            max-width: 40%;
-            height: 250px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-  
-            img {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-              border-radius: 10px;
-            }
-          }
-  
-  
-          .info {
-            flex: 1;
-            max-width: 55%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 10px;
-            gap: 10px;
-  
-            .top {
-              .post {
-                .address {
-                  display: flex;
-                  flex-direction: row;
-                  align-items: start;
-                  gap: 5px;
-  
-                }
-  
-                .price {
-                  font-size: 22px;
-                  font-weight: bold;
-                  color: #007bff;
-                  margin-top: 5px;
-                }
-              }
-            }
-          }
-          .editButtonContainer {
-            .editButton {
-              background: #007bff;
-              color: white;
-              margin-right: 10px;
-              padding: 10px 20px;
-              border: none;
-              border-radius: 5px;
-              cursor: pointer;
-              transition: all 0.3s;
-  
-              &:hover {
-                background: #0056b3;
-              }
-            }
-          }
 
-        // }
+        .imageContainer {
+          flex: 1;
+          max-width: 40%;
+          height: 250px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+          }
+        }
+
+        .info {
+          flex: 1;
+          max-width: 55%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          padding-top: 10px;
+          gap: 10px;
+
+          .top {
+            .post {
+              .address {
+                display: flex;
+                flex-direction: row;
+                align-items: start;
+                gap: 5px;
+              }
+
+              .price {
+                font-size: 22px;
+                font-weight: bold;
+                color: #007bff;
+                margin-top: 5px;
+              }
+            }
+          }
+        }
+
+        .editButtonContainer {
+          .editButton {
+            background: #007bff;
+            color: white;
+            margin-right: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+
+            &:hover {
+              background: #0056b3;
+            }
+          }
+        }
       }
-  
+
       .features {
         margin-top: 20px;
         padding: 20px;
         background: #f9f9f9;
         border-radius: 10px;
-  
+
         .wrapper {
           display: flex;
           flex-direction: row;
           gap: 30px;
-        
+
           .user {
             flex: 0.5;
             display: flex;
@@ -109,112 +98,111 @@
             background: #f9f9f9;
             padding: 10px;
             border-radius: 10px;
-  
+
             img {
               width: 60px;
               height: 60px;
               border-radius: 50%;
               margin-bottom: 5px;
             }
-  
+
             span {
               font-weight: bold;
             }
-  
+
             p {
               font-size: 14px;
               color: gray;
             }
           }
 
-        .listVertical {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
-
-          p {
-            font-weight: bolder;
-          }
-  
-          .feature {
+          .listVertical {
             display: flex;
-            align-items: center;
-            gap: 10px;
-  
-            .featureText {
-              span {
-                font-weight: bold;
-              }
-  
-              p {
-                color: gray;
-              }
+            flex-direction: column;
+            gap: 15px;
+
+            p {
+              font-weight: bolder;
             }
-          }
-        }
-  
-        .sizes {
-          display: flex;
-          flex-direction: column;
-          gap: 20px;
 
-          p {
-            font-weight: bolder;
-          }
-  
-          .size {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            
-            .featureText {
+            .feature {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+
+              .featureText {
                 span {
                   font-weight: bold;
                 }
-    
+
                 p {
                   color: gray;
                 }
               }
+            }
+          }
+
+          .sizes {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            p {
+              font-weight: bolder;
+            }
+
+            .size {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+
+              .featureText {
+                span {
+                  font-weight: bold;
+                }
+
+                p {
+                  color: gray;
+                }
+              }
+            }
           }
         }
-    }
-  
-    .mapContainer {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    
-      .coordinates {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 14px;
-        background: #f9f9f9;
-        padding: 10px;
-        border-radius: 5px;
-    
-        span {
-          font-weight: bold;
-        }
-    
-        input {
-          padding: 5px;
-          font-size: 14px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          width: 48%;
+
+        .mapContainer {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+
+          .coordinates {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            background: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+
+            span {
+              font-weight: bold;
+            }
+
+            input {
+              padding: 5px;
+              font-size: 14px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              width: 48%;
+            }
+          }
         }
       }
-    }
-    
-      }
-  
+
       /* Responsive Design */
       @media (max-width: 1024px) {
         .details .wrapper {
           flex-direction: column;
-  
+
           .imageContainer,
           .info {
             max-width: 100%;
@@ -223,5 +211,124 @@
       }
     }
   }
+
+  &.dark {
+    background-color: #141414;
+    color: #fff;
+
+    .singleHouseContainer {
+      background-color: #141414;
+      color: #fff;
+
+      .houseContainer {
+        .details {
+          .imageContainer {
+            img {
+              border: 1px solid #444;
+            }
+          }
+
+          .info {
+            .top {
+              .post {
+                .address,
+                .price,
+                .type {
+                  color: #ccc;
+                }
+              }
+            }
+
+            .bottomContainer {
+              .leftSection {
+                textarea {
+                  background-color: #333;
+                  color: #fff;
+                  border: 1px solid #444;
+                }
+              }
+            }
+          }
+
+          .editButtonContainer {
+            .editButton {
+              background-color: #444;
+              color: #fff;
+              &:disabled {
+                background-color: #666;
+              }
+            }
+          }
+        }
+
+        .features {
+          background-color: #1e1e1e !important; /* Dark mode background */
+          color: #fff !important; /* Dark mode text color */
+
+          .wrapper {
+            background-color: #1e1e1e !important; /* Dark mode background */
+            color: #fff !important; /* Dark mode text color */
+
+            .user {
+              background: #1e1e1e !important;
+              img {
+                border: 1px solid #444;
+              }
+              span {
+                color: #fff;
+              }
+              p {
+                color: #ccc;
+              }
+            }
+
+            .listVertical {
+              .title {
+                color: #6a8bf9;
+              }
+
+              .feature {
+                .featureText {
+                  span {
+                    color: #fff;
+                  }
+                  p {
+                    color: #ccc;
+                  }
+                }
+              }
+            }
+
+            .sizes {
+              .title {
+                color: #6a8bf9;
+              }
+
+              .size {
+                .featureText {
+                  span {
+                    color: #fff;
+                  }
+                  p {
+                    color: #ccc;
+                  }
+                }
+              }
+            }
+          }
+
+          .mapContainer {
+            .coordinates {
+              background: #1e1e1e !important;
+              input {
+                background-color: #333;
+                color: #fff;
+                border: 1px solid #444;
+              }
+            }
+          }
+        }
+      }
+    }
   }
-  
+}

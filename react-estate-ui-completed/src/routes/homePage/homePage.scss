@@ -23,7 +23,7 @@
     justify-content: space-between;
     width: 100%;
     max-width: 1600px;
-    gap: 100px; // Creates space between text and image
+    gap: 90px; // Creates space between text and image
 
     @include md {
       flex-direction: column;

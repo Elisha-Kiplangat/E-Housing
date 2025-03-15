@@ -21,14 +21,12 @@ const getAccessToken = async () => {
 export const payment = async (req, res) => {
   let { phone, amount } = req.body;
 
-  // ✅ Validate the request body to ensure 'phone' and 'amount' exist
   if (!phone || !amount) {
     return res
       .status(400)
       .json({ error: "Phone number and amount are required" });
   }
 
-  // ✅ Ensure phone number is in the correct M-Pesa format (2547XXXXXXXX)
   if (typeof phone !== "string") {
     return res.status(400).json({ error: "Invalid phone number format" });
   }
@@ -55,12 +53,12 @@ export const payment = async (req, res) => {
       Timestamp: timestamp,
       TransactionType: "CustomerPayBillOnline",
       Amount: amount,
-      PartyA: phone, // ✅ Corrected phone number
+      PartyA: phone,
       PartyB: process.env.BUSINESS_SHORTCODE,
-      PhoneNumber: phone, // ✅ Corrected phone number
+      PhoneNumber: phone,
       CallBackURL: process.env.CALLBACK_URL,
-      AccountReference: "Husler Fund",
-      TransactionDesc: "Hustler-Fund",
+      AccountReference: "E-Housing",
+      TransactionDesc: "E-Housing Payment",
     };
 
     const response = await axios.post(

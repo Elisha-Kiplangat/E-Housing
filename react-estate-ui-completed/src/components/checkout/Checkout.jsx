@@ -54,7 +54,7 @@ const Checkout = () => {
 
     try {
       const response = await axios.post(
-        "https://a488-102-215-33-50.ngrok-free.app/payment",
+        import.meta.env.VITE_PAYMENT_URL + "/payment",
         {
           phone: formattedPhone,
           amount: amountToPay,
@@ -95,7 +95,7 @@ const Checkout = () => {
             <b>{post.title}</b>
           </h3>
           <p>
-            <b>Room:</b> 243
+            <b>Room:</b> 314D
           </p>
           <p>
             <b>Type:</b> {post.type}

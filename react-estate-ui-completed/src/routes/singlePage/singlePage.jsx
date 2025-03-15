@@ -81,15 +81,20 @@ function SinglePage() {
               </div>
             </div>
             <div className="bottomContainer">
+              <div className="leftSection">
+                <button className="backbutton" onClick={() => window.history.back()}>
+                  Back
+                </button>
+              </div>
               <div
-                className="leftSection"
+                className="centerSection"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(post.postDetail.desc),
                 }}
               ></div>
               <div className="rightSection">
                 <button className="reserveButton" onClick={handleReserveClick}>
-                  Reserve or Book Now!
+                  Reserve Now!
                 </button>
               </div>
             </div>
