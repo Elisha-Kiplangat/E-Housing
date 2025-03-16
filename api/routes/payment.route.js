@@ -1,8 +1,8 @@
-// import express from "express";
-// import paymentController from "../controllers/payment.controller";
+import express from "express";
+import { payment } from "../controllers/payment.controller.js";
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.post("/stkpush", paymentController);
+router.post("/", payment );
 
-// export default router;
+export default router;
