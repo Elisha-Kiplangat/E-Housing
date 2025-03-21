@@ -172,12 +172,51 @@ export const savePost = async (req, res) => {
   }
 };
 
+export const deleteSavedPost = async (req, res) => {
+  const postId = req.body.postId || req.params.postId || req.query.postId;
+  const tokenUserId = req.userId;
+
+  if (!postId) {
+    return res.status(400).json({ message: "Post ID is required" });
+  }
+
+  try {
+    const savedPost = await prisma.savedPost.findUnique({
+      where: {
+        userId_postId: {
+          userId: tokenUserId,
+          postId,
+        },
+      },
+    });
+
+    if (savedPost) {
+      await prisma.savedPost.delete({
+        where: {
+          id: savedPost.id,
+        },
+      });
+      res.status(200).json({ message: "Post removed from saved list" });
+    } else {
+      res.status(404).json({ message: "Post not found in saved list" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to delete saved post!" });
+  }
+};
+
 export const profilePosts = async (req, res) => {
   const tokenUserId = req.userId;
+  const userRole = req.userRole;
+
   try {
-    const userPosts = await prisma.post.findMany({
-      where: { userId: tokenUserId },
-    });
+    let userPosts = [];
+    let savedPosts = [];
+    let bookings = [];
+
+
+    // Fetch saved posts for all users
     const saved = await prisma.savedPost.findMany({
       where: { userId: tokenUserId },
       include: {
@@ -185,10 +224,28 @@ export const profilePosts = async (req, res) => {
       },
     });
 
-    const savedPosts = saved.map((item) => item.post);
-    res.status(200).json({ userPosts, savedPosts });
+    savedPosts = saved.map((item) => item.post);
+
+    if (userRole === "admin") {
+      // Fetch posts for admin only
+      userPosts = await prisma.post.findMany({
+        where: { userId: tokenUserId },
+      });
+
+     return res.status(200).json({ userPosts, savedPosts });
+    }
+
+    // Fetch bookings for regular users only
+    bookings = await prisma.booking.findMany({
+      where: { userId: tokenUserId },
+      include: {
+        post: true, // Include related property details if needed
+      },
+    });
+
+    // Return bookings and savedPosts for regular users
+    return res.status(200).json({ bookings, savedPosts });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Failed to get profile posts!" });
   }
 };
