@@ -93,7 +93,7 @@ const Widget = ({ type }) => {
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.isMoney && "$"} {loading ? "Loading..." : error ? "Error" : apiData}
+          {data.isMoney && "Ksh."} {loading ? "Loading..." : error ? "Error" : apiData}
         </span>
         <span className="link">{data.link}</span>
       </div>
