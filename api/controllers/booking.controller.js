@@ -50,3 +50,42 @@ export const bookingCount = async (req, res) => {
         res.status(500).json({ message: "Failed to get booking count!" });
     }
     }
+
+    export const getBookingStats = async (req, res) => {
+      try {
+        // Get current count of all bookings
+        const currentCount = await prisma.booking.count();
+        
+        // Get count from previous period (e.g., last month)
+        const lastMonth = new Date();
+        lastMonth.setMonth(lastMonth.getMonth() - 1);
+        
+        const previousMonthBookings = await prisma.booking.count({
+          where: {
+            createdAt: {
+              lt: lastMonth
+            }
+          }
+        });
+        
+        // Calculate new bookings in the last month
+        const newBookings = currentCount - previousMonthBookings;
+        
+        // Calculate percentage change
+        let percentChange = 0;
+        if (previousMonthBookings > 0) {
+          percentChange = Math.round((newBookings / previousMonthBookings) * 100);
+        } else if (currentCount > 0) {
+          percentChange = 100; 
+        }
+        
+        res.status(200).json({
+          count: currentCount,
+          newBookings: newBookings,
+          percentChange: percentChange
+        });
+      } catch (err) {
+        console.error("Error in getBookingStats:", err);
+        res.status(500).json({ message: "Failed to get booking statistics!" });
+      }
+    };

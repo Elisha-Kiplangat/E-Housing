@@ -281,3 +281,103 @@ export const totalUsers = async (req, res) => {
     res.status(500).json({ message: "Failed to get total users!" });
   }
 }
+
+//total users with posts(have created posts)
+export const usersWithPosts = async (req, res) => {
+  try {
+    const total = await prisma.user.count({
+      where: {
+        posts: {
+          some: {},
+        },
+      },
+    });
+    res.status(200).json(total);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to get users with posts!" });
+  }
+}
+
+export const getUserStats = async (req, res) => {
+  try {
+    // Get current count of all users
+    const currentCount = await prisma.user.count();
+    
+    // Get count from previous period (e.g., last month)
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const previousMonthUsers = await prisma.user.count({
+      where: {
+        createdAt: {
+          lt: lastMonth
+        }
+      }
+    });
+    
+    // Calculate new users in the last month
+    const newUsers = currentCount - previousMonthUsers;
+    
+    // Calculate percentage change
+    let percentChange = 0;
+    if (previousMonthUsers > 0) {
+      percentChange = Math.round((newUsers / previousMonthUsers) * 100);
+    } else if (currentCount > 0) {
+      percentChange = 100; 
+    }
+    
+    res.status(200).json({
+      count: currentCount,
+      newUsers: newUsers,
+      percentChange: percentChange
+    });
+  } catch (err) {
+    console.error("Error in getUserStats:", err);
+    res.status(500).json({ message: "Failed to get user statistics!" });
+  }
+};
+
+export const getLandlordStats = async (req, res) => {
+  try {
+    // Get current count of all landlords
+    const currentCount = await prisma.user.count({
+      where: {
+        role: "admin"
+      }
+    });
+    
+    // Get count from previous period (e.g., last month)
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const previousMonthLandlords = await prisma.user.count({
+      where: {
+        role: "admin",
+        createdAt: {
+          lt: lastMonth
+        }
+      }
+    });
+    
+    // Calculate new landlords in the last month
+    const newLandlords = currentCount - previousMonthLandlords;
+    
+    // Calculate percentage change
+    let percentChange = 0;
+    if (previousMonthLandlords > 0) {
+      percentChange = Math.round((newLandlords / previousMonthLandlords) * 100);
+    } else if (currentCount > 0) {
+      percentChange = 100; // If previous count was 0, and now we have landlords, that's a 100% increase
+    }
+    
+    res.status(200).json({
+      count: currentCount,
+      newLandlords: newLandlords,
+      percentChange: percentChange
+    });
+  } catch (err) {
+    console.error("Error in getLandlordStats:", err);
+    res.status(500).json({ message: "Failed to get landlord statistics!" });
+  }
+};
