@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "./checkout.scss";
 import { useLoaderData } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie"; // Import js-cookie
 
 const Checkout = () => {
   const post = useLoaderData();
@@ -17,7 +18,7 @@ const Checkout = () => {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-  const [transactionId, setTransactionId] = useState(null); // Store Transaction ID
+  const [checkoutId, setCheckoutId] = useState(null); // Store Transaction ID
 
   useEffect(() => {
     if (!isApartment) {
@@ -39,12 +40,75 @@ const Checkout = () => {
     }
   }, [startDate, endDate, post.price]);
 
+  const saveBookingDetails = async (checkoutId) => {
+    try {
+      // Retrieve the user object from localStorage
+      const userString = localStorage.getItem("user");
+
+      if (!userString) {
+        setMessage("User data not found. Please log in.");
+        setMessageType("error");
+        return;
+      }
+
+      // Parse the JSON string to extract the user object
+      const user = JSON.parse(userString);
+      const userId = user.id;
+
+      if (!userId) {
+        setMessage("User ID not found in the user data.");
+        setMessageType("error");
+        return;
+      }
+
+      const bookingDetails = {
+        startDate,
+        endDate,
+        status: "pending",
+        type: post.type,
+        postId: post.id,
+        userId,
+        checkoutId, // Save checkoutId in the Booking model
+      };
+
+      const token = Cookies.get("token");
+
+      if (!token) {
+        setMessage("Authorization token not found. Please log in.");
+        setMessageType("error");
+        return;
+      }
+
+      const response = await axios.post(
+        import.meta.env.VITE_BACKEND_URL2 + "/bookings",
+        bookingDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data && response.data.id) {
+        setMessage("Booking details saved successfully.");
+        setMessageType("success");
+        return response.data.id; // Return the booking ID
+      } else {
+        setMessage("Failed to save booking details.");
+        setMessageType("error");
+      }
+    } catch (error) {
+      setMessage("Failed to save booking details. Try again.");
+      setMessageType("error");
+    }
+  };
+
   const handlePayment = async () => {
     setMessage("Processing payment...");
     setMessageType("processing");
 
-    let formattedPhone = phone;
-    if (phone.startsWith("07")) {
+    let formattedPhone = phone.trim();
+    if (phone.startsWith("07") || formattedPhone.startsWith("011")) {
       formattedPhone = "254" + phone.substring(1);
     } else if (!phone.startsWith("254") || phone.length !== 12) {
       setMessage("Invalid phone number format.");
@@ -53,25 +117,30 @@ const Checkout = () => {
     }
 
     try {
-      const response = await axios.post(
-        import.meta.env.VITE_PAYMENT_URL + "/payment",
+      const paymentResponse = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/payment",
         {
           phone: formattedPhone,
           amount: amountToPay,
         }
       );
 
-      if (response.data && response.data.CheckoutRequestID) {
+      if (paymentResponse.data && paymentResponse.data.CheckoutRequestID) {
         setMessage("Payment request sent. Check your phone.");
         setMessageType("success");
 
-        // Store the Transaction ID
-        setTransactionId(response.data.CheckoutRequestID);
+        const checkoutRequestId = paymentResponse.data.CheckoutRequestID;
+        setCheckoutId(checkoutRequestId); // Update state (but don't rely on it immediately)
 
-        // Redirect to order options page after success
+        console.log("Checkout Request ID:", checkoutRequestId); // Log the correct ID
+
+        // Save booking details with checkoutRequestId
+        const bookingId = await saveBookingDetails(checkoutRequestId);
+
+        // Redirect to complete order page with correct checkoutRequestId
         setTimeout(() => {
           navigate("/completeOrder", {
-            state: { transactionId: response.data.CheckoutRequestID },
+            state: { checkoutId: checkoutRequestId, bookingId },
           });
         }, 3000);
       } else {

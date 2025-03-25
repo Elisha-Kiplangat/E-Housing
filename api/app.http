@@ -67,16 +67,16 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2
 ###
 GET http://localhost:3000/api/bookings
 
-###
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE2MjgxMTEsImV4cCI6MjM0NjQyODExMX0.c1yuWsQ9QLlW_tMqvuCUd7cd0bMdTqrlNvMZbxRb-q4
 
 ###
 POST http://localhost:3000/api/bookings
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDI0NjQyMzgsImV4cCI6MjM0NzI2NDIzOH0.W7G_yQWhj28Fbgj5SOBJthDg4DkWtL6bXorFn9w6RqI
 Content-Type: application/json
 
 {
     "postId": "67acc2b590843f0e2c86a244",
     "userId": "67c5ee579118e6d6d81177a",
-    "startDate": "2021-02-01T00:00:00.000Z",
-    "endDate": "2021-02-10T00:00:00.000Z"
+    "startDate": "2025-03-01T00:00:00.000Z",
+    "type": "apartment"
 }

@@ -132,14 +132,18 @@ model Booking {
   id         String        @id @default(auto()) @map("_id") @db.ObjectId
   createdAt  DateTime      @default(now())
   startDate  DateTime
-  endDate    DateTime
+  endDate    DateTime?
   status     BookingStatus @default(pending)
+  type       Type
   post       Post          @relation(fields: [postId], references: [id])
-  postId     String   @unique @db.ObjectId
+  postId     String        @db.ObjectId
   user       User          @relation(fields: [userId], references: [id])
-  userId     String   @unique @db.ObjectId
+  userId     String        @db.ObjectId
   payments   Payment[]
+  checkoutId String?       // Removed @unique
 }
+
+
 
 model Payment {
   id            String        @id @default(auto()) @map("_id") @db.ObjectId
@@ -149,5 +153,5 @@ model Payment {
   method        PaymentMethod
   transactionId String        @unique
   booking       Booking       @relation(fields: [bookingId], references: [id])
-  bookingId     String  @unique @db.ObjectId
+  bookingId     String        @db.ObjectId
 }
