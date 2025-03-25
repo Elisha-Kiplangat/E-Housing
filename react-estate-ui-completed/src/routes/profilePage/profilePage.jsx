@@ -8,9 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 
 function ProfilePage() {
   const data = useLoaderData();
-
   const { updateUser, currentUser } = useContext(AuthContext);
-
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -46,18 +44,35 @@ function ProfilePage() {
             </span>
             <button onClick={handleLogout}>Logout</button>
           </div>
+
           <div className="title">
-            <h1>My List</h1>
-            <Link to="/add">{<button>Create New Post</button>}</Link>
+            <h1>{currentUser.role === "admin" ? "My List" : "My Bookings"}</h1>
+            {/* Conditionally render the "Create New Post" button for admin */}
+            {currentUser.role === "admin" && (
+              <Link to="/add">
+                <button>Create New Post</button>
+              </Link>
+            )}
           </div>
+
           <Suspense fallback={<p>Loading...</p>}>
             <Await
               resolve={data.postResponse}
               errorElement={<p>Error loading posts!</p>}
             >
-              {(postResponse) => <List posts={postResponse.data.userPosts} />}
+              {(postResponse) => {
+                console.log("Resolved postResponse:", postResponse);
+                const posts =
+                  currentUser.role === "admin"
+                    ? postResponse?.data?.userPosts || []
+                    : postResponse?.data?.bookings.map((booking) => booking.post) || [];
+
+                    console.log(posts)
+                return <List posts={posts} />;
+              }}
             </Await>
           </Suspense>
+
           <div className="title">
             <h1>Saved List</h1>
           </div>
@@ -66,11 +81,15 @@ function ProfilePage() {
               resolve={data.postResponse}
               errorElement={<p>Error loading posts!</p>}
             >
-              {(postResponse) => <List posts={postResponse.data.savedPosts} />}
+              {(postResponse) => {
+                const savedPosts = postResponse?.data?.savedPosts || [];
+                return <List posts={savedPosts} />;
+              }}
             </Await>
           </Suspense>
         </div>
       </div>
+
       <div className="chatContainer">
         <div className="wrapper">
           <Suspense fallback={<p>Loading...</p>}>

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./single.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
@@ -8,6 +8,8 @@ import List from "../../components/table/Table";
 import apiRequest from "../../lib/apiRequest";
 import useFetch from "../../hooks/useFetch";
 import Cookies from "js-cookie";
+import { CircularProgress } from "@mui/material";
+import { DarkModeContext } from "../../context/darkModeContext";
 
 const Single = () => {
   const { Id } = useParams();
@@ -16,6 +18,7 @@ const Single = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   // const [edited, setEdited] = useState({});
+  const { darkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     if (data) {
@@ -64,7 +67,10 @@ const Single = () => {
         <Navbar />
 
         {loading ? (
-          <p className="loading">Loading user details...</p>
+          <div className={`loadingContainer ${darkMode ? "dark" : "light"}`}>
+                                <CircularProgress />
+                                <p className="loading">Loading user details...</p>
+                              </div>
         ) : error ? (
           <p className="error">Error: {error}</p>
         ) : user ? (

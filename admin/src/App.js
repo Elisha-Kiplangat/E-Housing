@@ -33,42 +33,41 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
       <BrowserRouter>
         <Routes>
-          <Route path="/">
-            <Route path="login" element={<Login />} />
-            <Route index element={<Home />} />
-            <Route path="users">
-              <Route index element={<List columns={userColumns} />} />
-              <Route path="search/:Id" element={<Single />} />
-              <Route
-                path="new"
-                element={<New inputs={userInputs} title="Add New User" />}
-              />
-            </Route>
-            <Route path="posts">
-              <Route index element={<List columns={postColumns} />} />
-              <Route path="search/:Id" element={<SingleHouse />} />
-              <Route path="new" element={<NewHotel />} />
-            </Route>
-            <Route path="bookings">
-              <Route index element={<List columns={bookingColumns} />} />
-              <Route
-                path=":productId"
-                element={
-                  <ProtectedRoute>
-                    <Single />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="new" element={<NewRoom />} />
-            </Route>
-            <Route path="/payments">
-              <Route index element={<Payment/>} />
-            </Route>
-
-            <Route path="/profile">
-              <Route index element={<Profile />} />
-            </Route>
-          </Route>
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="/*"
+            element={
+              <ProtectedRoute>
+                <Routes>
+                  <Route index element={<Home />} />
+                  <Route path="users">
+                    <Route index element={<List columns={userColumns} />} />
+                    <Route path="search/:Id" element={<Single />} />
+                    <Route
+                      path="new"
+                      element={<New inputs={userInputs} title="Add New User" />}
+                    />
+                  </Route>
+                  <Route path="posts">
+                    <Route index element={<List columns={postColumns} />} />
+                    <Route path="search/:Id" element={<SingleHouse />} />
+                    <Route path="new" element={<NewHotel />} />
+                  </Route>
+                  <Route path="bookings">
+                    <Route index element={<List columns={bookingColumns} />} />
+                    <Route path=":productId" element={<Single />} />
+                    <Route path="new" element={<NewRoom />} />
+                  </Route>
+                  <Route path="payments">
+                    <Route index element={<Payment />} />
+                  </Route>
+                  <Route path="profile">
+                    <Route index element={<Profile />} />
+                  </Route>
+                </Routes>
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

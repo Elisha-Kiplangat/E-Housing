@@ -8,6 +8,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { DarkModeContext } from "../../context/darkModeContext"; // Import the dark mode context
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { CircularProgress } from "@mui/material";
 
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -184,7 +185,10 @@ const Profile = () => {
         <Navbar />
 
         {loading ? (
-          <p className="loading">Loading user details...</p>
+          <div className={`loadingContainer ${darkMode ? "dark" : "light"}`}>
+                      <CircularProgress />
+                      <p className="loading">Loading user details...</p>
+                    </div>
         ) : error ? (
           <p className="error">Error: {error.message}</p>
         ) : userData ? (

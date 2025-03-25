@@ -172,12 +172,51 @@ export const savePost = async (req, res) => {
   }
 };
 
+export const deleteSavedPost = async (req, res) => {
+  const postId = req.body.postId || req.params.postId || req.query.postId;
+  const tokenUserId = req.userId;
+
+  if (!postId) {
+    return res.status(400).json({ message: "Post ID is required" });
+  }
+
+  try {
+    const savedPost = await prisma.savedPost.findUnique({
+      where: {
+        userId_postId: {
+          userId: tokenUserId,
+          postId,
+        },
+      },
+    });
+
+    if (savedPost) {
+      await prisma.savedPost.delete({
+        where: {
+          id: savedPost.id,
+        },
+      });
+      res.status(200).json({ message: "Post removed from saved list" });
+    } else {
+      res.status(404).json({ message: "Post not found in saved list" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to delete saved post!" });
+  }
+};
+
 export const profilePosts = async (req, res) => {
   const tokenUserId = req.userId;
+  const userRole = req.userRole;
+
   try {
-    const userPosts = await prisma.post.findMany({
-      where: { userId: tokenUserId },
-    });
+    let userPosts = [];
+    let savedPosts = [];
+    let bookings = [];
+
+
+    // Fetch saved posts for all users
     const saved = await prisma.savedPost.findMany({
       where: { userId: tokenUserId },
       include: {
@@ -185,10 +224,28 @@ export const profilePosts = async (req, res) => {
       },
     });
 
-    const savedPosts = saved.map((item) => item.post);
-    res.status(200).json({ userPosts, savedPosts });
+    savedPosts = saved.map((item) => item.post);
+
+    if (userRole === "admin") {
+      // Fetch posts for admin only
+      userPosts = await prisma.post.findMany({
+        where: { userId: tokenUserId },
+      });
+
+     return res.status(200).json({ userPosts, savedPosts });
+    }
+
+    // Fetch bookings for regular users only
+    bookings = await prisma.booking.findMany({
+      where: { userId: tokenUserId },
+      include: {
+        post: true, // Include related property details if needed
+      },
+    });
+
+    // Return bookings and savedPosts for regular users
+    return res.status(200).json({ bookings, savedPosts });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ message: "Failed to get profile posts!" });
   }
 };
@@ -224,3 +281,103 @@ export const totalUsers = async (req, res) => {
     res.status(500).json({ message: "Failed to get total users!" });
   }
 }
+
+//total users with posts(have created posts)
+export const usersWithPosts = async (req, res) => {
+  try {
+    const total = await prisma.user.count({
+      where: {
+        posts: {
+          some: {},
+        },
+      },
+    });
+    res.status(200).json(total);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to get users with posts!" });
+  }
+}
+
+export const getUserStats = async (req, res) => {
+  try {
+    // Get current count of all users
+    const currentCount = await prisma.user.count();
+    
+    // Get count from previous period (e.g., last month)
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const previousMonthUsers = await prisma.user.count({
+      where: {
+        createdAt: {
+          lt: lastMonth
+        }
+      }
+    });
+    
+    // Calculate new users in the last month
+    const newUsers = currentCount - previousMonthUsers;
+    
+    // Calculate percentage change
+    let percentChange = 0;
+    if (previousMonthUsers > 0) {
+      percentChange = Math.round((newUsers / previousMonthUsers) * 100);
+    } else if (currentCount > 0) {
+      percentChange = 100; 
+    }
+    
+    res.status(200).json({
+      count: currentCount,
+      newUsers: newUsers,
+      percentChange: percentChange
+    });
+  } catch (err) {
+    console.error("Error in getUserStats:", err);
+    res.status(500).json({ message: "Failed to get user statistics!" });
+  }
+};
+
+export const getLandlordStats = async (req, res) => {
+  try {
+    // Get current count of all landlords
+    const currentCount = await prisma.user.count({
+      where: {
+        role: "admin"
+      }
+    });
+    
+    // Get count from previous period (e.g., last month)
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const previousMonthLandlords = await prisma.user.count({
+      where: {
+        role: "admin",
+        createdAt: {
+          lt: lastMonth
+        }
+      }
+    });
+    
+    // Calculate new landlords in the last month
+    const newLandlords = currentCount - previousMonthLandlords;
+    
+    // Calculate percentage change
+    let percentChange = 0;
+    if (previousMonthLandlords > 0) {
+      percentChange = Math.round((newLandlords / previousMonthLandlords) * 100);
+    } else if (currentCount > 0) {
+      percentChange = 100; // If previous count was 0, and now we have landlords, that's a 100% increase
+    }
+    
+    res.status(200).json({
+      count: currentCount,
+      newLandlords: newLandlords,
+      percentChange: percentChange
+    });
+  } catch (err) {
+    console.error("Error in getLandlordStats:", err);
+    res.status(500).json({ message: "Failed to get landlord statistics!" });
+  }
+};
