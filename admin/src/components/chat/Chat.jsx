@@ -1,16 +1,20 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./chat.scss";
 import { AuthContext } from "../../context/AuthContext";
-import { format } from "timeago.js";
+import * as timeagojs from "timeago.js";
 import { useNotificationStore } from "../../lib/notificationStore";
 import apiRequest from "../../lib/apiRequest";
 import { SocketContext } from "../../context/SocketContext";
+import { DarkModeContext } from "../../context/darkModeContext";
 
 function Chat({ handleCloseChat }) {
+  
+const timeago = new timeagojs();
   const [chats, setChats] = useState([]);
   const [chat, setChat] = useState(null);
   const { user : currentUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
+  const { darkMode } = useContext(DarkModeContext);
 
   const messageEndRef = useRef();
 
@@ -120,9 +124,9 @@ function Chat({ handleCloseChat }) {
   }, [socket, chat]);
 
   return (
-    <div className="chatOverlay">
-      <div className="chat">
-        <div className="chatHeader">
+    <div className={`chatOverlay ${darkMode ? "dark" : "light"}`}>
+      <div className={`chat ${darkMode ? "dark" : "light"}`}>
+        <div className={`chatHeader ${darkMode ? "dark" : "light"}`}>
           <h3>Messages</h3>
           <button onClick={handleCloseChat}>Close</button>
         </div>
@@ -146,7 +150,7 @@ function Chat({ handleCloseChat }) {
           ))}
         </div>
         {chat && chat.receiver && (
-          <div className="chatBox">
+          <div className={`chatBox ${darkMode ? "dark" : "light"}`}>
             <div className="top">
               <div className="user">
                 <img src={chat.receiver.avatar || "/noavatar.jpg"} alt="User Avatar" />
@@ -168,12 +172,12 @@ function Chat({ handleCloseChat }) {
                     key={message.id}
                   >
                     <p>{message.text}</p>
-                    <span>{format(message.createdAt)}</span>
+                    <span>{timeago.format(message.createdAt)}</span>
                   </div>
                 ))}
               <div ref={messageEndRef}></div>
             </div>
-            <form onSubmit={handleSubmit} className="bottom">
+            <form onSubmit={handleSubmit} className={`bottom ${darkMode ? "dark" : "light"}`}>
               <textarea name="text"></textarea>
               <button>Send</button>
             </form>

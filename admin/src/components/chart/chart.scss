@@ -9,6 +9,71 @@
     margin-bottom: 20px;
   }
 
+  .loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    height: 300px; // Match approximate chart height
+    margin: 20px 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.2);
+    
+    p {
+      margin-top: 16px;
+      color: #666;
+      font-size: 1rem;
+    }
+  }
+  
+  .error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    height: 300px; // Match approximate chart height
+    margin: 20px 0;
+    background-color: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.2);
+    border-radius: 8px;
+    color: #d32f2f;
+    font-size: 0.95rem;
+  }
+
+  // Dark mode styles for the chart component
+.chart.dark {
+  background-color: #1e1e1e;
+  box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.6);
+  color: #e0e0e0;
+  
+  .title {
+    color: #e0e0e0;
+  }
+  
+  .chartGrid {
+    stroke: rgba(255, 255, 255, 0.1);
+  }
+}
+
+// Dark mode styles for loading container
+.loading.dark {
+  background-color: #141414;
+  box-shadow: 0px 0px 15px -10px rgba(255, 255, 255, 0.2);
+  
+  p {
+    color: #bbb;
+  }
+}
+
+// Dark mode styles for error container
+.error.dark {
+  background-color: rgba(244, 67, 54, 0.15);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  color: #ff6b6b;
+}
+
   .chartGrid {
     stroke: rgb(228, 225, 225);
   }

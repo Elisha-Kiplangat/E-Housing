@@ -7,6 +7,7 @@ import apiRequest from "../../lib/apiRequest";
 import Cookies from "js-cookie";
 import { DarkModeContext } from "../../context/darkModeContext";
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
+import { CircularProgress } from "@mui/material";
 
 const Datatable = ({ columns, searchQueryProp }) => {
   const location = useLocation();
@@ -156,9 +157,14 @@ const Datatable = ({ columns, searchQueryProp }) => {
           </div>
 
           {loading ? (
+            <div className="loadingContainer">
+            <CircularProgress />
             <p>Loading data...</p>
-          ) : error ? (
-            <p>Error fetching data</p>
+          </div>
+        ) : error ? (
+          <div className="errorContainer">
+            <p>Error fetching data: {error.message}</p>
+          </div>
           ) : (
             <div className="tableWrapper">
               <DataGrid

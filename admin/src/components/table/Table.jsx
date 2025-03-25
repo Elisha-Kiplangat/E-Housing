@@ -6,83 +6,86 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState, useContext } from "react";
+import useFetch from "../../hooks/useFetch";
+import Alert from '@mui/material/Alert';
+import moment from 'moment';
+import { CircularProgress } from "@mui/material";
+import { DarkModeContext } from "../../context/darkModeContext";
 
 const List = ({ searchQueryProp }) => {
+  // Get the dark mode context
+  const { darkMode } = useContext(DarkModeContext);
+  
+  // Fetch payment data from the API
+  const { data, loading, error } = useFetch("/payment/");
+  const [formattedData, setFormattedData] = useState([]);
 
-  const rows = useMemo(() => [
-    {
-      id: 1143155,
-      product: "NEW HOPE",
-      img: "https://m.media-amazon.com/images/I/81bc8mA3nKL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "John Smith",
-      date: "1 March",
-      amount: 7850,
-      method: "Online",
-      status: "Approved",
-    },
-    {
-      id: 2235235,
-      product: "PAQUETA",
-      img: "https://m.media-amazon.com/images/I/31JaiPXYI8L._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "Michael Doe",
-      date: "1 March",
-      amount: 17000,
-      method: "Online",
-      status: "Pending",
-    },
-    {
-      id: 2342353,
-      product: "NEW JERSEY",
-      img: "https://m.media-amazon.com/images/I/71kr3WAj1FL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "John Smith",
-      date: "1 March",
-      amount: 30000,
-      method: "Online",
-      status: "Pending",
-    },
-    {
-      id: 2357741,
-      product: "MAENDELEO",
-      img: "https://m.media-amazon.com/images/I/71wF7YDIQkL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "Jane Smith",
-      date: "1 March",
-      amount: 9000,
-      method: "Online",
-      status: "Approved",
-    },
-    {
-      id: 2342355,
-      product: "J HEIGHTS",
-      img: "https://m.media-amazon.com/images/I/81hH5vK-MCL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "Harold Carol",
-      date: "1 March",
-      amount: 2000,
-      method: "Online",
-      status: "Pending",
-    },
-  ], []);
+  // Format the data once it's fetched
+  useEffect(() => {
+    if (data) {
+      const formatted = data.map(payment => ({
+        id: payment.id || payment.transactionId,
+        postId: payment.booking?.postId || "Unknown Property",
+        customer: payment.booking?.user?.username || "Unknown User",
+        date: payment.createdAt ? moment(payment.createdAt).format('D MMM YYYY') : "Unknown Date",
+        amount: payment.amount || 0,
+        transactionId: payment.transactionId || "Unknown",
+        status: payment.status || "Unknown",
+      }));
+      setFormattedData(formatted);
+    }
+  }, [data]);
 
+  // Filter the data based on search query
   const filteredRows = useMemo(() => {
-    if (!searchQueryProp) return rows;
-    return rows.filter((row) =>
+    if (!searchQueryProp) return formattedData;
+    return formattedData.filter((row) =>
       Object.values(row).some((value) =>
         String(value).toLowerCase().includes(searchQueryProp.toLowerCase())
       )
     );
-  }, [searchQueryProp, rows]);
+  }, [searchQueryProp, formattedData]);
+
+  // Render loading state
+  if (loading) {
+    return (
+      <div className={`loadingContainer ${darkMode ? "dark" : "light"}`}>
+        <CircularProgress />
+        <p>Loading payment data...</p>
+      </div>
+    );
+  }
+
+  // Render error state
+  if (error) {
+    return (
+      <Alert severity="error" className={darkMode ? "dark" : "light"}>
+        Error loading payment data: {error.message || "Unknown error"}
+      </Alert>
+    );
+  }
+
+  // Render empty state
+  if (!loading && filteredRows.length === 0) {
+    return (
+      <Alert severity="info" className={darkMode ? "dark" : "light"}>
+        {searchQueryProp ? "No payments match your search criteria." : "No payment records found."}
+      </Alert>
+    );
+  }
 
   return (
-    <TableContainer component={Paper} className="table">
+    <TableContainer component={Paper} className={`table ${darkMode ? "dark" : "light"}`}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell className="tableCell">Tracking ID</TableCell>
-            <TableCell className="tableCell">Property</TableCell>
             <TableCell className="tableCell">Customer</TableCell>
+            <TableCell className="tableCell">Property</TableCell>
             <TableCell className="tableCell">Date</TableCell>
             <TableCell className="tableCell">Amount</TableCell>
-            <TableCell className="tableCell">Payment Method</TableCell>
+            <TableCell className="tableCell">Transaction ID</TableCell>
             <TableCell className="tableCell">Status</TableCell>
           </TableRow>
         </TableHead>
@@ -90,18 +93,13 @@ const List = ({ searchQueryProp }) => {
           {filteredRows.map((row) => (
             <TableRow key={row.id}>
               <TableCell className="tableCell">{row.id}</TableCell>
-              <TableCell className="tableCell">
-                <div className="cellWrapper">
-                  <img src={row.img} alt="" className="image" />
-                  {row.product}
-                </div>
-              </TableCell>
               <TableCell className="tableCell">{row.customer}</TableCell>
+              <TableCell className="tableCell"> {row.postId} </TableCell>
               <TableCell className="tableCell">{row.date}</TableCell>
-              <TableCell className="tableCell">{row.amount}</TableCell>
-              <TableCell className="tableCell">{row.method}</TableCell>
+              <TableCell className="tableCell">Ksh. {row.amount.toLocaleString()}</TableCell>
+              <TableCell className="tableCell">{row.transactionId}</TableCell>
               <TableCell className="tableCell">
-                <span className={`status ${row.status}`}>{row.status}</span>
+                <span className={`status ${row.status.toLowerCase()}`}>{row.status}</span>
               </TableCell>
             </TableRow>
           ))}

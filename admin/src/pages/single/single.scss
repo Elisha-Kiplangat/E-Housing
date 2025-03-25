@@ -69,6 +69,21 @@
 
       .right {
         flex: 2;
+        overflow-y: hidden; // Fix infinite resizing issues
+        display: flex;
+        flex-direction: column;
+        min-width: 0; // Prevents flexbox-induced resize loops
+        
+        .chart {
+          width: 100%;
+          flex-grow: 1;
+          height: 100%; // Fill available space
+          
+          .recharts-responsive-container {
+            min-height: 300px;
+            flex-shrink: 0; // Prevent chart from shrinking
+          }
+        }
       }
     }
 
