@@ -1,4 +1,4 @@
-import express from "express";<<<<<<< master
+import express from "express";
 import {
   getBookings,
   addBooking,
