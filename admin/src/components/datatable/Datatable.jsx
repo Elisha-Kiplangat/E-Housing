@@ -6,8 +6,11 @@ import useFetch from "../../hooks/useFetch";
 import apiRequest from "../../lib/apiRequest";
 import Cookies from "js-cookie";
 import { DarkModeContext } from "../../context/darkModeContext";
+
+
 import { createTheme, ThemeProvider, StyledEngineProvider } from "@mui/material/styles";
 import { CircularProgress } from "@mui/material";
+
 
 const Datatable = ({ columns, searchQueryProp }) => {
   const location = useLocation();
@@ -17,7 +20,7 @@ const Datatable = ({ columns, searchQueryProp }) => {
 
   const { data, loading, error } = useFetch(`/${path}`);
   const [list, setList] = useState([]);
-  
+
   console.log(path);
   console.log("Data:", data);
 
@@ -98,10 +101,16 @@ const Datatable = ({ columns, searchQueryProp }) => {
     width: 150,
     renderCell: (params) => (
       <div className="cellAction">
-        <button className={`viewButton ${darkMode ? "dark" : "light"}`} onClick={() => handleView(params.row.id)}>
+        <button
+          className={`viewButton ${darkMode ? "dark" : "light"}`}
+          onClick={() => handleView(params.row.id)}
+        >
           View
         </button>
-        <button className={`deleteButton ${darkMode ? "dark" : "light"}`} onClick={() => handleDelete(params.row.id)}>
+        <button
+          className={`deleteButton ${darkMode ? "dark" : "light"}`}
+          onClick={() => handleDelete(params.row.id)}
+        >
           Delete
         </button>
       </div>
@@ -150,7 +159,11 @@ const Datatable = ({ columns, searchQueryProp }) => {
       <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
         <div className={`datatable ${darkMode ? "dark" : "light"}`}>
           <div className="datatableTitle">
-            {path === "users" ? "Users" : path === "posts" ? "Properties" : "Bookings"}
+            {path === "users"
+              ? "Users"
+              : path === "posts"
+              ? "Properties"
+              : "Bookings"}
             <button className="link" onClick={() => navigate(`/${path}/new`)}>
               Add New
             </button>

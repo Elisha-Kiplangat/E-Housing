@@ -1,53 +1,89 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./completeOrder.scss";
 
-const completeOrder = () => {
+const CompleteOrder = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const transactionId = location.state?.transactionId; // Get Transaction ID from state
+  const [message, setMessage] = useState();
+  const checkoutId = location.state?.checkoutId; 
+  const bookingId = location.state?.bookingId; 
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    console.log(" Received checkoutId in CompleteOrder:", checkoutId);
+
+    if (!checkoutId) {
+      alert("Checkout ID not found. Redirecting to home.");
+      navigate("/"); 
+    }
+  }, [checkoutId, navigate]);
 
   const handleCompleteOrder = async () => {
-    if (!transactionId) {
-      alert("Transaction ID not found. Cannot complete order.");
+    let CheckoutRequestID = checkoutId;
+    if (!CheckoutRequestID) {
+      alert("❌ Missing Checkout ID. Cannot proceed.");
       return;
     }
 
+    setLoading(true);
+
     try {
-      const response = await fetch("https://1f6f-102-215-33-50.ngrok-free.app/completeorder", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ transactionId }),
-      });
+      console.log("🔹 Sending request with Checkout ID:", CheckoutRequestID);
+
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL3}/complete`, 
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({ CheckoutRequestID }),
+        }
+      );
+
+      console.log("🔹 Response Status:", response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Server Error");
+      }
 
       const data = await response.json();
+      console.log(" API Response:", data);
 
-      if (data.success) {
-        alert("Order confirmed! Check your email.");
-        navigate("/"); // Redirect to home
-      } else {
-        alert("Failed to confirm order. Try again.");
-      }
+      alert("✅ Order confirmed! Check your email.");
+      navigate("/"); // Redirect after success
     } catch (error) {
-      alert("Error processing order.");
+      console.error("🚨 API Error:", error);
+      alert("❌ Failed to complete order. Check console for details.");
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleCancelBooking = () => {
-    alert("Booking cancelled.");
-    navigate("/");
   };
 
   return (
     <div className="order-options-container">
       <h2>Payment Successful</h2>
-      <p>Your payment has been received. Please choose how you want to proceed:</p>
+      <p>
+        Your payment has been received. Click <b>Complete Order</b> to proceed.
+      </p>
       <div className="button-group">
-        <button className="complete-btn" onClick={handleCompleteOrder}>Complete Order</button>
-        <button className="cancel-btn" onClick={handleCancelBooking}>Cancel Booking</button>
+        <button
+          className="complete-btn"
+          onClick={handleCompleteOrder}
+          disabled={loading}
+        >
+          {loading ? "Processing..." : "Complete Order"}
+        </button>
+        <button className="cancel-btn" onClick={() => navigate("/")}>
+          Cancel Booking
+        </button>
       </div>
     </div>
   );
 };
 
-export default completeOrder;
+export default CompleteOrder;
