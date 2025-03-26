@@ -10,7 +10,7 @@ router.get("/", getPayments);
 router.get("/total", totalPayments);
 router.get("/stats", getPaymentStats);
 router.get("/monthly-stats", getMonthlyPaymentStats);
-router.get("/status/:checkoutRequestId", verifyToken, checkPaymentStatus); //added 
+router.get("/status/:checkoutRequestId", checkPaymentStatus); //added 
 router.post("/save", createPayment)
 router.post("/", payment );
 
