@@ -16,6 +16,9 @@ import {
 } from "./lib/loaders";
 import ContactUs from "./routes/contactUs/ContactUs";
 import CompleteOrder from "./routes/completeOrder/completeOrder"; // ✅ Import the OrderComplete page
+import ForgotPassword from "./routes/forgotPassword/ForgotPassword";
+import ResetPassword from "./routes/resetPassword/ResetPassword";
+
 
 function App() {
   const router = createBrowserRouter([
@@ -57,6 +60,8 @@ function App() {
           path: "/completeOrder", // ✅ Define a route for OrderComplete
           element: <CompleteOrder />,
         },
+        {path : "/forgot-password", element : <ForgotPassword /> },
+        { path : "/reset-password/:token", element : <ResetPassword /> },
       ],
     },
     {
