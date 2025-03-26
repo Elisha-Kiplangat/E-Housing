@@ -80,7 +80,7 @@ const Checkout = () => {
       }
 
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL2 + "/bookings",
+        import.meta.env.VITE_BACKEND_URL1 + "/bookings",
         bookingDetails,
         {
           headers: {
@@ -140,7 +140,7 @@ const Checkout = () => {
         // Redirect to complete order page with correct checkoutRequestId
         setTimeout(() => {
           navigate("/completeOrder", {
-            state: { checkoutId: checkoutRequestId, bookingId },
+            state: { checkoutId: checkoutRequestId, bookingId, phone: formattedPhone },
           });
         }, 3000);
       } else {

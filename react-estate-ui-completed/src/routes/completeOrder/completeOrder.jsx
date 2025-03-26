@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./completeOrder.scss";
+import Cookies from 'js-cookie';
 
 const CompleteOrder = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const CompleteOrder = () => {
       console.log("🔹 Sending request with Checkout ID:", CheckoutRequestID);
 
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL3}/complete`, 
+        `${import.meta.env.VITE_BACKEND_URL}/complete`, 
         {
           method: "POST",
           headers: {
@@ -46,19 +47,55 @@ const CompleteOrder = () => {
 
       console.log("🔹 Response Status:", response.status);
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Server Error");
-      }
+    // Store the response data first, then check if it's OK
+    const responseData = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(responseData.error || "Server Error");
+    }
 
-      const data = await response.json();
-      console.log(" API Response:", data);
+    console.log("🔹 API Response:", responseData);
+    
+    // Use data from responseData
+    // const token = Cookies.get("token");
+    // if (!token) {
+    //   throw new Error("Authentication token missing. Please log in again.");
+    // }
+    // const paymentResponse = await fetch(
+    //   `${import.meta.env.VITE_BACKEND_URL}/payment/save`, 
+    //   {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     body: JSON.stringify({
+    //       amount: responseData.amount || 0,
+    //       method: "M-Pesa",
+    //       transactionId: responseData.transactionId || CheckoutRequestID,
+    //       bookingId: bookingId
+    //     }),
+    //   }
+    // );
+
+    // if (!paymentResponse.ok) {
+    //   const paymentError = await paymentResponse.json();
+    //   console.error("Payment record creation failed:", paymentError);
+    //   throw new Error(paymentError.message || "Failed to save payment details");
+    // }
+
+    // const paymentData = await paymentResponse.json();
+    // console.log("Payment record created:", paymentData);
+
+
 
       alert("✅ Order confirmed! Check your email.");
       navigate("/"); // Redirect after success
     } catch (error) {
-      console.error("🚨 API Error:", error);
-      alert("❌ Failed to complete order. Check console for details.");
+      console.error("🚨 Payment Cancelled:", error);
+      alert("❌ Failed to complete order. Please enter your M-Pesa pin.");
+  //     const errorMessage = error.message || "❌ Failed to complete order. Please enter your M-Pesa pin.";
+  // alert(errorMessage);
     } finally {
       setLoading(false);
     }
