@@ -325,3 +325,107 @@ export const getMonthlyPaymentStats = async (req, res) => {
     res.status(500).json({ message: "Failed to get monthly payment statistics" });
   }
 };
+
+export const mpesaCallback = async (req, res) => {
+  try {
+    console.log("🔹 M-Pesa Callback received:", JSON.stringify(req.body, null, 2));
+    
+    // Always respond with 200 OK immediately (M-Pesa expects this)
+    // This prevents M-Pesa from retrying the callback
+    res.status(200).json({ ResultCode: 0, ResultDesc: "Success" });
+    
+    // Continue processing asynchronously
+    processCallback(req.body).catch(error => {
+      console.error("❌ Error processing M-Pesa callback:", error);
+    });
+    
+  } catch (error) {
+    console.error("❌ M-Pesa callback error:", error);
+    // Still return 200 to prevent M-Pesa retries
+    res.status(200).json({ ResultCode: 0, ResultDesc: "Success" });
+  }
+};
+
+// Process the callback data asynchronously
+const processCallback = async (callbackData) => {
+  try {
+    // Extract data from callback
+    const { Body } = callbackData;
+    
+    if (!Body || !Body.stkCallback) {
+      console.error("❌ Invalid callback format - missing Body.stkCallback");
+      return;
+    }
+    
+    const { 
+      MerchantRequestID, 
+      CheckoutRequestID, 
+      ResultCode, 
+      ResultDesc,
+      CallbackMetadata 
+    } = Body.stkCallback;
+    
+    console.log(`🔹 Processing callback for CheckoutRequestID: ${CheckoutRequestID}`);
+    console.log(`🔹 ResultCode: ${ResultCode}, ResultDesc: ${ResultDesc}`);
+    
+    // Find the booking with this checkout ID
+    const booking = await prisma.booking.findFirst({
+      where: { checkoutId: CheckoutRequestID }
+    });
+    
+    if (!booking) {
+      console.error(`❌ No booking found with checkoutId: ${CheckoutRequestID}`);
+      return;
+    }
+    
+    console.log(`🔹 Found booking: ${booking.id}`);
+    
+    // If payment failed
+    if (ResultCode !== 0) {
+      console.log(`❌ Payment failed: ${ResultDesc}`);
+      
+      // Update booking status to CANCELED
+      await prisma.booking.update({
+        where: { id: booking.id },
+        data: { status: "CANCELED" }
+      });
+      
+      console.log(`🔹 Updated booking ${booking.id} status to CANCELED`);
+      return;
+    }
+    
+    // Extract payment details from CallbackMetadata
+    const paymentDetails = extractPaymentDetails(CallbackMetadata);
+    console.log("🔹 Extracted payment details:", paymentDetails);
+    
+    if (!paymentDetails) {
+      console.error("❌ Could not extract payment details from callback");
+      return;
+    }
+    
+    // Create payment record
+    const payment = await prisma.payment.create({
+      data: {
+        amount: paymentDetails.amount,
+        method: "M-Pesa",
+        status: "COMPLETED",
+        transactionId: paymentDetails.mpesaReceiptNumber,
+        phoneNumber: paymentDetails.phoneNumber?.toString(),
+        booking: { connect: { id: booking.id } }
+      }
+    });
+    
+    console.log(`✅ Payment created successfully: ${payment.id}`);
+    
+    // Update booking status to CONFIRMED
+    await prisma.booking.update({
+      where: { id: booking.id },
+      data: { status: "CONFIRMED" }
+    });
+    
+    console.log(`✅ Updated booking ${booking.id} status to CONFIRMED`);
+    
+  } catch (error) {
+    console.error("❌ Error processing callback:", error);
+  }
+};

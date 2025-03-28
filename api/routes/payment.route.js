@@ -1,10 +1,10 @@
 import express from "express";
-import { createPayment, getMonthlyPaymentStats, getPayments, getPaymentStats, payment, totalPayments } from "../controllers/payment.controller.js";
+import { createPayment, getMonthlyPaymentStats, getPayments, getPaymentStats, mpesaCallback, payment, totalPayments } from "../controllers/payment.controller.js";
 // import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
-// router.post("/mpesa-callback", mpesaCallback);
+router.post("/mpesa-callback", mpesaCallback);
 
 router.get("/", getPayments);
 router.get("/total", totalPayments);
