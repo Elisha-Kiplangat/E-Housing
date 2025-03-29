@@ -71,22 +71,20 @@ const Checkout = () => {
         checkoutId, // Save checkoutId in the Booking model
       };
 
-      const token = Cookies.get("token");
-      console.log(token);
+      // const token = Cookies.get("token");
+      // console.log(token);
 
-      if (!token) {
-        setMessage("Authorization token not found. Please log in.");
-        setMessageType("error");
-        return;
-      }
+      // if (!token) {
+      //   setMessage("Authorization token not found. Please log in.");
+      //   setMessageType("error");
+      //   return;
+      // }
 
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/bookings",
         bookingDetails,
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          withCredentials: true 
         }
       );
 
