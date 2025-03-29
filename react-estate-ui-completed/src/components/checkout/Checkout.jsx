@@ -72,6 +72,7 @@ const Checkout = () => {
       };
 
       const token = Cookies.get("token");
+      console.log(token);
 
       if (!token) {
         setMessage("Authorization token not found. Please log in.");
@@ -80,7 +81,7 @@ const Checkout = () => {
       }
 
       const response = await axios.post(
-        import.meta.env.VITE_BACKEND_URL2 + "/bookings",
+        import.meta.env.VITE_BACKEND_URL + "/bookings",
         bookingDetails,
         {
           headers: {
@@ -118,7 +119,7 @@ const Checkout = () => {
 
     try {
       const paymentResponse = await axios.post(
-        import.meta.env.VITE_BACKEND_URL3 + "/payment",
+        import.meta.env.VITE_BACKEND_URL + "/payment",
         {
           phone: formattedPhone,
           amount: amountToPay,

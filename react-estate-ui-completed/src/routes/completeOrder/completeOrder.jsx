@@ -26,7 +26,7 @@ const CompleteOrder = () => {
     try {
       console.log("🔹 Saving payment for Booking ID:", bookingId);
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL2}/payment/save`,
+        `${import.meta.env.VITE_BACKEND_URL}/payment/save`,
         {
           method: "POST",
           headers: {
@@ -64,7 +64,7 @@ const CompleteOrder = () => {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL3}/complete`,
+        `${import.meta.env.VITE_BACKEND_URL}/complete`,
         {
           method: "POST",
           headers: {
@@ -128,7 +128,7 @@ const CompleteOrder = () => {
   const updatePaymentStatus = async (status, transactionId) => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL2}/payment/update`,
+        `${import.meta.env.VITE_BACKEND_URL}/payment/update`,
         {
           method: "PUT",
           headers: {
