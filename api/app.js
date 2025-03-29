@@ -10,6 +10,7 @@ import chatRoute from "./routes/chat.route.js";
 import messageRoute from "./routes/message.route.js";
 import paymentRoute from "./routes/payment.route.js";
 import completeRoute from "./routes/complete.route.js";
+import callbackRoute from "./routes/callback.route.js";
 // import { payment } from "./controllers/payment.controller.js";
 
 // import { confirmOrder } from "../controllers/complete.controller.js";
@@ -59,6 +60,8 @@ app.use("/api/messages", messageRoute);
 app.use("/api/bookings", bookingRoute);
 app.use("/api/payment", paymentRoute);
 app.use("/api/complete", completeRoute);
+
+app.use("/api/callback", callbackRoute);
 
 app.listen(3000, () => {
   console.log("Server is running!");
