@@ -22,7 +22,7 @@ enum BookingStatus {
 enum PaymentStatus {
   pending
   completed
-  failed
+  cancelled
 }
 
 enum PaymentMethod {

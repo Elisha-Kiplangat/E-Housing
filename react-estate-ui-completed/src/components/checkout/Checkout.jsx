@@ -118,12 +118,14 @@ const Checkout = () => {
 
     try {
       const paymentResponse = await axios.post(
-        import.meta.env.VITE_BACKEND_URL + "/payment",
+        import.meta.env.VITE_BACKEND_URL3 + "/payment",
         {
           phone: formattedPhone,
           amount: amountToPay,
         }
       );
+      // const url = import.meta.env.VITE_BACKEND_URL3;
+      // console.log(url);
 
       if (paymentResponse.data && paymentResponse.data.CheckoutRequestID) {
         setMessage("Payment request sent. Check your phone.");
@@ -140,7 +142,7 @@ const Checkout = () => {
         // Redirect to complete order page with correct checkoutRequestId
         setTimeout(() => {
           navigate("/completeOrder", {
-            state: { checkoutId: checkoutRequestId, bookingId },
+            state: { checkoutId: checkoutRequestId, bookingId, amountToPay, phone },
           });
         }, 3000);
       } else {
