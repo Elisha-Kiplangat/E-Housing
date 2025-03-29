@@ -10,6 +10,21 @@
     background-color: #141414;
     color: #fff;
 
+    .loadingContainer {
+      background-color: #141414;
+      box-shadow: 0px 0px 15px -10px rgba(255, 255, 255, 0.2);
+      
+      p {
+        color: #bbb;
+      }
+    }
+    
+    .errorContainer {
+      background-color: rgba(244, 67, 54, 0.05);
+      border-color: rgba(244, 67, 54, 0.1);
+      color: #ff6b6b;
+    }
+
     .datatableTitle {
       background-color: #141414;
       // color: #fff;
@@ -74,6 +89,35 @@
       }
     }
   }
+
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.3);
+    
+    p {
+      margin-top: 16px;
+      color: #666;
+      font-size: 1rem;
+    }
+  }
+  
+  .errorContainer {
+    padding: 20px;
+    margin: 20px 0;
+    background-color: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.2);
+    border-radius: 8px;
+    color: #d32f2f;
+    font-size: 0.95rem;
+  }
+
 
   .tableWrapper {
     overflow-x: auto;

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./singleHouse.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
@@ -7,6 +7,8 @@ import Map from "../../components/map/Map";
 import useFetch from "../../hooks/useFetch";
 import apiRequest from "../../lib/apiRequest";
 import Cookies from "js-cookie";
+import { CircularProgress } from "@mui/material";
+import { DarkModeContext } from "../../context/darkModeContext";
 
 const SingleHouse = () => {
   const { Id } = useParams();
@@ -15,6 +17,7 @@ const SingleHouse = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedData, setEditedData] = useState({});
   const [saving, setSaving] = useState(false);
+  const { darkMode } = useContext(DarkModeContext);
 
   useEffect(() => {
     if (data) {
@@ -93,19 +96,22 @@ const SingleHouse = () => {
   };
 
   return (
-    <div className="singleHouse">
+    <div className={`singleHouse ${darkMode ? "dark" : "light"}`}>
       <Sidebar />
-      <div className="singleHouseContainer">
+      <div className={`singleHouseContainer ${darkMode ? "dark" : "light"}`}>
         <Navbar />
 
         {loading ? (
-          <p className="loading">Loading house details...</p>
+          <div className={`loadingContainer ${darkMode ? "dark" : "light"}`}>
+                      <CircularProgress />
+                      <p className="loading">Loading house details...</p>
+                    </div>
         ) : error ? (
           <p className="error">Error fetching data</p>
         ) : house ? (
-          <div className="houseContainer">
-            <div className="details">
-              <div className="imageContainer">
+          <div className={`houseContainer ${darkMode ? "dark" : "light"}`}>
+          <div className={`details ${darkMode ? "dark" : "light"}`}>
+           <div className="imageContainer">
                 <img src={house.images?.[0] || "/default-house.jpg"} alt="House" />
               </div>
 
@@ -147,8 +153,8 @@ const SingleHouse = () => {
                   </div>
                 </div>
 
-                <div className="bottomContainer">
-                  <div className="leftSection">
+                <div className={`bottomContainer ${darkMode ? "dark" : "light"}`}>
+                <div className="leftSection">
                   {isEditing ? (
                     <textarea
                       name="postDetail.desc"
@@ -170,8 +176,8 @@ const SingleHouse = () => {
               </div>
             </div>
 
-            <div className="features">
-              <div className="wrapper">
+            <div className={`features ${darkMode ? "dark" : "light"}`}>
+           <div className={`wrapper ${darkMode ? "dark" : "light"}`}>
                 <div className="user">
                   <img src={house.user?.avatar || "/default-user.jpg"} alt="Owner" />
                   <span>{house.user?.username || "Unknown User"}</span>
@@ -197,8 +203,8 @@ const SingleHouse = () => {
                       )}
                     </div>
                   </div>
-                  <div className="feature">
-                    <div className="featureText">
+                  <div className={`feature ${darkMode ? "dark" : "light"}`}>
+                    <div className={`featureText ${darkMode ? "dark" : "light"}`}>
                       <span>Pet Policy</span>
                       {isEditing ? (
                         <select name="postDetail.pet" value={editedData.postDetail?.pet} onChange={handleChange}>
@@ -214,8 +220,8 @@ const SingleHouse = () => {
                       )}
                     </div>
                   </div>
-                  <div className="feature">
-                    <div className="featureText">
+                  <div className={`feature ${darkMode ? "dark" : "light"}`}>
+                    <div className={`featureText${darkMode ? "dark" : "light"}`}>
                       <span>Income Policy</span>
                       {isEditing ? (
                         <input type="text" name="postDetail.income" value={editedData.postDetail?.income} onChange={handleChange} />
@@ -262,7 +268,7 @@ const SingleHouse = () => {
               </div>
 
               <p className="title">Location</p>
-              <div className="mapContainer">
+              <div className={`mapContainer${darkMode ? "dark" : "light"}`}>
                 <div className="coordinates">
                   {isEditing ? (
                     <>
@@ -271,7 +277,7 @@ const SingleHouse = () => {
                     </>
                   ) : (
                     <>
-                      <span>Latitude: {house.latitude ?? "N/A"}</span>
+                      <span style={{ marginRight: '40px' }}>Latitude: {house.latitude ?? "N/A"}</span>
                       <span>Longitude: {house.longitude ?? "N/A"}</span>
                     </>
                   )}
@@ -281,8 +287,8 @@ const SingleHouse = () => {
             </div>
           </div>
         ) : (
-          <p className="error">No house found</p>
-        )}
+          <p className={`error ${darkMode ? "dark" : "light"}`}>No house found</p>
+      )}
       </div>
     </div>
   );

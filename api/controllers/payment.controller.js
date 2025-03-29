@@ -181,3 +181,290 @@ export const updatePaymentStatus = async (req, res) => {
       .json({ success: false, error: "Failed to update payment." });
   }
 };
+export const getPayments = async (req, res) => {
+  try {
+    const payments = await prisma.payment.findMany({
+      orderBy: {
+        createdAt: 'desc'
+      },
+      include: {
+        booking: {
+          include: {
+            user: {
+              select: {
+                username: true,
+                email: true
+              }
+            }
+          }
+        }
+      }
+    });
+    
+    res.status(200).json(payments);
+  } catch (err) {
+    console.error("Error getting payment list:", err);
+    res.status(500).json({ message: "Failed to get payment list" });
+  }
+};
+
+export const totalPayments = async (req, res) => {
+  try {
+    const total = await prisma.payment.aggregate({
+      _sum: {
+        amount: true
+      }
+    });
+    
+    res.json(
+      total._sum.amount || 0 
+    );
+  } catch (error) {
+    console.error("Error getting total payments:", error);
+    res.status(500).json({ error: "Failed to get total payments" });
+  }
+};
+
+export const getPaymentStats = async (req, res) => {
+  try {
+    // Get total payment amount
+    const totalResult = await prisma.payment.aggregate({
+      _sum: {
+        amount: true
+      }
+    });
+    const totalAmount = totalResult._sum.amount || 0;
+    
+    // Get total from previous month
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const previousMonthTotal = await prisma.payment.aggregate({
+      _sum: {
+        amount: true
+      },
+      where: {
+        createdAt: {
+          lt: lastMonth
+        }
+      }
+    });
+    const previousAmount = previousMonthTotal._sum.amount || 0;
+    
+    // Get amount from current month
+    const currentMonthTotal = await prisma.payment.aggregate({
+      _sum: {
+        amount: true
+      },
+      where: {
+        createdAt: {
+          gte: lastMonth
+        }
+      }
+    });
+    const currentMonthAmount = currentMonthTotal._sum.amount || 0;
+    
+    // Get weekly data
+    const lastWeek = new Date();
+    lastWeek.setDate(lastWeek.getDate() - 7);
+    
+    const weeklyTotal = await prisma.payment.aggregate({
+      _sum: {
+        amount: true
+      },
+      where: {
+        createdAt: {
+          gte: lastWeek
+        }
+      }
+    });
+    const weeklyAmount = weeklyTotal._sum.amount || 0;
+    
+    // Calculate previous week
+    const twoWeeksAgo = new Date();
+    twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+    
+    const previousWeekTotal = await prisma.payment.aggregate({
+      _sum: {
+        amount: true
+      },
+      where: {
+        createdAt: {
+          gte: twoWeeksAgo,
+          lt: lastWeek
+        }
+      }
+    });
+    const previousWeekAmount = previousWeekTotal._sum.amount || 0;
+    
+    // Calculate percentage changes
+    let percentChange = 0;
+    if (previousAmount > 0) {
+      percentChange = Math.round((currentMonthAmount / previousAmount) * 100) - 100;
+    } else if (currentMonthAmount > 0) {
+      percentChange = 100;
+    }
+    
+    let weeklyChange = 0;
+    if (previousWeekAmount > 0) {
+      weeklyChange = Math.round((weeklyAmount / previousWeekAmount) * 100) - 100;
+    } else if (weeklyAmount > 0) {
+      weeklyChange = 100;
+    }
+    
+    res.status(200).json({
+      totalAmount: totalAmount,
+      newAmount: currentMonthAmount,
+      percentChange: percentChange,
+      weeklyAmount: weeklyAmount,
+      weeklyChange: weeklyChange
+    });
+  } catch (err) {
+    console.error("Error in getPaymentStats:", err);
+    res.status(500).json({ message: "Failed to get payment statistics!" });
+  }
+};
+
+export const getMonthlyPaymentStats = async (req, res) => {
+  try {
+    // Get current year
+    const currentYear = new Date().getFullYear();
+    
+    // Get all payments for the current year
+    const payments = await prisma.payment.findMany({
+      where: {
+        createdAt: {
+          gte: new Date(`${currentYear}-01-01`),
+          lt: new Date(`${currentYear+1}-01-01`)
+        }
+      },
+      select: {
+        amount: true,
+        createdAt: true
+      }
+    });
+    
+    // Group payments by month
+    const monthlyStats = {};
+    
+    // Initialize all months with 0
+    for (let i = 1; i <= 12; i++) {
+      monthlyStats[i] = 0;
+    }
+    
+    // Sum up payments for each month
+    payments.forEach(payment => {
+      const month = payment.createdAt.getMonth() + 1; // JavaScript months are 0-indexed
+      monthlyStats[month] += payment.amount;
+    });
+    
+    res.status(200).json(monthlyStats);
+  } catch (err) {
+    console.error("Error getting monthly payment stats:", err);
+    res.status(500).json({ message: "Failed to get monthly payment statistics" });
+  }
+};
+
+export const mpesaCallback = async (req, res) => {
+  try {
+    console.log("🔹 M-Pesa Callback received:", JSON.stringify(req.body, null, 2));
+    
+    // Always respond with 200 OK immediately (M-Pesa expects this)
+    // This prevents M-Pesa from retrying the callback
+    res.status(200).json({ ResultCode: 0, ResultDesc: "Success" });
+    
+    // Continue processing asynchronously
+    processCallback(req.body).catch(error => {
+      console.error("❌ Error processing M-Pesa callback:", error);
+    });
+    
+  } catch (error) {
+    console.error("❌ M-Pesa callback error:", error);
+    // Still return 200 to prevent M-Pesa retries
+    res.status(200).json({ ResultCode: 0, ResultDesc: "Success" });
+  }
+};
+
+// Process the callback data asynchronously
+const processCallback = async (callbackData) => {
+  try {
+    // Extract data from callback
+    const { Body } = callbackData;
+    
+    if (!Body || !Body.stkCallback) {
+      console.error("❌ Invalid callback format - missing Body.stkCallback");
+      return;
+    }
+    
+    const { 
+      MerchantRequestID, 
+      CheckoutRequestID, 
+      ResultCode, 
+      ResultDesc,
+      CallbackMetadata 
+    } = Body.stkCallback;
+    
+    console.log(`🔹 Processing callback for CheckoutRequestID: ${CheckoutRequestID}`);
+    console.log(`🔹 ResultCode: ${ResultCode}, ResultDesc: ${ResultDesc}`);
+    
+    // Find the booking with this checkout ID
+    const booking = await prisma.booking.findFirst({
+      where: { checkoutId: CheckoutRequestID }
+    });
+    
+    if (!booking) {
+      console.error(`❌ No booking found with checkoutId: ${CheckoutRequestID}`);
+      return;
+    }
+    
+    console.log(`🔹 Found booking: ${booking.id}`);
+    
+    // If payment failed
+    if (ResultCode !== 0) {
+      console.log(`❌ Payment failed: ${ResultDesc}`);
+      
+      // Update booking status to CANCELED
+      await prisma.booking.update({
+        where: { id: booking.id },
+        data: { status: "CANCELED" }
+      });
+      
+      console.log(`🔹 Updated booking ${booking.id} status to CANCELED`);
+      return;
+    }
+    
+    // Extract payment details from CallbackMetadata
+    const paymentDetails = extractPaymentDetails(CallbackMetadata);
+    console.log("🔹 Extracted payment details:", paymentDetails);
+    
+    if (!paymentDetails) {
+      console.error("❌ Could not extract payment details from callback");
+      return;
+    }
+    
+    // Create payment record
+    const payment = await prisma.payment.create({
+      data: {
+        amount: paymentDetails.amount,
+        method: "M-Pesa",
+        status: "COMPLETED",
+        transactionId: paymentDetails.mpesaReceiptNumber,
+        phoneNumber: paymentDetails.phoneNumber?.toString(),
+        booking: { connect: { id: booking.id } }
+      }
+    });
+    
+    console.log(`✅ Payment created successfully: ${payment.id}`);
+    
+    // Update booking status to CONFIRMED
+    await prisma.booking.update({
+      where: { id: booking.id },
+      data: { status: "CONFIRMED" }
+    });
+    
+    console.log(`✅ Updated booking ${booking.id} status to CONFIRMED`);
+    
+  } catch (error) {
+    console.error("❌ Error processing callback:", error);
+  }
+};

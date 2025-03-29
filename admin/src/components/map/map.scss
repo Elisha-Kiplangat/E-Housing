@@ -7,6 +7,17 @@
       width: 100%;
       height: 100%;
       border-radius: 10px;
+
+      .popupContainer{
+        display: flex;
+        gap: 20px;
+      
+        .textContainer{
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+      }
     }
   }
   

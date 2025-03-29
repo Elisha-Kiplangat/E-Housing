@@ -244,3 +244,52 @@ export const deletePostDetail = async (req, res) => {
     return res.status(500).json({ message: "Failed to delete post and post details" });
   }
 };
+
+export const countPosts = async (req, res) => {
+  try {
+    const count = await prisma.post.count();
+    return res.status(200).json(count);
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: "Failed to count posts" });
+  }
+}
+
+export const getPostStats = async (req, res) => {
+  try {
+    // Get current count of all posts
+    const currentCount = await prisma.post.count();
+    
+    // Get count from previous period (e.g., last month)
+    const lastMonth = new Date();
+    lastMonth.setMonth(lastMonth.getMonth() - 1);
+    
+    const previousMonthPosts = await prisma.post.count({
+      where: {
+        createdAt: {
+          lt: lastMonth
+        }
+      }
+    });
+    
+    // Calculate new posts in the last month
+    const newPosts = currentCount - previousMonthPosts;
+    
+    // Calculate percentage change
+    let percentChange = 0;
+    if (previousMonthPosts > 0) {
+      percentChange = Math.round((newPosts / previousMonthPosts) * 100);
+    } else if (currentCount > 0) {
+      percentChange = 100; // If previous count was 0, and now we have posts, that's a 100% increase
+    }
+    
+    res.status(200).json({
+      count: currentCount,
+      newPosts: newPosts,
+      percentChange: percentChange
+    });
+  } catch (err) {
+    console.error("Error in getPostStats:", err);
+    res.status(500).json({ message: "Failed to get post statistics!" });
+  }
+};

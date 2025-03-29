@@ -142,7 +142,12 @@ const Checkout = () => {
         // Redirect to complete order page with correct checkoutRequestId
         setTimeout(() => {
           navigate("/completeOrder", {
-            state: { checkoutId: checkoutRequestId, bookingId, amountToPay, phone },
+            state: {
+              checkoutId: checkoutRequestId,
+              bookingId,
+              amountToPay,
+              phone,
+            },
           });
         }, 3000);
       } else {

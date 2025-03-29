@@ -41,7 +41,7 @@ export const SavedPostsProvider = ({ children }) => {
     if (savedPosts.has(postId)) {
       newSavedPosts.delete(postId);
       try {
-        await apiRequest.delete(`/users/save/${postId}`);
+        await apiRequest.delete(`/users/unsave/${postId}`);
       } catch (err) {
         console.error("Failed to remove saved post:", err);
         setSavedPosts(savedPosts); // Revert state on error
