@@ -149,9 +149,51 @@ const CompleteOrder = () => {
 
       console.log(`✅ Payment updated to: ${status}`);
       setMessage(`✅ Payment ${status}!`);
+
+      await updateBookingStatus(status);
     } catch (error) {
       console.error("🚨 Update Payment Error:", error);
       alert("❌ Failed to update payment status.");
+    }
+  };
+
+  const updateBookingStatus = async (paymentStatus) => {
+    // Map payment status to booking status
+    let bookingStatus;
+    switch (paymentStatus) {
+      case "completed":
+        bookingStatus = "completed";
+        break;
+      case "cancelled":
+        bookingStatus = "cancelled";
+        break;
+      default:
+        bookingStatus = "pending"; // For pending payments
+    }
+  
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/bookings/update-status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            bookingId,
+            status: bookingStatus,
+          }),
+        }
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update booking status.");
+      }
+  
+      console.log(`✅ Booking updated to: ${bookingStatus}`);
+    } catch (error) {
+      console.error("🚨 Update Booking Error:", error);
+      alert("❌ Failed to update booking status.");
     }
   };
 

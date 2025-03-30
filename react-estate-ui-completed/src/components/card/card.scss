@@ -26,6 +26,41 @@
     justify-content: space-between;
     gap: 10px;
 
+    // ...existing code...
+
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.statusBadge {
+  padding: 5px 10px;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+  flex-shrink: 0;
+  
+  &.pending {
+    background-color: #ffa500;
+  }
+  
+  &.completed {
+    background-color: #4caf50;
+  }
+  
+  &.rejected {
+    background-color: #f44336;
+  }
+  
+  &.cancelled {
+    background-color: #9e9e9e;
+  }
+}
+
     img {
       width: 16px;
       height: 16px;

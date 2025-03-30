@@ -61,15 +61,24 @@ function ProfilePage() {
               errorElement={<p>Error loading posts!</p>}
             >
               {(postResponse) => {
-                console.log("Resolved postResponse:", postResponse);
-                const posts =
-                  currentUser.role === "admin"
-                    ? postResponse?.data?.userPosts || []
-                    : postResponse?.data?.bookings.map((booking) => booking.post) || [];
-
-                    console.log(posts)
-                return <List posts={posts} />;
-              }}
+  try {
+    console.log("Resolved postResponse:", postResponse);
+    const posts =
+      currentUser.role === "admin"
+        ? postResponse?.data?.userPosts || []
+        : postResponse?.data?.bookings
+            .filter(booking => booking.post)
+            .map((booking) => ({
+              ...booking.post,
+              status: booking.status
+            })) || [];
+    console.log(posts);
+    return <List posts={posts} />;
+  } catch (error) {
+    console.error("Error rendering posts:", error);
+    return <p>Error displaying posts: {error.message}</p>;
+  }
+}}
             </Await>
           </Suspense>
 

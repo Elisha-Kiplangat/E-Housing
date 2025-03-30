@@ -1,10 +1,13 @@
 import { Link } from "react-router-dom";
 import "./card.scss";
 import { useSavedPosts } from "../../context/SavedPostsContext";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
 function Card({ item }) {
 
   const { savedPosts, toggleSave } = useSavedPosts();
+  const currentUser = useContext(AuthContext);
   // const isSaved = savedPosts.has(item.id);
 
   return (
@@ -13,9 +16,16 @@ function Card({ item }) {
         <img src={item.images[0]} alt="" />
       </Link>
       <div className="textContainer">
-        <h2 className="title">
-          <Link to={`/${item.id}`}>{item.title}</Link>
-        </h2>
+      <div className="titleRow">
+          <h2 className="title">
+            <Link to={`/${item.id}`}>{item.title}</Link>
+          </h2>
+          {currentUser?.role !== "admin" && item.status && (
+  <div className={`statusBadge ${item.status.toLowerCase()}`}>
+    {item.status}
+  </div>
+)}
+        </div>
         <p className="address">
           <img src="/pin.png" alt="" />
           <span>{item.address}</span>
