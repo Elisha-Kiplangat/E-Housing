@@ -56,6 +56,83 @@ export const addBooking = async (req, res) => {
   }
 };
 
+// ...existing code...
+
+export const updateBooking = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const booking = await prisma.booking.update({
+      where: { id },
+      data: {
+        status,
+      },
+    });
+    res.status(200).json(booking);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to update booking!" });
+  }
+};
+
+// New controller method specifically for updating booking status
+export const updateBookingStatus = async (req, res) => {
+  const { bookingId, status } = req.body;
+
+  // Validate required fields
+  if (!bookingId || !status) {
+    return res.status(400).json({
+      success: false,
+      message: "Booking ID and status are required",
+    });
+  }
+
+  // Validate status value
+  const validStatuses = ["pending", "completed", "failed", "cancelled", "approved", "rejected"];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({
+      success: false,
+      message: `Invalid status value. Must be one of: ${validStatuses.join(", ")}`,
+    });
+  }
+
+  try {
+    // Make sure bookingId is a valid ObjectId
+    if (!bookingId.match(/^[0-9a-fA-F]{24}$/)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid booking ID format",
+      });
+    }
+
+    const booking = await prisma.booking.update({
+      where: { id: bookingId },
+      data: { status },
+    });
+    
+    if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: "Booking not found",
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: `Booking status updated to ${status}`,
+      data: booking
+    });
+  } catch (err) {
+    console.error("Error updating booking status:", err);
+    res.status(500).json({ 
+      success: false,
+      message: "Failed to update booking status!",
+      error: err.message
+    });
+  }
+};
+
 export const bookingCount = async (req, res) => {
   try {
 //     const count = await prisma.booking.count();

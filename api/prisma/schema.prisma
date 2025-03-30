@@ -16,7 +16,7 @@ datasource db {
 enum BookingStatus {
   pending
   completed
-  failed
+  cancelled
 }
 
 enum PaymentStatus {
