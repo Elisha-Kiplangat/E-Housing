@@ -7,7 +7,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import EventIcon from "@mui/icons-material/Event";
 import StoreIcon from "@mui/icons-material/Store";
 // import InsertChartIcon from "@mui/icons-material/InsertChart";
-import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
+// import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 // import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 // import SettingsSystemDaydreamOutlinedIcon from "@mui/icons-material/SettingsSystemDaydreamOutlined";
@@ -140,10 +140,10 @@ const Sidebar = () => {
         ></div> */}
         <ul>
           <p className="title">USER</p>
-        <li>
+        {/* <li>
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
-          </li>
+          </li> */}
           <Link to="/profile" style={{ textDecoration: "none" }}>
           <li>
             <AccountCircleOutlinedIcon className="icon" />
