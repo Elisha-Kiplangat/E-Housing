@@ -181,27 +181,50 @@ export const updatePaymentStatus = async (req, res) => {
       .json({ success: false, error: "Failed to update payment." });
   }
 };
+
 export const getPayments = async (req, res) => {
   try {
+    // Get all payments first
     const payments = await prisma.payment.findMany({
       orderBy: {
         createdAt: 'desc'
-      },
-      include: {
-        booking: {
-          include: {
-            user: {
-              select: {
-                username: true,
-                email: true
-              }
-            }
-          }
-        }
       }
     });
     
-    res.status(200).json(payments);
+    // Then enrich with booking data where available
+    const enrichedPayments = await Promise.all(
+      payments.map(async (payment) => {
+        // Only attempt to fetch booking data if bookingId exists
+        if (payment.bookingId) {
+          try {
+            const booking = await prisma.booking.findUnique({
+              where: { id: payment.bookingId },
+              include: {
+                user: {
+                  select: {
+                    username: true,
+                    email: true
+                  }
+                }
+              }
+            });
+            
+            return {
+              ...payment,
+              booking
+            };
+          } catch (err) {
+            // Return payment without booking data if there's an error
+            return payment;
+          }
+        }
+        
+        // Return payment as is if no bookingId
+        return payment;
+      })
+    );
+    
+    res.status(200).json(enrichedPayments);
   } catch (err) {
     console.error("Error getting payment list:", err);
     res.status(500).json({ message: "Failed to get payment list" });

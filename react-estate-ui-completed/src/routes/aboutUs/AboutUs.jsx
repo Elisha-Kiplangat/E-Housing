@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./AboutUs.scss";
-// Replace with your image path
 
 const AboutUs = () => {
+  // Add intersection observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.about-us__content section').forEach(section => {
+      observer.observe(section);
+    });
+    
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="about-us">
       <div className="about-us__header">
@@ -13,7 +29,6 @@ const AboutUs = () => {
         </p>
       </div>
 
-      {/* Introduction Section */}
       <section className="about-us__introduction">
         <div className="introduction-left">
           <img
@@ -93,7 +108,6 @@ const AboutUs = () => {
           </ul>
         </section>
 
-        {/* Milestones Section */}
         <section className="about-us__milestones">
           <h2>Milestones</h2>
           <div className="milestones-grid">
