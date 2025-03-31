@@ -57,7 +57,7 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3000/api",
+  "proxy": "https://e-housing-e4yj.onrender.com/api",
   "devDependencies": {
     "react-scripts": "^5.0.1",
     "webpack": "^5.98.0"
