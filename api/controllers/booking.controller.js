@@ -28,6 +28,45 @@ export const getBookings = async (req, res) => {
   }
 };
 
+// get one booking by id
+export const getBooking = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Get booking with post and user data
+    const booking = await prisma.booking.findUnique({
+      where: { id },
+      include: {
+        post: true,
+        user: true,
+      },
+    });
+
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found!" });
+    }
+
+    // Get payment data using checkoutId
+    let payment = null;
+    if (booking.checkoutId) {
+      payment = await prisma.payment.findUnique({
+        where: { transactionId: booking.checkoutId },
+      });
+    }
+
+    // Combine booking and payment data
+    const responseData = {
+      ...booking,
+      payment: payment || null
+    };
+
+    res.status(200).json(responseData);
+  } catch (err) {
+    console.error("Error fetching booking details:", err);
+    res.status(500).json({ message: "Failed to get booking details!" });
+  }
+};
+
 export const addBooking = async (req, res) => {
   const { startDate, endDate, status, type, postId, userId, checkoutId } =
     req.body;
@@ -187,6 +226,69 @@ export const bookingCount = async (req, res) => {
       } catch (err) {
         console.error("Error in getBookingStats:", err);
         res.status(500).json({ message: "Failed to get booking statistics!" });
+      }
+    };
+
+    export const deleteBooking = async (req, res) => {
+      const { id } = req.params;
+    
+      try {
+        // Check if booking exists
+        const booking = await prisma.booking.findUnique({
+          where: { id },
+          include: { payments: true } // Include all associated payments
+        });
+    
+        if (!booking) {
+          return res.status(404).json({ message: "Booking not found!" });
+        }
+    
+        // First delete all associated payments using the proper relationship
+        if (booking.payments && booking.payments.length > 0) {
+          // Delete all payments associated with this booking
+          await prisma.payment.deleteMany({
+            where: { bookingId: id }
+          });
+          console.log(`Deleted ${booking.payments.length} payment record(s) for booking ID: ${id}`);
+        }
+    
+        // Alternative lookup for payments if the booking has a checkoutId but no loaded payments
+        if (booking.checkoutId && (!booking.payments || booking.payments.length === 0)) {
+          try {
+            // Find any payment using the checkoutId
+            const payment = await prisma.payment.findUnique({
+              where: { transactionId: booking.checkoutId }
+            });
+    
+            if (payment) {
+              // Delete the payment record
+              await prisma.payment.delete({
+                where: { id: payment.id }
+              });
+              console.log(`Deleted payment record with transaction ID: ${booking.checkoutId}`);
+            }
+          } catch (paymentError) {
+            console.error("Error deleting associated payment by checkoutId:", paymentError);
+          }
+        }
+    
+        // Now delete the booking
+        const deletedBooking = await prisma.booking.delete({
+          where: { id }
+        });
+    
+        res.status(200).json({
+          success: true,
+          message: "Booking and associated payments deleted successfully",
+          data: deletedBooking
+        });
+      } catch (err) {
+        console.error("Error deleting booking:", err);
+        res.status(500).json({ 
+          success: false,
+          message: "Failed to delete booking!",
+          error: err.message
+        });
       }
     };
 

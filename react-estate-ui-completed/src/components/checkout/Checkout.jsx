@@ -14,6 +14,7 @@ const Checkout = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const isApartment = post.type === "apartment";
+  const isHostel = post.type === "hostel";
   const [amountToPay, setAmountToPay] = useState(post.price);
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -21,23 +22,45 @@ const Checkout = () => {
   const [checkoutId, setCheckoutId] = useState(null); // Store Transaction ID
 
   useEffect(() => {
-    if (!isApartment) {
-      setStartDate(null);
-      setEndDate(null);
+    if (isApartment) {
+      // For apartments, keep the dates selectable but initialize to today
+      setStartDate(new Date());
+      setEndDate(new Date());
+    } else if (isHostel) {
+      // For hostels, set both dates to the current date
+      const today = new Date();
+      setStartDate(today);
+      
+      // Set end date to the end of the semester (e.g., 4 months from now)
+      const semesterEnd = new Date(today);
+      semesterEnd.setMonth(today.getMonth() + 1);
+      setEndDate(semesterEnd);
+      
+      // For hostels, use fixed price
+      setAmountToPay(post.price);
+    } else {
+      // For other property types
+      setStartDate(new Date());
+      setEndDate(new Date());
       setAmountToPay(post.price);
     }
-  }, [isApartment, post.price]);
+  }, [isApartment, isHostel, post.price]);
 
   const calculateAmount = () => {
     if (!startDate || !endDate) return;
-    const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
-    setAmountToPay(days * post.price);
+    
+    if (isApartment) {
+      // For apartments, calculate based on days
+      const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+      setAmountToPay(days * post.price);
+    } else {
+      // For hostels and other types, use fixed price
+      setAmountToPay(post.price);
+    }
   };
 
   useEffect(() => {
-    if (isApartment) {
-      calculateAmount();
-    }
+    calculateAmount();
   }, [startDate, endDate, post.price]);
 
   const saveBookingDetails = async (checkoutId) => {
@@ -70,15 +93,6 @@ const Checkout = () => {
         userId,
         checkoutId, // Save checkoutId in the Booking model
       };
-
-      // const token = Cookies.get("token");
-      // console.log(token);
-
-      // if (!token) {
-      //   setMessage("Authorization token not found. Please log in.");
-      //   setMessageType("error");
-      //   return;
-      // }
 
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/bookings",
@@ -123,8 +137,6 @@ const Checkout = () => {
           amount: amountToPay,
         }
       );
-      // const url = import.meta.env.VITE_BACKEND_URL3;
-      // console.log(url);
 
       if (paymentResponse.data && paymentResponse.data.CheckoutRequestID) {
         setMessage("Payment request sent. Check your phone.");
@@ -188,7 +200,7 @@ const Checkout = () => {
           />
         </div>
 
-        {isApartment && (
+        {isApartment ? (
           <div className="date-inputs">
             <label>Start Date:</label>
             <DatePicker
@@ -207,7 +219,16 @@ const Checkout = () => {
               required
             />
           </div>
-        )}
+        ) : isHostel ? (
+          <div className="date-inputs">
+            {/* <p className="booking-info">
+              <b>Booking Period:</b> From {startDate?.toLocaleDateString()} to {endDate?.toLocaleDateString()}
+            </p> */}
+            <p className="booking-note">
+              Hostel bookings are for deposit and first month's rent only
+            </p>
+          </div>
+        ) : null}
 
         <p className="amount">
           <b>Total Amount:</b> KSh. {amountToPay}
@@ -219,7 +240,6 @@ const Checkout = () => {
           </button>
           <button
             className="confirm-button"
-            disabled={isApartment && (!startDate || !endDate)}
             onClick={handlePayment}
           >
             Confirm Booking

@@ -6,7 +6,9 @@ import {
   getAllBookings,
   getBookingStats,
   updateBooking,
-  updateBookingStatus
+  updateBookingStatus,
+  getBooking,
+  deleteBooking
 } from "../controllers/booking.controller.js";
 
 // import { getBookings, addBooking, bookingCount, getBookingStats } from "../controllers/booking.controller.js";
@@ -15,12 +17,15 @@ import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
+router.get("/count", verifyToken, bookingCount);
 router.get("/", verifyToken, getAllBookings);
 router.get("/user", verifyToken, getBookings);
-router.post("/", addBooking);
+router.get("/:id", verifyToken, getBooking );
 // router.put("/:id", updateBooking);
-router.get("/count", verifyToken, bookingCount);
 router.get("/stats", verifyToken, getBookingStats);
+router.post("/", addBooking);
+
+router.delete("/:id", verifyToken, deleteBooking)
 
 // router.get("/", verifyToken, getBookings);
 

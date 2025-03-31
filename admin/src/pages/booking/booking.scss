@@ -1,0 +1,266 @@
+.booking {
+    display: flex;
+    width: 100%;
+  
+    .bookingContainer {
+      flex: 6;
+      
+      .loadingContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 300px;
+        
+        &.dark {
+          color: white;
+        }
+        
+        &.light {
+          color: #333;
+        }
+        
+        .loading {
+          margin-top: 20px;
+          font-size: 16px;
+        }
+      }
+      
+      .error {
+        color: red;
+        margin: 20px;
+        font-size: 16px;
+        text-align: center;
+      }
+      
+      .bookingContent {
+        padding: 20px;
+        
+        .top {
+          display: flex;
+          gap: 20px;
+          
+          @media screen and (max-width: 768px) {
+            flex-direction: column;
+          }
+          
+          .left {
+            flex: 2;
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+            padding: 20px;
+            position: relative;
+            border-radius: 8px;
+            
+            .editButton {
+              position: absolute;
+              top: 0;
+              right: 0;
+              padding: 8px 12px;
+              font-size: 14px;
+              color: #7451f8;
+              background-color: #7551f818;
+              cursor: pointer;
+              border-radius: 0 8px 0 8px;
+              
+              &:hover {
+                background-color: #7551f830;
+              }
+              
+              &:disabled {
+                cursor: not-allowed;
+                opacity: 0.7;
+              }
+            }
+            
+            .title {
+              font-size: 20px;
+              color: lightgray;
+              margin-bottom: 20px;
+            }
+            
+            .item {
+              display: flex;
+              gap: 20px;
+              
+              @media screen and (max-width: 480px) {
+                flex-direction: column;
+              }
+              
+              .itemImg {
+                width: 120px;
+                height: 120px;
+                border-radius: 8px;
+                object-fit: cover;
+              }
+              
+              .details {
+                .itemTitle {
+                  margin-bottom: 15px;
+                  color: #555;
+                }
+                
+                .detailItem {
+                  margin-bottom: 15px;
+                  font-size: 14px;
+                  
+                  .itemKey {
+                    font-weight: bold;
+                    color: gray;
+                    margin-right: 8px;
+                  }
+                  
+                  .itemValue {
+                    font-weight: 300;
+                    
+                    &.status {
+                      padding: 3px 8px;
+                      border-radius: 4px;
+                      font-weight: 500;
+                      
+                      &.pending {
+                        background-color: #fff6dd;
+                        color: #ffa319;
+                      }
+                      
+                      &.approved {
+                        background-color: #e5f7ed;
+                        color: #00b74a;
+                      }
+                      
+                      &.completed {
+                        background-color: #e8f4ff;
+                        color: #1976d2;
+                      }
+                      
+                      &.cancelled {
+                        background-color: #f5f5f5;
+                        color: #757575;
+                      }
+                      
+                      &.rejected {
+                        background-color: #ffebee;
+                        color: #f44336;
+                      }
+                    }
+                  }
+                  
+                  .statusSelect {
+                    padding: 6px 10px;
+                    border-radius: 4px;
+                    border: 1px solid #ddd;
+                    font-size: 14px;
+                    width: 150px;
+                  }
+                }
+              }
+            }
+          }
+          
+          .right {
+            flex: 1;
+            box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+            padding: 20px;
+            border-radius: 8px;
+            
+            .paymentInfo {
+              h2 {
+                font-size: 18px;
+                color: lightgray;
+                margin-bottom: 20px;
+              }
+              
+              .paymentDetails {
+                .detailItem {
+                  margin-bottom: 15px;
+                  font-size: 14px;
+                  
+                  .itemKey {
+                    font-weight: bold;
+                    color: gray;
+                    margin-right: 8px;
+                  }
+                  
+                  .itemValue {
+                    font-weight: 300;
+                    
+                    &.status {
+                      padding: 3px 8px;
+                      border-radius: 4px;
+                      font-weight: 500;
+                      
+                      &.completed {
+                        background-color: #e5f7ed;
+                        color: #00b74a;
+                      }
+                      
+                      &.pending {
+                        background-color: #fff6dd;
+                        color: #ffa319;
+                      }
+                      
+                      &.cancelled {
+                        background-color: #ffebee;
+                        color: #f44336;
+                      }
+                    }
+                  }
+                }
+              }
+              
+              .noPayment {
+                color: #999;
+                font-style: italic;
+              }
+            }
+          }
+        }
+        
+        .bottom {
+          box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+          padding: 20px;
+          margin-top: 20px;
+          border-radius: 8px;
+          
+          .title {
+            font-size: 20px;
+            color: lightgray;
+            margin-bottom: 20px;
+          }
+          
+          .propertyDetails {
+            .property-info-grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+              gap: 15px;
+              margin-bottom: 20px;
+              
+              .property-info-item {
+                .label {
+                  font-weight: bold;
+                  color: gray;
+                  margin-right: 8px;
+                }
+                
+                .value {
+                  font-weight: 400;
+                }
+              }
+            }
+            
+            .property-description {
+              h3 {
+                font-size: 16px;
+                margin-bottom: 10px;
+                color: #666;
+              }
+              
+              p {
+                color: #666;
+                line-height: 1.6;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
