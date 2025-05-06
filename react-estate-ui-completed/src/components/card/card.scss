@@ -17,11 +17,14 @@
   
   @include sm {
     border-radius: 8px;
+    max-width: 320px; // Control maximum width on small screens
+    margin-left: auto; // Center the card if it's not in a grid
+    margin-right: auto;
   }
 
   .imageContainer {
     width: 100%;
-    height: 200px; // Fixed height for consistent appearance
+    height: 200px;
     overflow: hidden;
     position: relative;
     display: block;
@@ -41,13 +44,13 @@
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover; // Ensures the image covers the container nicely
+      object-fit: cover;
       display: block;
       transition: transform 0.3s ease;
     }
     
     &:hover img {
-      transform: scale(1.05); // Subtle zoom effect on hover
+      transform: scale(1.05);
     }
     
     &::after {
@@ -58,7 +61,7 @@
       right: 0;
       height: 40px;
       background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
-      pointer-events: none; // Ensures clicks pass through
+      pointer-events: none;
     }
   }
 
@@ -67,7 +70,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
-    flex: 1; // Takes remaining space
+    flex: 1;
     
     @include md {
       padding: 12px;
@@ -89,7 +92,7 @@
         font-size: 18px;
         font-weight: 600;
         margin: 0;
-        flex: 1; // Allow title to take available space
+        flex: 1;
         
         @include md {
           font-size: 16px;
@@ -103,7 +106,7 @@
           color: #333;
           text-decoration: none;
           display: -webkit-box;
-          -webkit-line-clamp: 2; // Limit to 2 lines
+          -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -267,7 +270,7 @@
   }
 }
 
-// Optional: Add a grid container for multiple cards
+// Card grid layout with centering for small screens
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -279,7 +282,40 @@
   }
   
   @include sm {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 280px)); // Changed to auto-fit with controlled sizes
+    gap: 15px;
+    justify-content: center; // Center the grid items
+    padding: 0 10px; // Add some padding on small screens
+  }
+  
+  // Extra small screens
+  @media screen and (max-width: 350px) {
+    grid-template-columns: 1fr; // Single column for very small screens
+    max-width: 280px; // Control maximum width
+    margin-left: auto; // Center the entire grid
+    margin-right: auto;
+  }
+}
+
+// For list pages that contain cards
+.listContainer, .searchResults {
+  .title {
+    text-align: center;
+    margin-bottom: 20px;
+    
+    @include sm {
+      margin-bottom: 15px;
+      font-size: 22px;
+    }
+  }
+  
+  @include sm {
+    padding: 0 5px; // Add some padding on small screens
+    
+    .filterOptions {
+      justify-content: center; // Center filter options on mobile
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
   }
 }

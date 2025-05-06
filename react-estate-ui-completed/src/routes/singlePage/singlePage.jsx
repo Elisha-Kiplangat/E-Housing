@@ -134,7 +134,7 @@ function SinglePage() {
             </div>
           </div>
 
-          <p className="title">General</p>
+          <p className="title">Amenities</p>
           <div className="listVertical">
             <div className="feature">
               <img src="/utility.png" alt="" />
@@ -150,11 +150,11 @@ function SinglePage() {
             <div className="feature">
               <img src="/pet.png" alt="" />
               <div className="featureText">
-                <span>Pet Policy</span>
+                <span>WIFI</span>
                 <p>
                   {post.postDetail.pet === "allowed"
-                    ? "Pets Allowed"
-                    : "Pets not Allowed"}
+                    ? "Available"
+                    : "Not Available"}
                 </p>
               </div>
             </div>
