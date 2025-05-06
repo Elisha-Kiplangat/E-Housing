@@ -2,75 +2,220 @@
 
 .featuredHome {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; // Changed to space-between for better alignment
   align-items: center;
-  gap: 20px;
+  gap: 30px; // Increased gap for better separation
   max-width: 1200px;
   margin: 40px auto;
-  padding: 20px;
+  padding: 30px; // Increased padding for better breathing room
   background: #f8f8f8;
   border-radius: 12px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 
   @include md {
     flex-direction: column;
-    padding: 15px;
+    padding: 25px 20px;
+    gap: 25px;
+  }
+  
+  @include sm {
+    padding: 20px 15px;
+    margin: 25px auto;
+    gap: 0; // Remove gap since slider won't be shown
   }
 }
 
 .sliderContainer {
   flex: 1;
-  max-width: 50%;
-
+  max-width: 48%; // Slightly less than half to ensure proper spacing
+  order: 1; // Explicitly set order to ensure slider is on the left
+  overflow: hidden;
+  border-radius: 8px; // Added border radius to container
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08); // Added subtle shadow
+  
+  @include lg {
+    max-width: 45%; // Adjusted for large screens
+  }
+  
   @include md {
     max-width: 100%;
+    order: 2; // This makes the slider appear after the text on medium screens
+    margin-top: 20px;
+    width: 90%; // Controlled width on medium screens
+  }
+  
+  @include sm {
+    display: none; // Hide the slider completely on small screens
   }
 }
 
-.imageSlide img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
+.imageSlide {
+  height: 100%;
+  
+  img {
+    width: 100%;
+    height: 350px; // Fixed height for consistent appearance
+    object-fit: cover; // This ensures images cover the area nicely
+    display: block; // Remove any spacing issues
+    
+    @include lg {
+      height: 320px;
+    }
+    
+    @include md {
+      height: 300px;
+    }
+  }
+}
+
+/* Slider navigation styling */
+.slick-prev, .slick-next {
+  z-index: 10;
+  width: 35px !important;
+  height: 35px !important;
+  
+  &:before {
+    font-size: 30px !important;
+  }
+  
+  @include md {
+    width: 30px !important;
+    height: 30px !important;
+    
+    &:before {
+      font-size: 25px !important;
+    }
+  }
+  
+  @include sm {
+    display: none !important;
+  }
+}
+
+.slick-prev {
+  left: 10px !important;
+}
+
+.slick-next {
+  right: 10px !important;
 }
 
 .textContainer {
   flex: 1;
-  max-width: 50%;
-  padding: 20px;
+  max-width: 48%; // Matching the slider width
+  padding: 0 10px 0 20px; // More padding on the left for better spacing from slider
+  order: 2; // Explicitly set order to ensure text is on the right
+
+  @include lg {
+    max-width: 50%;
+    padding: 0 10px 0 15px;
+  }
 
   @include md {
     max-width: 100%;
     text-align: center;
+    order: 1; // This makes the text appear before the slider on medium screens
+    padding: 10px 15px; 
+  }
+  
+  @include sm {
+    max-width: 100%;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   h2 {
-    font-size: 28px;
+    font-size: 32px; // Larger heading for better hierarchy
     color: #333;
+    margin-bottom: 18px;
+    font-weight: 600;
+    line-height: 1.2;
 
+    @include lg {
+      font-size: 28px;
+    }
+    
+    @include md {
+      font-size: 26px;
+      margin-bottom: 15px;
+    }
+    
     @include sm {
       font-size: 24px;
+      margin-bottom: 12px;
     }
   }
 
   p {
-    font-size: 16px;
+    font-size: 17px;
     color: #555;
-    line-height: 1.5;
-    margin-bottom: 15px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    
+    @include lg {
+      font-size: 16px;
+      margin-bottom: 22px;
+    }
+    
+    @include md {
+      font-size: 16px;
+      margin-bottom: 20px;
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    @include sm {
+      font-size: 15px;
+      margin-bottom: 18px;
+      line-height: 1.4;
+      max-width: 95%;
+    }
   }
 }
 
 .exploreBtn {
   background: #fece51;
   color: #1e1e2f;
-  font-size: 16px;
-  padding: 10px 18px;
+  font-size: 17px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
+  font-weight: 600;
+  display: inline-block;
+  
+  @include lg {
+    padding: 11px 22px;
+    font-size: 16px;
+  }
+  
+  @include md {
+    padding: 12px 24px;
+    font-size: 17px;
+    margin: 0 auto; // Center on medium screens
+  }
+  
+  @include sm {
+    padding: 12px 25px;
+    font-size: 16px;
+    margin-top: 5px;
+    width: auto; // Ensure button isn't too wide
+    min-width: 160px; // But not too narrow either
+  }
 
   &:hover {
     background: #ffb700;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
   }
 }

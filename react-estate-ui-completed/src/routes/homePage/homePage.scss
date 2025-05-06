@@ -5,37 +5,58 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 100vh; // Full viewport height
-  // padding: 20px 0;
-  overflow-y: auto; // Enables vertical scrolling
+  min-height: 100vh;
+  overflow-x: hidden;
   position: relative;
-  height: 100%;
-  // padding: 20px 0;
-
-  @include md {
-    padding: 10px 15px;
+  
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
   }
-
+  
+  &.scrolled .overlay {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
   .contentContainer {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    max-width: 1600px;
-    gap: 90px; // Creates space between text and image
+    max-width: 1400px;
+    padding: 20px;
+    gap: 60px;
+    margin: 40px 0;
 
     @include md {
       flex-direction: column;
       align-items: center;
-      text-align: center;
+      margin: 30px 0;
+      gap: 35px; // Reduced gap
+    }
+    
+    @include sm {
+      padding: 10px; // Reduced padding
+      margin: 15px 0; // Reduced margin
+      gap: 25px; // Reduced gap for small screens
     }
   }
 
   .textContainer {
     flex: 1;
     max-width: 50%;
-
+    order: 1;
+    position: relative;
+    z-index: 5;
+    
     @include md {
       max-width: 100%;
       text-align: center;
@@ -45,26 +66,56 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 40px;
-
-      @include md {
-        padding: 0;
+      gap: 25px;
+      
+      @include sm {
+        gap: 15px; // Reduced gap between elements on small screens
       }
 
       .title {
-        font-size: 56px;
+        font-size: 48px;
         color: #333;
+        line-height: 1.2;
+        margin: 0;
 
         @include lg {
-          font-size: 48px;
+          font-size: 42px;
         }
 
         @include md {
-          font-size: 40px;
+          font-size: 36px;
         }
 
         @include sm {
-          font-size: 32px;
+          font-size: 28px;
+        }
+      }
+
+      p {
+        font-size: 18px;
+        color: #555;
+        line-height: 1.6;
+        margin: 0;
+        
+        @include sm {
+          font-size: 16px;
+          line-height: 1.5; // Slightly reduced line height for compact layout
+        }
+      }
+      
+      // SearchBar component - important to set proper margins and z-index
+      & > :nth-child(3) {
+        margin: 15px 0 30px;
+        width: 100%;
+        position: relative;
+        z-index: 10;
+        
+        @include md {
+          margin: 15px 0 25px; // Reduced bottom margin
+        }
+        
+        @include sm {
+          margin: 5px 0 15px; // Significantly reduced margins for small screens
         }
       }
 
@@ -72,33 +123,54 @@
         display: flex;
         background: #f8f8f8;
         justify-content: space-between;
-        gap: 20px;
+        gap: 15px;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        position: relative;
+        z-index: 5;
 
+        @include md {
+          width: 100%;
+          gap: 15px;
+          padding: 12px; // Slightly reduced padding
+        }
+        
         @include sm {
-          display: none;
+         display: none; // Hide boxes completely on small screens
         }
 
         .box {
-          
-          padding: 15px;
+          padding: 10px;
           border-radius: 8px;
           text-align: center;
-          min-width: 120px;
-          // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+          flex: 1;
+          min-width: 90px;
+          
           h1 {
             font-size: 32px;
             color: #fece51;
+            margin: 0 0 5px 0;
 
             @include lg {
               font-size: 28px;
             }
+            
+            @include md {
+              font-size: 26px;
+            }
           }
 
           h2 {
-            font-size: 18px;
-            font-weight: 300;
-            color: black;
+            font-size: 16px;
+            font-weight: 500;
+            color: #333;
+            margin: 0;
+            
+            @include md {
+              font-size: 15px;
+            }
           }
         }
       }
@@ -107,26 +179,69 @@
 
   .imgContainer {
     flex: 1;
-    max-width: 50%;
+    max-width: 45%;
     background-color: #fcf5f3;
     display: flex;
     justify-content: center;
     align-items: center;
+    order: 2;
+    position: relative;
     padding: 20px;
-    padding-right: 500px;
+    border-radius: 10px;
+    z-index: 4;
+    
+    @include lg {
+      max-width: 48%;
+    }
 
     @include md {
-      max-width: 100%;
+      max-width: 90%;
+      order: 2;
+      padding: 15px;
+      margin-top: 5px; // Reduced margin
+    }
+    
+    @include sm {
+      max-width: 90%; // Slightly reduced to accommodate padding
+      padding: 10px 25px; // Increased horizontal padding (top/bottom 10px, left/right 25px)
+      height: auto;
+      margin-top: 140px;
+      border-radius: 12px; // Slightly increased for better appearance
     }
 
     img {
       width: 100%;
-      max-width: 600px;
+      max-width: 800px;
       border-radius: 10px;
-
-      @include lg {
-        width: 105%;
+      
+      @include md {
+        max-width: 140%;
+        max-height: 400px;
       }
+      
+      @include sm {
+        max-width: 100%;
+        max-height: 250px; // Reduced height on small screens
+        border-radius: 8px; // Slightly reduced border radius
+        padding: 0; // Removed padding from image (it should be on the container)
+      }
+    }
+  }
+  
+  .featuredContainer {
+    width: 100%;
+    max-width: 1400px;
+    padding: 20px;
+    margin-top: 60px;
+    
+    @include md {
+      margin-top: 40px; // Reduced margin
+      padding: 15px;
+    }
+    
+    @include sm {
+      padding: 15px; // Reduced padding
+      margin-top: 20px; // Reduced margin
     }
   }
 }

@@ -225,7 +225,7 @@ const Checkout = () => {
               <b>Booking Period:</b> From {startDate?.toLocaleDateString()} to {endDate?.toLocaleDateString()}
             </p> */}
             <p className="booking-note">
-              Hostel bookings are for deposit and first month's rent only
+              Hostel bookings are for deposit only
             </p>
           </div>
         ) : null}

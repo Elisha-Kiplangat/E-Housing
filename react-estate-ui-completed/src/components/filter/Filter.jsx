@@ -66,9 +66,9 @@ function Filter() {
           >
             <option value="">any</option>
             <option value="apartment">Apartment</option>
-            <option value="house">House</option>
-            <option value="condo">Condo</option>
-            <option value="land">Land</option>
+            <option value="house">Bedsitter</option>
+            <option value="condo">Single</option>
+            <option value="land">Bedroom</option>
           </select>
         </div>
         <div className="item">

@@ -178,8 +178,8 @@ function SinglePage() {
               <span>{post.bedroom} beds</span>
             </div>
             <div className="size">
-              <img src="/bath.png" alt="" />
-              <span>{post.bathroom} bathroom</span>
+              <img src="/disicon.png" alt="" />
+              <span>{post.bathroom}km Distance</span>
             </div>
           </div>
 

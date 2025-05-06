@@ -125,19 +125,20 @@ nav {
     }
 
     .menu {
-      position: absolute;
+      position: fixed; /* Changed from absolute to fixed */
       top: 0;
-      right: -50%;
+      right: -100%; /* Changed from -50% to -100% */
       background-color: black;
       color: white;
       height: 100vh;
-      width: 50%;
-      transition: all 1s ease;
+      width: 100%; /* Changed from 50% to 100% */
+      transition: all 0.5s ease; /* Made transition slightly faster */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       font-size: 24px;
+      z-index: 998; /* Added z-index to ensure it's below the menu icon */
 
       &.active {
         right: 0;
@@ -145,7 +146,10 @@ nav {
 
       @include sm {
         a {
-          display: initial;
+          display: block; /* Changed from initial to block */
+          margin: 15px 0; /* Added vertical spacing between links */
+          padding: 10px 20px; /* Added padding */
+          font-size: 20px; /* Slightly reduced font size */
         }
       }
     }

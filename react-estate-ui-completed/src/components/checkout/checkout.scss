@@ -1,22 +1,72 @@
+@use "../../responsive.scss" as *;
+
+html, body {
+  overflow-y: auto !important;
+  height: 100%;
+}
+
 .checkoutContainer {
   max-width: 600px;
+  margin: 20px auto;
   background: #fff;
   border-radius: 10px;
   font-family: Arial, sans-serif;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  height: auto;
+  max-height: 90vh;
+  position: relative;
+  padding-top: 20px;
+  
+  transform: translateZ(0);
+  
+  @include md {
+    max-width: 90%;
+    max-height: 85vh;
+  }
+  
+  @include sm {
+    max-width: 95%;
+    border-radius: 8px;
+    margin: 15px auto;
+    max-height: 80vh;
+  }
 
   .header {
-    margin-top: -3.5rem;
+    margin-top: 1rem;
     color: rgb(20, 79, 26);
     text-align: center;
     padding: 1rem;
     font-size: 1.5rem;
     font-weight: bold;
+    position: relative;
+    
+    @include sm {
+      margin-top: 0.5rem;
+      padding: 0.75rem;
+      font-size: 1.3rem;
+    }
+    
+    h2 {
+      margin: 0;
+      padding: 0.5rem 0;
+    }
   }
 
   .booking-container {
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     display: flex;
     flex-direction: column;
+    overflow-y: visible;
+    
+    @include md {
+      padding: 1.25rem 1.5rem;
+    }
+    
+    @include sm {
+      padding: 1rem;
+    }
 
     .details {
       margin-bottom: 1rem;
@@ -25,11 +75,21 @@
         font-size: 1.2rem;
         font-weight: bold;
         margin-bottom: 0.5rem;
+        
+        @include sm {
+          font-size: 1.1rem;
+          margin-bottom: 0.4rem;
+        }
       }
 
       p {
         font-size: 1rem;
         margin-bottom: 0.3rem;
+        word-break: break-word;
+        
+        @include sm {
+          font-size: 0.9rem;
+        }
       }
     }
 
@@ -37,20 +97,33 @@
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      
+      @include sm {
+        gap: 0.4rem;
+      }
 
       label {
         font-weight: bold;
+        margin-bottom: 0.2rem;
+        
+        @include sm {
+          font-size: 0.9rem;
+        }
       }
 
       input {
         width: 100%;
         padding: 0.5rem;
-        margin-top: 0.3rem;
         border: 1px solid #cbd5e0;
         border-radius: 5px;
         outline: none;
         font-size: 1rem;
+        
+        @include sm {
+          padding: 0.4rem;
+          font-size: 0.9rem;
+        }
       }
 
       .react-datepicker-wrapper {
@@ -60,15 +133,30 @@
       .react-datepicker__input-container input {
         width: 100%;
         padding: 0.5rem;
-        margin-top: 0.3rem;
         border: 1px solid #cbd5e0;
         border-radius: 5px;
         outline: none;
         font-size: 1rem;
+        
+        @include sm {
+          padding: 0.4rem;
+          font-size: 0.9rem;
+        }
 
         &:focus {
           border-color: #4c51bf;
           box-shadow: 0 0 5px rgba(76, 81, 191, 0.5);
+        }
+      }
+      
+      .booking-note {
+        font-size: 0.9rem;
+        color: #718096;
+        font-style: italic;
+        margin-top: 0.5rem;
+        
+        @include sm {
+          font-size: 0.8rem;
         }
       }
     }
@@ -76,13 +164,33 @@
     .amount {
       font-size: 1.2rem;
       font-weight: bold;
-      margin-bottom: 0.5rem;
+      margin: 0.75rem 0;
+      
+      @include sm {
+        font-size: 1rem;
+        margin: 0.5rem 0;
+      }
     }
 
+    // Improved button group styling for small screens
     .button-group {
       display: flex;
       justify-content: space-between;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 15px; // Default gap
+      
+      @include md {
+        margin-top: 1.2rem;
+        gap: 12px;
+      }
+      
+      @include sm {
+        margin-top: 1rem;
+        justify-content: center; // Center buttons on small screens
+        gap: 10px; // Reduced gap on small screens
+      }
 
       button {
         padding: 0.7rem 1.5rem;
@@ -91,7 +199,31 @@
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        transition: background 0.3s ease;
+        transition: all 0.2s ease;
+        min-width: 130px; // Ensure buttons have enough width
+        
+        @include md {
+          padding: 0.65rem 1.3rem;
+          font-size: 0.95rem;
+          min-width: 120px;
+        }
+        
+        @include sm {
+          padding: 0.6rem 1rem;
+          font-size: 0.85rem; // Reduced font size
+          font-weight: 500; // Reduced font weight
+          min-width: 110px; // Still give enough space for touch targets
+          flex: 0 1 45%; // Allow buttons to take up to 45% of container
+          margin: 0 5px; // Add horizontal margin
+        }
+        
+        // Extra small screens
+        @media screen and (max-width: 350px) {
+          flex: 0 1 80%; // Larger buttons on very small screens
+          margin: 0;
+          padding: 0.55rem 0.9rem;
+          font-size: 0.8rem;
+        }
       }
 
       .back-button {
@@ -100,6 +232,10 @@
 
         &:hover {
           background: #4a5568;
+        }
+        
+        @include sm {
+          background: #8290a5; // Slightly lighter on small screens
         }
       }
 
@@ -115,17 +251,31 @@
           background: #a0aec0;
           cursor: not-allowed;
         }
+        
+        @include sm {
+          background: #5a60c7; // Slightly brighter on small screens for better visibility
+          
+          &:disabled {
+            background: #b5bcd0; // Lighter disabled color
+          }
+        }
       }
     }
 
-    // ✅ Styling for payment status messages
     .payment-message {
       font-size: 16px;
-      margin-top: 10px;
+      margin-top: 15px;
       padding: 10px;
       border-radius: 5px;
       text-align: center;
       font-weight: bold;
+      word-break: break-word;
+      
+      @include sm {
+        font-size: 14px;
+        padding: 8px;
+        margin-top: 12px;
+      }
 
       &.success {
         color: #155724;
@@ -145,5 +295,61 @@
         border: 1px solid #ffeeba;
       }
     }
+  }
+}
+
+.react-datepicker-popper {
+  z-index: 1000 !important;
+}
+
+// Media query for very small height screens
+@media screen and (max-height: 600px) {
+  .checkoutContainer {
+    height: 100%;
+    max-height: none;
+    overflow-y: scroll;
+    border-radius: 0;
+    margin: 0;
+    padding-bottom: 20px;
+    
+    .header {
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 10;
+      margin-top: 0;
+      padding: 0.5rem;
+    }
+    
+    .booking-container {
+      padding: 0.75rem;
+      
+      .details {
+        margin-bottom: 0.5rem;
+      }
+      
+      .date-inputs {
+        gap: 0.3rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      // Adjust button group for small height screens
+      .button-group {
+        margin-top: 0.5rem;
+        gap: 8px;
+        
+        button {
+          padding: 0.5rem 0.8rem;
+          font-size: 0.8rem;
+        }
+      }
+    }
+  }
+}
+
+// Fix for iOS Safari scrolling issues
+@supports (-webkit-touch-callout: none) {
+  .checkoutContainer {
+    -webkit-overflow-scrolling: touch;
   }
 }

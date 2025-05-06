@@ -38,8 +38,8 @@ function Card({ item }) {
               <span>{item.bedroom} bedroom</span>
             </div>
             <div className="feature">
-              <img src="/bath.png" alt="" />
-              <span>{item.bathroom} bathroom</span>
+              <img src="/disicon.png" alt="" />
+              <span>{item.bathroom}km Distance</span>
             </div>
           </div>
           <div className="icons">
