@@ -1,138 +1,285 @@
 @use "../../responsive.scss" as *;
 
 .card {
+  width: 100%;
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  @include sm {
+    border-radius: 8px;
+  }
 
   .imageContainer {
-    flex: 2;
-    height: 200px;
-
-    @include md {
-      display: none;
+    width: 100%;
+    height: 200px; // Fixed height for consistent appearance
+    overflow: hidden;
+    position: relative;
+    display: block;
+    
+    @include lg {
+      height: 180px;
     }
-
+    
+    @include md {
+      height: 170px;
+    }
+    
+    @include sm {
+      height: 160px;
+    }
+    
     img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
-      border-radius: 10px;
+      object-fit: cover; // Ensures the image covers the container nicely
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    
+    &:hover img {
+      transform: scale(1.05); // Subtle zoom effect on hover
+    }
+    
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
+      pointer-events: none; // Ensures clicks pass through
     }
   }
+
   .textContainer {
-    flex: 3;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
-
-    // ...existing code...
-
-.titleRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-.statusBadge {
-  padding: 5px 10px;
-  border-radius: 4px;
-  color: white;
-  font-weight: bold;
-  text-transform: uppercase;
-  font-size: 12px;
-  flex-shrink: 0;
-  
-  &.pending {
-    background-color: #ffa500;
-  }
-  
-  &.completed {
-    background-color: #4caf50;
-  }
-  
-  &.rejected {
-    background-color: #f44336;
-  }
-  
-  &.cancelled {
-    background-color: #9e9e9e;
-  }
-}
-
-    img {
-      width: 16px;
-      height: 16px;
+    gap: 8px;
+    flex: 1; // Takes remaining space
+    
+    @include md {
+      padding: 12px;
+      gap: 6px;
     }
-
-    .title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #444;
-      transition: all 0.4s ease;
-
-      &:hover {
-        color: #000;
-        scale: 1.01;
+    
+    @include sm {
+      padding: 10px;
+      gap: 5px;
+    }
+    
+    .titleRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      
+      .title {
+        font-size: 18px;
+        font-weight: 600;
+        margin: 0;
+        flex: 1; // Allow title to take available space
+        
+        @include md {
+          font-size: 16px;
+        }
+        
+        @include sm {
+          font-size: 15px;
+        }
+        
+        a {
+          color: #333;
+          text-decoration: none;
+          display: -webkit-box;
+          -webkit-line-clamp: 2; // Limit to 2 lines
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          
+          &:hover {
+            color: #fece51;
+          }
+        }
+      }
+      
+      .statusBadge {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 500;
+        white-space: nowrap;
+        
+        @include sm {
+          font-size: 10px;
+          padding: 3px 6px;
+        }
+        
+        &.available {
+          background-color: #d4edda;
+          color: #155724;
+        }
+        
+        &.pending {
+          background-color: #fff3cd;
+          color: #856404;
+        }
+        
+        &.sold {
+          background-color: #f8d7da;
+          color: #721c24;
+        }
       }
     }
 
     .address {
-      font-size: 14px;
       display: flex;
       align-items: center;
       gap: 5px;
-      color: #888;
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+      
+      @include sm {
+        font-size: 12px;
+      }
+      
+      img {
+        width: 14px;
+        height: 14px;
+        
+        @include sm {
+          width: 12px;
+          height: 12px;
+        }
+      }
+      
+      span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     .price {
       font-size: 20px;
-      font-weight: 300;
-      padding: 5px;
-      border-radius: 5px;
-      background-color: rgba(254, 205, 81, 0.438);
-      width: max-content;
+      font-weight: 700;
+      color: #fece51;
+      margin: 4px 0;
+      
+      @include md {
+        font-size: 18px;
+      }
+      
+      @include sm {
+        font-size: 16px;
+      }
     }
 
     .bottom {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
-
+      align-items: center;
+      margin-top: 5px;
+      
       .features {
         display: flex;
-        gap: 20px;
-        font-size: 14px;
-
+        gap: 15px;
+        
+        @include sm {
+          gap: 10px;
+        }
+        
         .feature {
           display: flex;
           align-items: center;
           gap: 5px;
-          background-color: whitesmoke;
-          padding: 5px;
-          border-radius: 5px;
+          font-size: 13px;
+          color: #666;
+          
+          @include sm {
+            font-size: 12px;
+          }
+          
+          img {
+            width: 16px;
+            height: 16px;
+            
+            @include sm {
+              width: 14px;
+              height: 14px;
+            }
+          }
         }
       }
 
       .icons {
         display: flex;
-        gap: 20px;
-
+        gap: 8px;
+        
         .icon {
-          border: 1px solid #999;
-          padding: 2px 5px;
-          border-radius: 5px;
-          cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
-
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          
+          @include sm {
+            width: 28px;
+            height: 28px;
+          }
+          
           &:hover {
-            background-color: lightgray;
+            background-color: #f2f2f2;
+          }
+          
+          img {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
+            
+            @include sm {
+              width: 14px;
+              height: 14px;
+            }
+          }
+          
+          &:hover img {
+            transform: scale(1.1);
           }
         }
       }
     }
+  }
+}
+
+// Optional: Add a grid container for multiple cards
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  
+  @include md {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 15px;
+  }
+  
+  @include sm {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
   }
 }
