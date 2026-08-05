@@ -63,7 +63,11 @@ function Login() {
 
           <Link to="/forgot-password">Forgot password?</Link>
 
-         <a href={process.env.VITE_GUEST_LOGIN_URL} target="_blank" rel="noopener noreferrer">
+         <a
+            href={import.meta.env.VITE_GUEST_LOGIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Guest?
           </a>
 
