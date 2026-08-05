@@ -1,0 +1,117 @@
+.footer {
+    background: #1e1e2f;
+    color: #ffffff;
+    padding: 20px 0; // Reduced padding for a shorter height
+    font-family: "Arial", sans-serif;
+  
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: auto;
+  
+      .footer-top {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); // Slightly smaller min size
+        gap: 15px; // Reduced gap
+        text-align: left;
+  
+        .brand {
+          h2 {
+            font-size: 22px; // Slightly smaller font size
+            color: #fece51;
+          }
+          p {
+            font-size: 13px; // Reduce font size for compactness
+            margin-top: 3px;
+            opacity: 0.8;
+          }
+        }
+  
+        .links,
+        .contact,
+        .socials {
+          h3 {
+            font-size: 16px; // Reduce heading size
+            margin-bottom: 8px; // Reduce spacing
+            color: #fece51;
+          }
+          ul {
+            list-style: none;
+            padding: 0;
+            li {
+              margin: 5px 0; // Reduce margin between list items
+              a {
+                text-decoration: none;
+                font-size: 13px; // Reduce link font size
+                color: #ffffff;
+                transition: 0.3s;
+                &:hover {
+                  color: #fece51;
+                }
+              }
+            }
+          }
+          p {
+            font-size: 13px;
+            margin: 3px 0;
+          }
+        }
+  
+        .socials {
+          .icons {
+            display: flex;
+            gap: 10px; // Reduce gap for compact layout
+            a {
+              font-size: 18px; // Slightly smaller icon size
+              color: #ffffff;
+              transition: 0.3s;
+              &:hover {
+                color: #fece51;
+              }
+            }
+          }
+        }
+      }
+  
+      .footer-bottom {
+        background: #1e1e2f;
+        padding: 15px 0;
+        color: #ffffff;
+        font-size: 14px;
+      }
+      
+      .footer-bottom-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 90%;
+        max-width: 1200px;
+        margin: auto;
+        text-align: center;
+      }
+      
+      .quick-links a {
+        color: #ffffff;
+        margin-right: 15px;
+        text-decoration: none;
+        transition: 0.3s;
+      }
+      
+      .quick-links a:hover {
+        color: #fece51;
+      }
+      
+      .social-icons a {
+        color: #ffffff;
+        font-size: 18px;
+        margin-left: 15px;
+        transition: 0.3s;
+      }
+      
+      .social-icons a:hover {
+        color: #fece51;
+      }
+      
+    }
+  }
+  

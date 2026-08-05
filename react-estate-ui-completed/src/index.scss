@@ -1,0 +1,31 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  overflow-x: hidden; /* Prevents horizontal scrolling */
+  overflow-y: auto; /* Allows vertical scrolling when needed */
+  min-height: 100vh; /* Ensures the body takes up at least the full viewport height */
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; /* Pushes the footer to the bottom */
+}
+
+.footer {
+  background: #1e1e2f;
+  color: #ffffff;
+  padding: 20px 0; /* Reduced padding for a smaller height */
+  font-family: "Arial", sans-serif;
+  text-align: center;
+}

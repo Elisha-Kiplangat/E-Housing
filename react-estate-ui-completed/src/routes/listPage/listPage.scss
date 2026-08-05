@@ -1,0 +1,37 @@
+@use "../../responsive.scss" as *;
+
+.listPage {
+  display: flex;
+  height: calc(100vh - 100px);
+  overflow: hidden;
+
+  .listContainer {
+    flex: 3;
+    height: 100%;
+    overflow-y: auto;
+
+    .wrapper {
+      padding: 20px 50px 50px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+  }
+
+  .mapContainer {
+    flex: 2;
+    position: sticky;
+    top: 100px;
+    height: calc(100vh - 100px);
+    background: #fcf5f3;
+
+    .map {
+      width: 100%;
+      height: 100%;
+    }
+
+    @include md {
+      display: none;
+    }
+  }
+}

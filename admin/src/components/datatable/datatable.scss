@@ -1,0 +1,265 @@
+.datatable {
+  // height: 700px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+  &.dark {
+    background-color: #141414;
+    color: #fff;
+
+    .loadingContainer {
+      background-color: #141414;
+      box-shadow: 0px 0px 15px -10px rgba(255, 255, 255, 0.2);
+      
+      p {
+        color: #bbb;
+      }
+    }
+    
+    .errorContainer {
+      background-color: rgba(244, 67, 54, 0.05);
+      border-color: rgba(244, 67, 54, 0.1);
+      color: #ff6b6b;
+    }
+
+    .datatableTitle {
+      background-color: #141414;
+      // color: #fff;
+    }
+
+    .cellAction {
+      .viewButton {
+        background-color: #2f3c49;
+        color: #2f57dc;
+      }
+      .deleteButton {
+        background-color: #4d4040;
+        color: #bf0f0f;
+      }
+    }
+  }
+
+  &.light {
+    background-color: #fff;
+    color: #000;
+
+    .datatableTitle {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .cellAction {
+      .viewButton {
+        background-color: #fff;
+        color: #2f57dc;
+      }
+      .deleteButton {
+        background-color: #fff;
+        color: #bf0f0f;
+      }
+    }
+  }
+
+  .datatableTitle {
+    width: 100%;
+    font-size: 24px;
+    color: gray;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .link {
+      text-decoration: none;
+      color: green;
+      font-size: 16px;
+      font-weight: 400;
+      border: 1px solid green;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: green;
+        color: white;
+      }
+    }
+  }
+
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    margin: 20px 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px -10px rgba(0, 0, 0, 0.3);
+    
+    p {
+      margin-top: 16px;
+      color: #666;
+      font-size: 1rem;
+    }
+  }
+  
+  .errorContainer {
+    padding: 20px;
+    margin: 20px 0;
+    background-color: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.2);
+    border-radius: 8px;
+    color: #d32f2f;
+    font-size: 0.95rem;
+  }
+
+
+  .tableWrapper {
+    overflow-x: auto;
+  }
+
+  .customTable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-size: 14px;
+
+    th,
+    td {
+      padding: 5px 8px;
+      line-height: 1.2;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f5f5f5;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    tr {
+      transition: background 0.2s ease;
+      // margin-top: 5px;
+
+      &:hover {
+        background: #f9f9f9;
+      }
+    }
+  }
+
+  .expandButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+
+  .cellWithImg {
+    display: flex;
+    align-items: center;
+
+    .cellImg {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 10px;
+    }
+  }
+
+  .cellWithStatus {
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: 500;
+
+    &.active {
+      background-color: rgba(0, 128, 0, 0.1);
+      color: green;
+    }
+
+    &.pending {
+      background-color: rgba(255, 217, 0, 0.1);
+      color: goldenrod;
+    }
+
+    &.passive {
+      background-color: rgba(255, 0, 0, 0.1);
+      color: crimson;
+    }
+  }
+
+  .cellAction {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .viewButton,
+    .deleteButton {
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 10px;
+    }
+
+    .viewButton {
+      color: darkblue;
+      border: 1px dotted rgba(0, 0, 139, 0.6);
+
+      &:hover {
+        background: darkblue;
+        color: white;
+      }
+    }
+
+    .deleteButton {
+      color: crimson;
+      border: 1px dotted rgba(220, 20, 60, 0.6);
+
+      &:hover {
+        background: crimson;
+        color: white;
+      }
+    }
+  }
+
+  .expandedRow {
+    background: #f5f5f5;
+
+    .expandedContent {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      padding: 10px;
+    }
+
+    .expandedCell {
+      min-width: 150px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #333;
+    }
+  }
+
+  // Checkbox styling
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+}

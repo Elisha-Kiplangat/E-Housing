@@ -1,0 +1,82 @@
+###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "Doe",
+    "password": "123456"
+}
+###
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "12345"
+}
+###
+GET http://localhost:3000/api/chats
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NThkNzU5MTQzMThhM2ZiMDE1Yzc4YiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDA4MzkwMDQsImV4cCI6MjM0NTYzOTAwNH0.shqVZYoIvv6Su6aSj0LP88j9Cs4LUvwNf0Tg-9pjQNE
+
+###
+POST http://localhost:3000/api/chats
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NThkNzU5MTQzMThhM2ZiMDE1Yzc4YiIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDA4MzkwMDQsImV4cCI6MjM0NTYzOTAwNH0.shqVZYoIvv6Su6aSj0LP88j9Cs4LUvwNf0Tg-9pjQNE
+Content-Type: application/json
+
+{
+    "userIDs": ["6658d75914318a3fb015c78b"],
+    "receiverId": "67acbdd856523389e6876fae"
+}
+
+###
+GET  http://localhost:3000/api/users/count
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
+
+###
+GET  http://localhost:3000/api/users/saved
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
+###
+GET  http://localhost:3000/api/users/profilePosts
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
+###
+GET  http://localhost:3000/api/users/notification
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE0MjUyMzAsImV4cCI6MjM0NjIyNTIzMH0.i83fDll6BrKPdTPonjvrXKROE_u7z3dHpgzAbW-pU40
+
+###
+GET http://localhost:3000/api/posts
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE1MjU1OTksImV4cCI6MjM0NjMyNTU5OX0.UQJY8pikluhjhRlqEvhc-vRGkojhOLMqAHPOCdlpgJk
+
+###
+PUT http://localhost:3000/api/posts/67acc2b590843f0e2c86a244
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE1MzIxNzcsImV4cCI6MjM0NjMzMjE3N30.DY9D-Xaz0w8o5ybuXzScVH1EPqWtDVuFyxGnlvZGFzg
+Content-Type: application/json
+
+{
+    "postData": {
+    "title": "NEW HOPE 11234"
+  },
+    "postDetail" : {
+    "desc": "NEW HOPE 11234"
+    }
+}
+
+###
+DELETE http://localhost:3000/api/posts/67cee08ee4d18fab2ae3b466
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE2MjgxMTEsImV4cCI6MjM0NjQyODExMX0.c1yuWsQ9QLlW_tMqvuCUd7cd0bMdTqrlNvMZbxRb-q4
+
+###
+GET http://localhost:3000/api/bookings
+
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDE2MjgxMTEsImV4cCI6MjM0NjQyODExMX0.c1yuWsQ9QLlW_tMqvuCUd7cd0bMdTqrlNvMZbxRb-q4
+
+###
+POST http://localhost:3000/api/bookings
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YzVlZTU3OTExOGU2ZDZkODExMTc3YSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE3NDI0NjQyMzgsImV4cCI6MjM0NzI2NDIzOH0.W7G_yQWhj28Fbgj5SOBJthDg4DkWtL6bXorFn9w6RqI
+Content-Type: application/json
+
+{
+    "postId": "67acc2b590843f0e2c86a244",
+    "userId": "67c5ee579118e6d6d81177a",
+    "startDate": "2025-03-01T00:00:00.000Z",
+    "type": "apartment"
+}
