@@ -63,7 +63,9 @@ function Login() {
 
           <Link to="/forgot-password">Forgot password?</Link>
 
-         <a href="http://localhost:3001/login">Guest?</a>
+         <a href={process.env.REACT_APP_GUEST_LOGIN_URL} target="_blank" rel="noopener noreferrer">
+            Guest?
+          </a>
 
         </form>
       </div>
